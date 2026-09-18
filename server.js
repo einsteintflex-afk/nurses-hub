@@ -150,7 +150,13 @@ function broadcastToUser(userId,payload){for(const entry of clients?.values?.()|
 
 autoMigrateLocalUserData();
 
-app.get('/api/config',(req,res)=>res.json({subscriptionGhs:priceGhs('subscription'),evaluationGhs:priceGhs('transcript'),paymentCurrency:'GHS',checkoutSubscription:checkoutAmount('subscription'),checkoutEvaluation:checkoutAmount('transcript'),paymentConfigured:paystackReady(),subscriptionPlanConfigured:Boolean(process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE&&!process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE.includes('your_')),autoRefreshMinutes:Number(process.env.AUTO_REFRESH_MINUTES||30),opportunityFeedsConfigured:Boolean(process.env.OPPORTUNITY_FEEDS_JSON&&process.env.OPPORTUNITY_FEEDS_JSON!=='[]'),maxUploadMb:Number(process.env.MAX_UPLOAD_MB||8),aiConfigured:Boolean(process.env.OPENAI_API_KEY),demoPayments:String(process.env.ALLOW_DEMO_PAYMENTS||'true')==='true',trialDays:trialDays()}));
+app.get('/api/config',(req,res)=>{
+  const rawKey=String(process.env.PAYSTACK_SECRET_KEY||'');
+  const trimmedKey=paystackSecretKey();
+  res.json({subscriptionGhs:priceGhs('subscription'),evaluationGhs:priceGhs('transcript'),paymentCurrency:'GHS',checkoutSubscription:checkoutAmount('subscription'),checkoutEvaluation:checkoutAmount('transcript'),paymentConfigured:paystackReady(),subscriptionPlanConfigured:Boolean(process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE&&!process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE.includes('your_')),autoRefreshMinutes:Number(process.env.AUTO_REFRESH_MINUTES||30),opportunityFeedsConfigured:Boolean(process.env.OPPORTUNITY_FEEDS_JSON&&process.env.OPPORTUNITY_FEEDS_JSON!=='[]'),maxUploadMb:Number(process.env.MAX_UPLOAD_MB||8),aiConfigured:Boolean(process.env.OPENAI_API_KEY),demoPayments:String(process.env.ALLOW_DEMO_PAYMENTS||'true')==='true',trialDays:trialDays(),
+    _debugPaystackKey:{present:rawKey.length>0,rawLength:rawKey.length,trimmedLength:trimmedKey.length,prefix:trimmedKey.slice(0,11),last4:trimmedKey.slice(-4),regexPass:/^sk_(test|live)_[A-Za-z0-9_-]+$/.test(trimmedKey)}
+  });
+});
 app.get('/api/health',(req,res)=>res.json({ok:true,service:'Nurses & Midwives Hub',time:now()}));
 app.get('/api/institutions',(_,res)=>res.json(readJson('institutions')));
 app.get('/api/study-options',(_,res)=>res.json(readJson('studyOptions').map(x=>({...x,applicationUrl:undefined}))));
