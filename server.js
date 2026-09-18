@@ -400,8 +400,22 @@ app.post('/api/transcript-evaluation',requireAuth,requireCsrf,upload.fields([{na
 app.get('/api/transcript-evaluation',requireAuth,(req,res)=>res.json(readJson('submissions').filter(x=>x.userId===req.user.id).map(x=>({reference:x.reference,status:x.status,targetCountry:x.targetCountry,pathwayType:x.pathwayType,recommendation:x.recommendation,createdAt:x.createdAt,updatedAt:x.updatedAt}))));
 
 const LESSON_HTML_ALLOWED_TAGS=new Set(['h4','p','ul','li','b','i','ol']);
+function looksLikeSafeSvgDiagram(svg){
+  const s=String(svg||'').trim();
+  if(!/^<svg[\s\S]*<\/svg>$/i.test(s))return false;
+  if(s.length>6000)return false;
+  if(/<script|<foreignobject|<image|<iframe|<object|<embed|<a[\s>]|on\w+\s*=|href\s*=|javascript:|<style/i.test(s))return false;
+  return true;
+}
 function sanitizeLessonHtml(html){
-  return String(html||'')
+  const raw=String(html||'');
+  const svgBlocks=[];
+  const withoutSvg=raw.replace(/<svg[\s\S]*?<\/svg>/gi,m=>{
+    if(!looksLikeSafeSvgDiagram(m))return '';
+    svgBlocks.push(m);
+    return `@@SVGDIAGRAM@@${svgBlocks.length-1}@@`;
+  });
+  let cleaned=withoutSvg
     .replace(/<script[\s\S]*?<\/script>/gi,'')
     .replace(/<style[\s\S]*?<\/style>/gi,'')
     .replace(/<\/?([a-zA-Z0-9]+)([^>]*)>/g,(full,tag,attrs)=>{
@@ -410,6 +424,8 @@ function sanitizeLessonHtml(html){
       const closing=full.startsWith('</');
       return closing?`</${lower}>`:`<${lower}>`;
     });
+  cleaned=cleaned.replace(/@@SVGDIAGRAM@@(\d+)@@/g,(m,i)=>`<div class="lesson-diagram">${svgBlocks[Number(i)]}</div>`);
+  return cleaned;
 }
 const TRACK_DOMAIN_HINTS={
   'Nursing Core':['Foundations','Medical-Surgical','Emergency','Emergency & Critical Care','Anatomy','Medication Safety','Infection Prevention','Geriatrics','Palliative Care'],
@@ -474,9 +490,13 @@ app.post('/api/ai/lesson-notes',requireAuth,requirePremium,requireCsrf,async(req
   if(cached)return res.json({notesHtml:cached.notesHtml,ai:cached.ai,relatedQuestions});
   const fallback=buildFallbackLessonNotes(module,lesson,lessonIndex,related);
   if(!aiConfigured()){cache.push({key:cacheKey,notesHtml:fallback,ai:false,createdAt:now()});writeJson('lessonNotes',cache.slice(-8000));return res.json({notesHtml:fallback,ai:false,relatedQuestions});}
-  const prompt=`Write extensive, textbook-quality nursing/midwifery study notes for Nurses & Midwives Hub, for the lesson "${lesson}" inside the module "${module.title}" (${module.track}). Module topics: ${module.topics.join(', ')}. Write 900-1300 words as HTML using only <h4>, <p>, <ul>, <ol>, <li>, <b>, <i> tags (no <html>/<body>/<script>/<svg>). Structure it like a textbook chapter section with these headings, each covering this exact lesson specifically (not the whole module): "Learning focus", "Core concepts" (as a numbered step-by-step list), "Clinical/professional application" (a short worked scenario), "Common pitfalls", "Exam focus" (licensing-style technique), and "Before you move on" (a short study checklist as a bullet list). Be specific and detailed, not generic. Never claim to reproduce an official exam paper and never give individualized diagnosis or prescribing instructions. Return only the HTML, no surrounding commentary or markdown fences.`;
+  const prompt=`Write precise, well-organised nursing/midwifery study notes for Nurses & Midwives Hub, for the lesson "${lesson}" inside the module "${module.title}" (${module.track}). Module topics: ${module.topics.join(', ')}. Write 600-900 words as HTML using only <h4>, <p>, <ul>, <ol>, <li>, <b>, <i> tags (no <html>/<body>/<script>). Structure it with these headings, each covering this exact lesson specifically (not the whole module): "Learning focus", "Core concepts" (as a numbered step-by-step list), "Clinical/professional application" (a short worked scenario), "Common pitfalls", "Exam focus" (licensing-style technique), and "Before you move on" (a short study checklist as a bullet list). Be concise, specific, precise and easy to understand — no padding, no repetition.
+
+Also include exactly one simple explanatory diagram as inline SVG, placed right after "Core concepts". Requirements for the diagram: viewBox="0 0 560 200", 3-6 labeled boxes/circles/arrows illustrating the actual process, cycle or comparison for THIS lesson's topic (not generic), text labels inside or beside each shape, colours from this palette only (fill/stroke hex values: navy #0b3542, teal #0c8d82, sky #e9f4fb, ink #16303b), sans-serif font-family, no external images, no <script>, no event-handler attributes, no <a>/<foreignObject>/<image> tags. Wrap it in a single <svg>...</svg> block with no surrounding <div>.
+
+Never claim to reproduce an official exam paper and never give individualized diagnosis or prescribing instructions. Return only the HTML (including the one inline <svg> diagram), no surrounding commentary or markdown fences.`;
   try{
-    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:3000,output_config:{effort:'medium'},messages:[{role:'user',content:prompt}]});
+    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:3000,output_config:{effort:'low'},messages:[{role:'user',content:prompt}]});
     let text=sanitizeLessonHtml(claudeText(r).replace(/^```html\s*|^```\s*|\s*```$/g,'').trim());
     if(!text)throw new Error('empty');
     cache.push({key:cacheKey,notesHtml:text,ai:true,createdAt:now()}); writeJson('lessonNotes',cache.slice(-8000));
@@ -490,7 +510,7 @@ app.post('/api/ai/daily-tutorial',requireAuth,requirePremium,requireCsrf,async(r
   if(!aiConfigured())return res.json({tutorial:fallback,ai:false});
   const prompt=`Create an extensive but digestible daily tutorial for Nurses & Midwives Hub based on the syllabus module "${module.title}". Topics: ${module.topics.join(', ')}. Provide title, 4 objectives, a 700-1000 word lesson with headings, why-it-matters explanations, 5 key points, 5 practice prompts, 5 key takeaways, and 3 original MCQs with answers and rationales. Do not claim to reproduce official exam papers. Return only JSON, no commentary or markdown fences, with keys title, objectives, lesson, keyPoints, practice, takeaways, mcqs.`;
   try{
-    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:1800,output_config:{effort:'medium'},messages:[{role:'user',content:prompt}]});
+    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:1800,output_config:{effort:'low'},messages:[{role:'user',content:prompt}]});
     const text=claudeText(r).replace(/^```json\s*|^```\s*|\s*```$/g,'').trim();
     if(!text)return res.json({tutorial:fallback,ai:false});
     const json=JSON.parse(text); res.json({tutorial:{...json,moduleId:module.id},ai:true});
@@ -503,9 +523,9 @@ app.post('/api/ai/tutor',requireAuth,requirePremium,requireCsrf,async(req,res)=>
   if(question.length<4)return res.status(400).json({error:'Ask a complete study question.'});
   const matched=readJson('syllabus').find(m=>m.title.toLowerCase().includes(topic.toLowerCase())||m.topics.some(t=>t.toLowerCase().includes(topic.toLowerCase()))); const fallback={answer:`Let's work through this step by step. ${matched?`The relevant Hub module is ${matched.title}. Its key areas include ${matched.topics.slice(0,5).join(', ')}.`:''} Your question is: “${question}”. Start by defining the concept, then connect it to assessment, underlying physiology or rationale, safe practice, common complications and examination priorities. Study the related lesson and explain the idea back in your own words.`,keyPoints:['Define the concept clearly.','Explain why it matters in practice.','Identify priority actions and common pitfalls.','Apply the concept to a short clinical scenario.'],examTip:'For licensing-style questions, read the stem carefully, identify the priority, compare every option against the safest immediate action, and avoid choosing an option merely because it is generally correct.',followUps:['Explain the same concept with a clinical example.','What would change your management priority?','Give me 3 licensing-style MCQs on this topic.']};
   if(!aiConfigured())return res.json({answer:fallback,ai:false});
-  const history=Array.isArray(req.body.history)?req.body.history.slice(-8).map(x=>`${x.role||'user'}: ${clean(x.text,900)}`).join('\n'):''; const prompt=`You are the senior educational tutor inside Nurses & Midwives Hub. Teach nurses, midwives, nutrition professionals and public-health learners with a calm, rigorous, exam-ready style. Never claim to be an official regulator, never reproduce official exam papers, and do not provide individualized diagnosis, prescribing, or unsafe treatment instructions. Explain the learner's question in layers: simple explanation first, deeper mechanism/rationale, clinical/professional application, common misconceptions, exam priorities, and a short knowledge check. Topic: ${topic}. Current question: ${question}. Recent conversation for context:\n${history||'(none)'}. Return only JSON, no commentary or markdown fences, with keys answer, keyPoints, examTip, followUps, miniQuiz. miniQuiz must contain 2-3 original questions with concise answers.`;
+  const history=Array.isArray(req.body.history)?req.body.history.slice(-8).map(x=>`${x.role||'user'}: ${clean(x.text,900)}`).join('\n'):''; const prompt=`You are the senior educational tutor inside Nurses & Midwives Hub. Teach nurses, midwives, nutrition professionals and public-health learners with a calm, rigorous, exam-ready style. Never claim to be an official regulator, never reproduce official exam papers, and do not provide individualized diagnosis, prescribing, or unsafe treatment instructions. Be concise and precise — answer in plain, simple language first, then add only the depth that is actually useful. Avoid padding or repeating yourself. Keep "answer" under 180 words. Topic: ${topic}. Current question: ${question}. Recent conversation for context:\n${history||'(none)'}. Return only JSON, no commentary or markdown fences, with keys answer, keyPoints (max 4, short), examTip (1 sentence), followUps (max 3, short), miniQuiz (2 short original questions with concise answers).`;
   try{
-    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:1600,output_config:{effort:'medium'},messages:[{role:'user',content:prompt}]});
+    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:900,output_config:{effort:'low'},messages:[{role:'user',content:prompt}]});
     const text=claudeText(r).replace(/^```json\s*|^```\s*|\s*```$/g,'').trim();
     const json=JSON.parse(text);res.json({answer:json,ai:true});
   }catch{res.json({answer:fallback,ai:false});}
