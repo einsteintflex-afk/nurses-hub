@@ -23,7 +23,7 @@ const STORE = {
   payments:'payments.json', paymentEvents:'payment-events.json', enquiries:'enquiries.json',
   submissions:'submissions.json',
   passwordResets:'password-resets.json', messages:'messages.json', reports:'message-reports.json',
-  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json'
+  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json', reels:'reels.json'
 };
 const CONTENT = { syllabus:'syllabus.json', questions:'questions.json', travel:'travel.json', resources:'resources.json', jobs:'jobs.json', news:'news.json', institutions:'institutions.json', studyOptions:'study-options.json', testimonials:'testimonials.json' };
 for (const f of [...Object.values(STORE), ...Object.values(CONTENT)]) {
@@ -159,11 +159,16 @@ app.get('/api/health',(req,res)=>res.json({ok:true,service:'Nurses & Midwives Hu
 app.get('/api/institutions',(_,res)=>res.json(readJson('institutions')));
 app.get('/api/study-options',(_,res)=>res.json(readJson('studyOptions').map(x=>({...x,applicationUrl:undefined}))));
 
-app.get('/api/content',(req,res)=>{
+function publicNewsItem(n,user){
+  const restricted=Boolean(n.locked)&&!hasPremiumAccess(user);
+  if(restricted) return {...n,body:undefined,sourceUrl:undefined,locked:true,restricted:true,teaser:(n.body&&n.body[0])?String(n.body[0]).slice(0,140)+'…':n.summary};
+  return {...n,locked:Boolean(n.locked),restricted:false};
+}
+app.get('/api/content',optionalAuth,(req,res)=>{
   const jobs=readJson('jobs').map(j=>{const {applicationUrl,...publicJob}=j;return publicJob;});
-  res.json({syllabus:readJson('syllabus'),questions:readJson('questions').map(({answer,...q})=>q),travel:readJson('travel').map(t=>({...t,links:undefined})),resources:readJson('resources').map(r=>({...r,sourceUrl:undefined})),jobs,news:readJson('news'),institutions:readJson('institutions'),studyOptions:readJson('studyOptions').map(x=>({...x,applicationUrl:undefined})),testimonials:readJson('testimonials'),stories:readJson('stories').filter(x=>x.status==='approved').map(x=>({id:x.id,type:x.type,text:x.text,name:x.anonymous?'Anonymous member':x.name,createdAt:x.createdAt}))});
+  res.json({syllabus:readJson('syllabus'),questions:readJson('questions').map(({answer,...q})=>q),travel:readJson('travel').map(t=>({...t,links:undefined})),resources:readJson('resources').map(r=>({...r,sourceUrl:undefined})),jobs,news:readJson('news').map(n=>publicNewsItem(n,req.user)),institutions:readJson('institutions'),studyOptions:readJson('studyOptions').map(x=>({...x,applicationUrl:undefined})),testimonials:readJson('testimonials'),stories:readJson('stories').filter(x=>x.status==='approved').map(x=>({id:x.id,type:x.type,text:x.text,name:x.anonymous?'Anonymous member':x.name,createdAt:x.createdAt}))});
 });
-app.get('/api/news/:id',(req,res)=>{const n=readJson('news').find(x=>x.id===req.params.id); if(!n)return res.status(404).json({error:'Article not found.'}); res.json(n);});
+app.get('/api/news/:id',optionalAuth,(req,res)=>{const n=readJson('news').find(x=>x.id===req.params.id); if(!n)return res.status(404).json({error:'Article not found.'}); res.json(publicNewsItem(n,req.user));});
 app.get('/api/jobs/:id',requireAuth,(req,res)=>{const j=readJson('jobs').find(x=>x.id===req.params.id); if(!j)return res.status(404).json({error:'Job not found.'}); res.json(j);});
 
 
@@ -230,6 +235,33 @@ app.get('/api/support/messages',requireAuth,(req,res)=>res.json(readJson('suppor
 app.post('/api/support/messages',requireAuth,chatLimiter,requireCsrf,(req,res)=>{const text=clean(req.body.text,1000);if(!text)return res.status(400).json({error:'Message cannot be empty.'});const item={id:uid('sup'),userId:req.user.id,sender:'member',text,createdAt:now()};const list=readJson('supportMessages');list.push(item);writeJson('supportMessages',list.slice(-20000));createNotification(`admin:${process.env.ADMIN_EMAIL||'admin'}`,'support_message','New support message',text.slice(0,120),'admin');res.status(201).json(item);});
 app.get('/api/community/summary',requireAuth,requirePremium,(req,res)=>{const friends=readJson('friends').filter(x=>x.status==='accepted'&&(x.userId===req.user.id||x.friendId===req.user.id)).length;const pending=readJson('friends').filter(x=>x.friendId===req.user.id&&x.status==='pending').length;const unread=readJson('notifications').filter(x=>x.userId===req.user.id&&!x.read).length;const online=[...clients?.values?.()||[]].filter(x=>x.userId!==req.user.id).length;res.json({friends,pending,unread,online});});
 
+function publicReel(r){return {id:r.id,userId:r.userId,author:r.author,caption:r.caption,mediaType:r.mediaType,mediaUrl:r.mediaUrl||`/api/reels/media/${r.id}`,likeCount:(r.likes||[]).length,createdAt:r.createdAt};}
+app.get('/api/reels',requireAuth,(req,res)=>{
+  const reels=readJson('reels').slice(-200).reverse();
+  res.json(reels.map(r=>({...publicReel(r),liked:(r.likes||[]).includes(req.user.id)})));
+});
+app.post('/api/reels',requireAuth,requireCsrf,chatLimiter,mediaUpload.single('media'),(req,res)=>{
+  try{
+    const caption=clean(req.body.caption,300);
+    if(!req.file)return res.status(400).json({error:'Add a photo or video to post a reel.'});
+    const mediaType=req.file.mimetype.startsWith('video')?'video':req.file.mimetype.startsWith('audio')?'audio':'image';
+    const item={id:uid('reel'),userId:req.user.id,author:clean(req.user.name,60),caption,mediaType,media:{path:path.basename(req.file.path),mime:req.file.mimetype},likes:[],createdAt:now()};
+    const list=readJson('reels');list.push(item);writeJson('reels',list.slice(-5000));
+    res.status(201).json({...publicReel(item),liked:false});
+  }catch(e){if(req.file)try{fs.unlinkSync(req.file.path)}catch{};res.status(400).json({error:e.message||'Reel post failed.'});}
+});
+app.post('/api/reels/:id/like',requireAuth,requireCsrf,(req,res)=>{
+  const list=readJson('reels'),item=list.find(x=>x.id===req.params.id); if(!item)return res.status(404).json({error:'Reel not found.'});
+  item.likes=item.likes||[]; const idx=item.likes.indexOf(req.user.id);
+  if(idx>=0)item.likes.splice(idx,1); else item.likes.push(req.user.id);
+  writeJson('reels',list); res.json({liked:idx<0,likeCount:item.likes.length});
+});
+app.get('/api/reels/media/:id',requireAuth,(req,res)=>{
+  const r=readJson('reels').find(x=>x.id===req.params.id); if(!r?.media)return res.sendStatus(404);
+  const safe=path.basename(r.media.path); if(!/^[A-Za-z0-9._-]+$/.test(safe))return res.sendStatus(404);
+  res.sendFile(path.join(UPLOADS,safe));
+});
+
 app.get('/api/notifications',requireAuth,(req,res)=>res.json(readJson('notifications').filter(x=>x.userId===req.user.id).slice(-100).reverse()));
 app.post('/api/notifications/:id/read',requireAuth,requireCsrf,(req,res)=>{const list=readJson('notifications'),item=list.find(x=>x.id===req.params.id&&x.userId===req.user.id);if(!item)return res.status(404).json({error:'Notification not found.'});item.read=true;writeJson('notifications',list);res.json(item);});
 
@@ -249,7 +281,9 @@ app.post('/api/auth/register',authLimiter,(req,res)=>{
   if(role==='student' && !institution)return res.status(400).json({error:'Students must select their university or training institution.'});
   if(role==='student' && (!STUDY_LEVELS.includes(studyLevel)||!PROGRAMMES.includes(programme)))return res.status(400).json({error:'Select a valid study level and programme from the list.'});
   const users=readJson('users'); if(users.some(u=>u.email===email))return res.status(409).json({error:'An account with that email already exists.'});
-  const start=now(); const u={id:uid('usr'),name,email,role,profession,institution:role==='student'?institution:null,studyLevel:role==='student'?studyLevel:null,programme:role==='student'?programme:null,password:hashPassword(password),subscription:{active:false,status:'free'},trial:{status:'active',startedAt:start,endsAt:trialEndsAt(start),days:trialDays()},createdAt:start}; users.push(u); writeJson('users',users); const csrf=createSession(res,u.id); res.status(201).json({user:safeUser(u),csrf});
+  const start=now(); const u={id:uid('usr'),name,email,role,profession,institution:role==='student'?institution:null,studyLevel:role==='student'?studyLevel:null,programme:role==='student'?programme:null,password:hashPassword(password),subscription:{active:false,status:'free'},trial:{status:'active',startedAt:start,endsAt:trialEndsAt(start),days:trialDays()},createdAt:start}; users.push(u); writeJson('users',users);
+  createNotification(u.id,'welcome','Welcome to the Hub!','Your 7-day Premium trial is active. Open Community to see members you can connect with and start building your study network.','community');
+  const csrf=createSession(res,u.id); res.status(201).json({user:safeUser(u),csrf});
 });
 app.post('/api/auth/login',authLimiter,(req,res)=>{const email=emailNorm(req.body.email),password=String(req.body.password||''),users=readJson('users'),u=users.find(x=>x.email===email);if(!u||!verifyPassword(password,u.password))return res.status(401).json({error:'Invalid email or password.'});ensureTrial(u);writeJson('users',users);const csrf=createSession(res,u.id);res.json({user:safeUser(u),csrf});});
 app.post('/api/auth/admin-login',authLimiter,(req,res)=>{const email=emailNorm(req.body.email),password=String(req.body.password||''),configured=String(process.env.ADMIN_PASSWORD||'');if(configured==='change-this-immediately')return res.status(503).json({error:'Administrator login is disabled until ADMIN_PASSWORD is changed in .env.'});if(!emailNorm(process.env.ADMIN_EMAIL)||email!==emailNorm(process.env.ADMIN_EMAIL)||password!==configured)return res.status(401).json({error:'Invalid administrator credentials.'});const csrf=createSession(res,`admin:${email}`,'admin');res.json({admin:true,csrf});});

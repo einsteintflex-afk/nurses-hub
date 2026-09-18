@@ -1,12 +1,38 @@
 [
   {
+    "id": "news-abroad-vacancy-sources-2026",
+    "category": "Abroad · Jobs & Vacancies",
+    "title": "Where to find genuine nursing and midwifery vacancies abroad",
+    "date": "2026-09-15",
+    "source": "Nurses & Midwives Hub",
+    "sourceUrl": "https://www.jobs.nhs.uk/candidate/search/results",
+    "summary": "A Hub-authored roundup of the official job boards Ghanaian nurses and midwives can use directly to find verified, current vacancies in the UK, Germany, Canada and Australia — and how to avoid recruitment scams.",
+    "image": "/assets/dashboard-community.png",
+    "locked": true,
+    "lastVerified": "2026-09-15",
+    "body": [
+      "The single biggest risk in international recruitment is an unverified \"agent\" or a vacancy that only exists on WhatsApp. This Hub explainer links directly to the official job boards employers actually use, so you can verify a vacancy yourself before paying anyone or sharing documents.",
+      "United Kingdom: NHS Jobs (jobs.nhs.uk) lists every current NHS vacancy directly from employing trusts, with no agent required to browse or apply.",
+      "Germany: the Bundesagentur für Arbeit job board (arbeitsagentur.de) and the official Make it in Germany portal list verified openings and the recognised route into a nursing role.",
+      "Canada: verify any nursing opportunity against your province's actual regulatory body registration list and the National Nursing Assessment Service (NNAS) process before accepting a role.",
+      "Australia: AHPRA/NMBA registration status and Health Careers job listings are the reliable starting point, not a third-party recruiter's private list.",
+      "Whatever the country, a genuine employer will never ask you to pay a large upfront \"processing fee\" before an interview. If in doubt, use the Hub's Document Evaluation service first — it checks your documents and profile fit before you spend money on any external agent."
+    ],
+    "tags": [
+      "jobs abroad",
+      "vacancies",
+      "work abroad",
+      "recruitment safety"
+    ]
+  },
+  {
     "id": "news-ghana-mobility-sept",
-    "category": "Ghana \u00b7 International Mobility",
-    "title": "Foreign countries recruiting nurses should also support Ghana\u2019s health system",
+    "category": "Ghana · International Mobility",
+    "title": "Foreign countries recruiting nurses should also support Ghana’s health system",
     "date": "2026-09-02",
     "source": "Ghana News Agency",
     "sourceUrl": "https://gna.org.gh/2026/09/foreign-countries-recruiting-ghanaian-nurses-should-support-local-health-services/",
-    "summary": "A September 2026 GNA report covered calls for international recruitment arrangements to include support for Ghana\u2019s health system, including workforce development and training.",
+    "summary": "A September 2026 GNA report covered calls for international recruitment arrangements to include support for Ghana’s health system, including workforce development and training.",
     "lastVerified": "2026-09-17",
     "body": [
       "A September 2, 2026 report from the Ghana News Agency covered a call for destination countries recruiting Ghanaian nurses and midwives to contribute to strengthening the health system that trained them.",
@@ -18,11 +44,13 @@
       "migration",
       "Ghana",
       "work abroad"
-    ]
+    ],
+    "image": "/assets/study-global.png",
+    "locked": true
   },
   {
     "id": "news-ghana-gis-fraud",
-    "category": "Ghana \u00b7 Overseas Safety",
+    "category": "Ghana · Overseas Safety",
     "title": "Ghana Immigration Service warns the public about fake overseas job offers",
     "date": "2026-08-28",
     "source": "Ghana News Agency",
@@ -39,11 +67,13 @@
       "fraud prevention",
       "migration",
       "Ghana"
-    ]
+    ],
+    "image": "/assets/dashboard.svg",
+    "locked": false
   },
   {
     "id": "news-ghana-health-training-sept",
-    "category": "Ghana \u00b7 Professional Development",
+    "category": "Ghana · Professional Development",
     "title": "Capacity-building programme trains 40 health professionals in the Ashanti Region",
     "date": "2026-09-04",
     "source": "Ghana News Agency",
@@ -60,11 +90,13 @@
       "CPD",
       "midwifery",
       "Ashanti Region"
-    ]
+    ],
+    "image": "/assets/study-ghana.png",
+    "locked": false
   },
   {
     "id": "news-ghana-antaigua",
-    "category": "Ghana \u00b7 Government / Mobility",
+    "category": "Ghana · Government / Mobility",
     "title": "Ghana sends first batch of 121 health professionals to Antigua",
     "date": "2026-01-27",
     "source": "The Presidency, Republic of Ghana",
@@ -74,19 +106,21 @@
     "body": [
       "The Presidency reported on January 27, 2026 that Ghana had sent a first group of 121 nurses, midwives and other allied health professionals to Antigua under the Ghana Labour Exchange Programme.",
       "The announcement described the arrangement as part of bilateral cooperation intended to create employment and professional-development opportunities and address a backlog of qualified unemployed health professionals.",
-      "A government-to-government mobility programme is different from a normal open job advertisement. The conditions, selection process, documentation and timing must be taken from the programme\u2019s official notices.",
+      "A government-to-government mobility programme is different from a normal open job advertisement. The conditions, selection process, documentation and timing must be taken from the programme’s official notices.",
       "The Hub keeps this announcement as policy and mobility news rather than presenting it as a current vacancy."
     ],
     "tags": [
       "Antigua",
       "Ghana",
       "government"
-    ]
+    ],
+    "image": "/assets/study-global.png",
+    "locked": true
   },
   {
     "id": "news-ghana-jamaica",
-    "category": "Ghana \u00b7 Government / Mobility",
-    "title": "Ghana\u2013Jamaica health workforce arrangement creates a structured mobility route",
+    "category": "Ghana · Government / Mobility",
+    "title": "Ghana–Jamaica health workforce arrangement creates a structured mobility route",
     "date": "2026-05-27",
     "source": "Ghana News Agency",
     "sourceUrl": "https://gna.org.gh/2026/05/ghanaian-nurses-to-begin-work-in-jamaica-in-june-following-mou-signing/",
@@ -102,19 +136,21 @@
       "Jamaica",
       "Ghana",
       "bilateral agreement"
-    ]
+    ],
+    "image": "/assets/study-global.png",
+    "locked": true
   },
   {
     "id": "news-who-nursing-2026",
-    "category": "Global \u00b7 Nursing & Midwifery",
+    "category": "Global · Nursing & Midwifery",
     "title": "WHO: the global nursing and midwifery workforce continues to face uneven distribution",
     "date": "2026-08-11",
     "source": "World Health Organization",
     "sourceUrl": "https://www.who.int/news-room/fact-sheets/detail/nursing-and-midwifery",
-    "summary": "WHO\u2019s August 2026 nursing and midwifery fact sheet highlights workforce growth alongside persistent shortages, uneven distribution and international migration.",
+    "summary": "WHO’s August 2026 nursing and midwifery fact sheet highlights workforce growth alongside persistent shortages, uneven distribution and international migration.",
     "lastVerified": "2026-09-17",
     "body": [
-      "The World Health Organization\u2019s August 11, 2026 fact sheet reported that the global nursing workforce had grown, while significant shortages and unequal distribution remained.",
+      "The World Health Organization’s August 11, 2026 fact sheet reported that the global nursing workforce had grown, while significant shortages and unequal distribution remained.",
       "WHO also reported a large global midwifery gap and emphasized education, employment, regulation, leadership and working conditions as important parts of workforce planning.",
       "The publication also places international recruitment within the broader need for ethical workforce migration and cooperation between source and destination countries.",
       "The Hub uses this information to provide context for users considering international career pathways."
@@ -123,11 +159,13 @@
       "WHO",
       "workforce",
       "migration"
-    ]
+    ],
+    "image": "/assets/hero-professionals.png",
+    "locked": true
   },
   {
     "id": "news-nmc-exams",
-    "category": "Ghana \u00b7 N&MC",
+    "category": "Ghana · N&MC",
     "title": "N&MC licensing examinations cover multiple nurse and midwife cadres",
     "date": "2026-09-17",
     "source": "Nursing and Midwifery Council of Ghana",
@@ -137,18 +175,20 @@
     "body": [
       "The Nursing and Midwifery Council of Ghana states that it conducts licensing examinations for Nurse Assistants, Nurses and Midwives.",
       "The Council lists several examination cadres, including Registered General Nurses, Registered Midwives, Registered Community Nurses, Registered Mental Nurses and a range of post-basic programmes.",
-      "The Hub\u2019s preparation bank is separate original study material. It is designed to help users practise knowledge and clinical reasoning without claiming to reproduce official examination papers.",
-      "For current examination schedules, eligibility, registration and official procedures, the Council\u2019s current publications remain the authoritative source."
+      "The Hub’s preparation bank is separate original study material. It is designed to help users practise knowledge and clinical reasoning without claiming to reproduce official examination papers.",
+      "For current examination schedules, eligibility, registration and official procedures, the Council’s current publications remain the authoritative source."
     ],
     "tags": [
       "N&MC",
       "exams",
       "registration"
-    ]
+    ],
+    "image": "/assets/study-ghana.png",
+    "locked": false
   },
   {
     "id": "news-ghana-staffing-sept",
-    "category": "Ghana \u00b7 Health System",
+    "category": "Ghana · Health System",
     "title": "Recent reporting highlights nursing workforce pressure in a regional referral hospital",
     "date": "2026-09-13",
     "source": "Ghana News Agency",
@@ -165,6 +205,8 @@
       "staffing",
       "Ghana",
       "health system"
-    ]
+    ],
+    "image": "/assets/study-ghana.png",
+    "locked": false
   }
 ]

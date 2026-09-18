@@ -19,9 +19,22 @@
   </a>
   <nav class="public-nav">
     <button data-public-view="home">Home</button>
-    <button data-public-view="features">Inside the Hub</button>
+    <div class="nav-dropdown" id="insideHubDropdown">
+      <button id="insideHubToggle">Inside the Hub ▾</button>
+      <div class="nav-dropdown-menu" id="insideHubMenu">
+        <a href="#feat-study">Study & Courses</a>
+        <a href="#feat-practice">N&MC Practice & NCLEX Simulation</a>
+        <a href="#feat-ai">AI Tutor & Daily Tutorial</a>
+        <a href="#feat-jobs">Jobs & Career</a>
+        <a href="#feat-abroad">Abroad — Study & Work</a>
+        <a href="#feat-community">Community, Reels & Stories</a>
+        <a href="#feat-news">Professional News</a>
+        <a href="#feat-evaluation">Document Evaluation</a>
+      </div>
+    </div>
     <button data-public-view="testimonials">Testimonials</button>
     <button data-public-view="premium">Premium</button>
+    <button data-public-view="faq">FAQ</button>
     <button data-public-view="help">Help</button>
   </nav>
   <div class="top-actions">
@@ -55,14 +68,14 @@
   <section id="features" class="section soft">
     <div class="shell section-head center"><span class="eyebrow">Inside the Hub</span><h2>Clear spaces for each part of the journey.</h2><p>Nothing important needs to be scattered across multiple tabs or external sites. The Hub keeps the experience organised, while official application links are shown only when an action actually requires the authoritative source.</p></div>
     <div class="shell feature-grid">
-      <article><b>01</b><h3>Study & Courses</h3><p>Structured nursing, midwifery, public health and Nutrition learning with notes and progress tracking.</p></article>
-      <article><b>02</b><h3>N&MC Practice</h3><p>Practice sets, MCQs, theory prompts, explanations, domain analytics and downloadable Hub questions.</p></article>
-      <article><b>03</b><h3>AI Tutor & Daily Tutorial</h3><p>Ask questions while studying and generate syllabus-based tutorials with follow-up quizzes.</p></article>
-      <article><b>04</b><h3>Jobs & Career</h3><p>Read complete job details inside the Hub, save opportunities and move them through a career tracker.</p></article>
-      <article><b>05</b><h3>Abroad — Study & Work</h3><p>Country guidance for study and employment, with official regulator and application sources.</p></article>
-      <article><b>06</b><h3>Community & Stories</h3><p>Premium chat, friends, groups, private messages, status posts and consented member stories.</p></article>
-      <article><b>07</b><h3>Professional News</h3><p>Internal reading with source attribution, comments, likes and auto-refreshed official-source headlines.</p></article>
-      <article><b>08</b><h3>Document Evaluation</h3><p>Separate job-abroad and school-abroad evaluation workflows, payment and review status.</p></article>
+      <article id="feat-study"><b>01</b><h3>Study & Courses</h3><p>Structured nursing, midwifery, public health and Nutrition learning with notes, diagrams and progress tracking.</p></article>
+      <article id="feat-practice"><b>02</b><h3>N&MC Practice & NCLEX Simulation</h3><p>Practice sets, MCQs, theory prompts, a timed exam simulation, explanations and domain analytics.</p></article>
+      <article id="feat-ai"><b>03</b><h3>AI Tutor & Daily Tutorial</h3><p>Ask questions while studying and generate syllabus-based tutorials with follow-up quizzes.</p></article>
+      <article id="feat-jobs"><b>04</b><h3>Jobs & Career</h3><p>Read complete job details inside the Hub, save opportunities and move them through a career tracker.</p></article>
+      <article id="feat-abroad"><b>05</b><h3>Abroad — Study & Work</h3><p>Country pathways to the UK, Germany, Canada, Australia and New Zealand, with eligibility criteria and official sources.</p></article>
+      <article id="feat-community"><b>06</b><h3>Community, Reels & Stories</h3><p>Chat, friends, groups, status posts, member Reels and consented member stories — entertainment is part of the Hub too.</p></article>
+      <article id="feat-news"><b>07</b><h3>Professional News</h3><p>Internal reading with source attribution, comments, likes and auto-refreshed official-source headlines.</p></article>
+      <article id="feat-evaluation"><b>08</b><h3>Document Evaluation</h3><p>Separate job-abroad and school-abroad evaluation workflows, payment and review status.</p></article>
     </div>
   </section>
 
@@ -82,6 +95,19 @@
     <div class="shell pricing-grid">
       <div class="pricing-main"><span class="eyebrow">Hub Premium</span><h2>GHS 50 <small>/ month</small></h2><p>Start with 7 days of full Premium access. After the trial ends, Premium tools close until you subscribe.</p><div class="price-features"><span>✓ Study modules + progress</span><span>✓ N&MC-style MCQs + theory</span><span>✓ AI tutor + daily tutorials</span><span>✓ Nutrition course</span><span>✓ Jobs + career tracker</span><span>✓ Abroad study + work guidance</span><span>✓ Premium community chat</span><span>✓ News + member stories</span></div><button class="btn primary xl" data-action="signup">Start 7-day free trial</button></div>
       <div class="pricing-side"><span class="eyebrow">Document Evaluation</span><h3>GHS 450</h3><p>Professional evaluation of documents and pathway fit for <b>Job Abroad</b> or <b>School Abroad</b>. You receive the review outcome first; official application routes are released based on the completed evaluation.</p><button class="btn secondary" data-action="login">Sign in to request evaluation</button><hr><small>Payments are handled through the configured Paystack integration in production.</small></div>
+    </div>
+  </section>
+
+  <section id="faq" class="section soft">
+    <div class="shell section-head center"><span class="eyebrow">FAQ</span><h2>Frequently asked questions.</h2><p>Everything you need to know before you join.</p></div>
+    <div class="shell" style="max-width:820px;margin:0 auto;display:grid;gap:10px">
+      <details class="theory-card"><summary>How does the 7-day free trial work?</summary><p>Every new account gets 7 days of full Premium access automatically — Study, N&MC Practice, AI Tutor, Daily Tutorial, Nutrition, Abroad, Community and premium News. No card is required to start the trial. After 7 days, Premium tools lock until you subscribe.</p></details>
+      <details class="theory-card"><summary>How much is Premium and how do I pay?</summary><p>Premium is GHS 50/month. Payment is handled through Paystack — cards and mobile money are supported depending on your Paystack checkout options. We never see or store your card details; Paystack processes the payment directly.</p></details>
+      <details class="theory-card"><summary>Do I need Document Evaluation before I apply abroad?</summary><p>It's not required, but strongly recommended. The Hub team reviews your transcripts, certificates and profile fit for GHS 450 before you spend time and money applying — so you know exactly where you stand first.</p></details>
+      <details class="theory-card"><summary>Are the practice questions official N&MC or NCLEX past papers?</summary><p>No. All practice questions, theory prompts and the exam simulation are original, Hub-authored content written in a licensing-style format. They are study preparation tools, not reproductions of any official exam paper.</p></details>
+      <details class="theory-card"><summary>Is the AI Tutor a substitute for clinical advice?</summary><p>No. The AI Tutor and Daily Tutorial are educational study tools only. They never provide individualized diagnosis, prescribing or clinical decision-making — always follow your institution's official teaching and current professional guidance in real practice.</p></details>
+      <details class="theory-card"><summary>Can I cancel anytime?</summary><p>Yes. Manage or cancel your subscription from your Profile page at any time — there's no lock-in contract.</p></details>
+      <details class="theory-card"><summary>How do I reach support?</summary><p>Sign in and use the in-app Enquiries desk for the fastest response, or email nursesmidwiveshub@gmail.com directly.</p></details>
     </div>
   </section>
 
@@ -115,6 +141,7 @@
       <button class="side-link" data-view="abroad"><span>✈</span> Abroad</button>
       <button class="side-link" data-view="news"><span>▤</span> News</button>
       <button class="side-link" data-view="community"><span>☷</span> Community <em>Premium</em></button>
+      <button class="side-link" data-view="reels"><span>▶</span> Reels</button>
       <button class="side-link" data-view="evaluation"><span>◫</span> Document Evaluation</button>
       <button class="side-link" data-view="stories"><span>★</span> Member Stories</button>
       <button class="side-link" data-view="enquiries"><span>?</span> Enquiries</button>

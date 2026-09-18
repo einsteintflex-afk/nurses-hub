@@ -300,5 +300,80 @@
       "A confirmed Form I-20 from the institution",
       "An F-1 Student visa application after acceptance"
     ]
+  },
+  {
+    "id": "germany-work",
+    "country": "Germany",
+    "mode": "work",
+    "title": "Nurse recognition and employment in Germany",
+    "authority": "Anerkennung in Deutschland (federal recognition portal) / regional health authorities",
+    "summary": "A structured route from qualification recognition and German language training through to employer-sponsored work in German hospitals and care facilities.",
+    "steps": [
+      "Check your profession recognition (Anerkennung) via the official portal",
+      "Prepare and submit your qualification documents for assessment",
+      "Reach the required German language level (usually B1/B2)",
+      "Complete any adaptation period or knowledge test if your qualification is only partially recognised",
+      "Search for an employer, often through licensed recruitment or direct hospital partnerships",
+      "Apply for a residence permit for qualified professionals after a job offer"
+    ],
+    "criteria": [
+      "A nursing/midwifery qualification eligible for the recognition (Anerkennung) process",
+      "German language evidence, typically B1 on starting and B2 within an agreed period",
+      "A completed application through the responsible regional recognition authority",
+      "A confirmed employer or recruitment partner for the work/residence permit route"
+    ],
+    "links": [
+      [
+        "Anerkennung in Deutschland (official recognition portal, English available)",
+        "https://www.anerkennung-in-deutschland.de/html/en/"
+      ],
+      [
+        "Make it in Germany (official skilled-worker portal)",
+        "https://www.make-it-in-germany.com/en/"
+      ],
+      [
+        "Bundesagentur für Arbeit (Federal Employment Agency job board)",
+        "https://www.arbeitsagentur.de/en/"
+      ],
+      [
+        "Goethe-Institut (official German language courses/exams)",
+        "https://www.goethe.de/en/index.html"
+      ]
+    ]
+  },
+  {
+    "id": "germany-study",
+    "country": "Germany",
+    "mode": "study",
+    "title": "Nursing and health-science study routes in Germany",
+    "authority": "DAAD (German Academic Exchange Service) / individual universities",
+    "summary": "Germany's nurse training is mostly vocational (Ausbildung) rather than university-first, alongside a smaller number of health-science and nursing-management degree programmes, some taught in English.",
+    "steps": [
+      "Use the official DAAD database to find current nursing/health-science programmes and their teaching language",
+      "Confirm entry requirements for your specific route (Ausbildung vs. Bachelor programme)",
+      "Reach the required German (or English, if the programme is English-taught) language level",
+      "Apply through uni-assist or the university's own admissions portal",
+      "Apply for a student visa/residence permit after a confirmed offer"
+    ],
+    "criteria": [
+      "Secondary/prior academic qualification recognised as equivalent for German study",
+      "Language evidence appropriate to the teaching language of the programme",
+      "A completed application through uni-assist or the institution's official portal",
+      "A student visa application after a confirmed offer"
+    ],
+    "links": [
+      [
+        "DAAD official study-in-Germany database",
+        "https://www2.daad.de/deutschland/studienangebote/international-programmes/en/"
+      ],
+      [
+        "uni-assist (official application portal for international students)",
+        "https://www.uni-assist.de/en/"
+      ],
+      [
+        "Make it in Germany — studying in Germany",
+        "https://www.make-it-in-germany.com/en/study-training/"
+      ]
+    ]
   }
 ]

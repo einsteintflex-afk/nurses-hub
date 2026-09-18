@@ -10,5 +10,6 @@ data/*.json
 !data/syllabus.json
 !data/travel.json
 !data/testimonials.json
+!data/reels.json
 uploads/
 *.log

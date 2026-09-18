@@ -1,0 +1,42 @@
+[
+  {
+    "id": "reel_hub_welcome",
+    "userId": null,
+    "author": "Hub Team",
+    "caption": "Welcome to Hub Reels! Share a quick study tip, a win, or a moment from your journey — every account holder can watch and post here.",
+    "mediaType": "image",
+    "mediaUrl": "/assets/dashboard-community.png",
+    "likes": [],
+    "createdAt": "2026-09-10T09:00:00.000Z"
+  },
+  {
+    "id": "reel_hub_tip_assessment",
+    "userId": null,
+    "author": "Hub Team",
+    "caption": "Study tip: before every practice question, ask 'what would I assess first?' before picking an answer. It's the fastest way to catch priority-setting traps.",
+    "mediaType": "image",
+    "mediaUrl": "/assets/study-clinical.png",
+    "likes": [],
+    "createdAt": "2026-09-12T09:00:00.000Z"
+  },
+  {
+    "id": "reel_hub_tip_abroad",
+    "userId": null,
+    "author": "Hub Team",
+    "caption": "Thinking abroad? Start with Document Evaluation before you spend on any application — know exactly where you stand first.",
+    "mediaType": "image",
+    "mediaUrl": "/assets/study-global.png",
+    "likes": [],
+    "createdAt": "2026-09-14T09:00:00.000Z"
+  },
+  {
+    "id": "reel_hub_tip_community",
+    "userId": null,
+    "author": "Hub Team",
+    "caption": "You're not studying alone. Join a study group in Community and quiz each other before your next practice set.",
+    "mediaType": "image",
+    "mediaUrl": "/assets/study-team.png",
+    "likes": [],
+    "createdAt": "2026-09-16T09:00:00.000Z"
+  }
+]
