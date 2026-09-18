@@ -40,6 +40,7 @@
   <div class="top-actions">
     <button class="btn ghost" data-action="login">Sign in</button>
     <button class="btn primary" data-action="signup">Join Hub</button>
+    <button id="publicNavToggle" class="icon-btn public-nav-toggle" aria-label="Menu">☰</button>
   </div>
 </header>
 
@@ -125,7 +126,7 @@
 <footer class="public-footer">
   <div class="shell footer-grid">
     <div class="footer-brand"><img src="/assets/logo.svg" alt="Hub logo"><div><strong>Nurses & Midwives Hub</strong><small>LEARN • PRACTISE • PROGRESS • ABROAD</small></div></div>
-    <div class="footer-links"><span class="eyebrow">Explore</span><button data-public-view="features">Inside the Hub</button><button data-public-view="testimonials">Testimonials</button><button data-public-view="premium">Premium</button><button data-public-view="help">Help</button></div>
+    <div class="footer-links"><span class="eyebrow">Explore</span><button onclick="goToHubFeature('study')">Inside the Hub</button><button data-public-view="testimonials">Testimonials</button><button data-public-view="premium">Premium</button><button data-public-view="help">Help</button></div>
     <div class="footer-contact"><span class="eyebrow">Enquiries</span><a href="mailto:nursesmidwiveshub@gmail.com">nursesmidwiveshub@gmail.com</a><p class="muted">Sign in and use the in-app Enquiries desk for the fastest response, or email us directly.</p></div>
   </div>
   <div class="shell footer-bottom"><span>© <span id="footerYear"></span> Nurses & Midwives Hub. All rights reserved.</span><span class="muted">Information should always be verified against the official N&MC, regulator, university or employer source before you act on it.</span></div>

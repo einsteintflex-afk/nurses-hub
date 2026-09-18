@@ -1,20 +1,5 @@
 [
   {
-    "id": "job_bc48ae342fe518ea389d",
-    "country": "Ghana",
-    "title": "Staff Nurse",
-    "employer": "Test Hospital",
-    "type": "",
-    "location": "",
-    "closing": "",
-    "source": "Test Source",
-    "applicationUrl": "https://example.com/apply",
-    "sponsorship": "",
-    "verified": true,
-    "lastVerified": "2026-09-18",
-    "summary": "Test job"
-  },
-  {
     "id": "job-wa-icu-2026",
     "country": "Australia",
     "title": "Registered Nurse — ICU",

@@ -18,7 +18,12 @@ function goToHubFeature(view){
   showSignup('student');
 }
 function bindGlobal(){
-  $$('[data-public-view]').forEach(b=>b.onclick=()=>{const target=document.getElementById(b.dataset.publicView);if(target)target.scrollIntoView({behavior:'smooth'})});
+  $$('[data-public-view]').forEach(b=>b.onclick=()=>{const target=document.getElementById(b.dataset.publicView);if(target)target.scrollIntoView({behavior:'smooth'});$('.public-nav')?.classList.remove('open')});
+  const navToggle=$('#publicNavToggle'),publicNav=$('.public-nav');
+  if(navToggle&&publicNav){
+    navToggle.onclick=e=>{e.stopPropagation();publicNav.classList.toggle('open')};
+    if(!window.__publicNavOutsideClickBound){window.__publicNavOutsideClickBound=true;document.addEventListener('click',e=>{const n=$('.public-nav'),t=$('#publicNavToggle');if(n&&n.classList.contains('open')&&!n.contains(e.target)&&e.target!==t)n.classList.remove('open')});}
+  }
   $$('[data-action="login"]').forEach(b=>b.onclick=()=>state.user?enter('dashboard'):showLogin());
   $$('[data-action="signup"]').forEach(b=>b.onclick=()=>state.user?enter('dashboard'):showSignup('student'));
   $$('[data-action="close"]').forEach(b=>b.onclick=closeModal);
@@ -33,7 +38,7 @@ function bindGlobal(){
   const hubToggle=$('#insideHubToggle'),hubMenu=$('#insideHubMenu');
   if(hubToggle&&hubMenu){
     hubToggle.onclick=e=>{e.stopPropagation();hubMenu.classList.toggle('open')};
-    hubMenu.querySelectorAll('[data-hub-target]').forEach(b=>b.onclick=()=>{hubMenu.classList.remove('open');goToHubFeature(b.dataset.hubTarget)});
+    hubMenu.querySelectorAll('[data-hub-target]').forEach(b=>b.onclick=()=>{hubMenu.classList.remove('open');$('.public-nav')?.classList.remove('open');goToHubFeature(b.dataset.hubTarget)});
     if(!window.__hubMenuOutsideClickBound){window.__hubMenuOutsideClickBound=true;document.addEventListener('click',e=>{const m=$('#insideHubMenu'),t=$('#insideHubToggle');if(m&&!m.contains(e.target)&&e.target!==t)m.classList.remove('open')});}
   }
 }
