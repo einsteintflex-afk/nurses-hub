@@ -23,7 +23,7 @@ const STORE = {
   payments:'payments.json', paymentEvents:'payment-events.json', enquiries:'enquiries.json',
   submissions:'submissions.json',
   passwordResets:'password-resets.json', messages:'messages.json', reports:'message-reports.json',
-  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json'
+  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json'
 };
 const CONTENT = { syllabus:'syllabus.json', questions:'questions.json', travel:'travel.json', resources:'resources.json', jobs:'jobs.json', news:'news.json', institutions:'institutions.json', studyOptions:'study-options.json', testimonials:'testimonials.json' };
 for (const f of [...Object.values(STORE), ...Object.values(CONTENT)]) {
@@ -65,7 +65,8 @@ function optionalAuth(req,res,next){ const {session,user}=current(req); if(sessi
 function requireCsrf(req,res,next){ if(!req.session) return next(); if(req.headers['x-csrf-token']!==req.session.csrf)return res.status(403).json({error:'Security token expired. Refresh the page and try again.'}); next(); }
 function requirePremium(req,res,next){ syncMembership(req.user); if(!hasPremiumAccess(req.user))return res.status(403).json({error:'Your 7-day Premium Trial has ended. Subscribe to continue using this feature.'}); next(); }
 function requireAdmin(req,res,next){ if(req.session?.role!=='admin')return res.status(403).json({error:'Administrator access required.'}); next(); }
-function paystackReady(){ const k=process.env.PAYSTACK_SECRET_KEY||''; return /^sk_(test|live)_[A-Za-z0-9_-]+$/.test(k)&&!k.includes('your_'); }
+function paystackSecretKey(){ return String(process.env.PAYSTACK_SECRET_KEY||'').trim(); }
+function paystackReady(){ const k=paystackSecretKey(); return /^sk_(test|live)_[A-Za-z0-9_-]+$/.test(k)&&!k.includes('your_'); }
 function priceGhs(purpose){ return purpose==='subscription'?Number(process.env.SUBSCRIPTION_AMOUNT_GHS||50):Number(process.env.DOCUMENT_EVALUATION_AMOUNT_GHS||450); }
 function paymentCurrency(){ return 'GHS'; }
 function checkoutAmount(purpose){ return priceGhs(purpose); }
@@ -93,7 +94,7 @@ function ensureTrial(user){
 app.post('/api/payments/webhook', express.raw({type:'application/json',limit:'2mb'}), (req,res)=>{
   if(!paystackReady()) return res.sendStatus(200);
   const signature=String(req.headers['x-paystack-signature']||'');
-  const expected=crypto.createHmac('sha512',process.env.PAYSTACK_SECRET_KEY).update(req.body).digest('hex');
+  const expected=crypto.createHmac('sha512',paystackSecretKey()).update(req.body).digest('hex');
   if(!signature || signature.length!==expected.length || !crypto.timingSafeEqual(Buffer.from(signature),Buffer.from(expected))) return res.sendStatus(401);
   let event; try{event=JSON.parse(req.body.toString('utf8'));}catch{return res.sendStatus(400);}
   const events=readJson('paymentEvents'); if(events.some(x=>x.eventId===event.id && event.id)) return res.sendStatus(200);
@@ -159,7 +160,7 @@ app.get('/api/content',(req,res)=>{
   res.json({syllabus:readJson('syllabus'),questions:readJson('questions').map(({answer,...q})=>q),travel:readJson('travel').map(t=>({...t,links:undefined})),resources:readJson('resources').map(r=>({...r,sourceUrl:undefined})),jobs,news:readJson('news'),institutions:readJson('institutions'),studyOptions:readJson('studyOptions').map(x=>({...x,applicationUrl:undefined})),testimonials:readJson('testimonials'),stories:readJson('stories').filter(x=>x.status==='approved').map(x=>({id:x.id,type:x.type,text:x.text,name:x.anonymous?'Anonymous member':x.name,createdAt:x.createdAt}))});
 });
 app.get('/api/news/:id',(req,res)=>{const n=readJson('news').find(x=>x.id===req.params.id); if(!n)return res.status(404).json({error:'Article not found.'}); res.json(n);});
-app.get('/api/jobs/:id',(req,res)=>{const j=readJson('jobs').find(x=>x.id===req.params.id); if(!j)return res.status(404).json({error:'Job not found.'}); const {applicationUrl,...publicJob}=j; res.json(publicJob);});
+app.get('/api/jobs/:id',requireAuth,(req,res)=>{const j=readJson('jobs').find(x=>x.id===req.params.id); if(!j)return res.status(404).json({error:'Job not found.'}); res.json(j);});
 
 
 
@@ -320,11 +321,12 @@ app.post('/api/payments/initialize',requireAuth,payLimiter,requireCsrf,async(req
     return res.json({demo:true,reference,authorization_url:`${APP_URL}/?route=payment-result&purpose=${purpose}&reference=${encodeURIComponent(reference)}&demo=1`});
   }
   if(!amount)return res.status(503).json({error:`Payment amount for ${currency} is not configured.`});
-  if(purpose==='subscription'&&!process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE)return res.status(503).json({error:'Create a monthly Paystack plan and put its plan code in .env first.'});
+  const planCode=String(process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE||'').trim();
+  if(purpose==='subscription'&&!planCode)return res.status(503).json({error:'Create a monthly Paystack plan and put its plan code in .env first.'});
   try{
     const payload={email:req.user.email,amount:Math.round(amount*100),currency,reference,metadata:{userId:req.user.id,purpose,amountGhs:amount},callback_url:callback};
-    if(purpose==='subscription')payload.plan=process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE;
-    const r=await fetch('https://api.paystack.co/transaction/initialize',{method:'POST',headers:{Authorization:`Bearer ${process.env.PAYSTACK_SECRET_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(payload)}); const d=await r.json(); if(!r.ok||!d.status)return res.status(502).json({error:d.message||'Paystack could not initialise the payment.'});
+    if(purpose==='subscription')payload.plan=planCode;
+    const r=await fetch('https://api.paystack.co/transaction/initialize',{method:'POST',headers:{Authorization:`Bearer ${paystackSecretKey()}`,'Content-Type':'application/json'},body:JSON.stringify(payload)}); const d=await r.json(); if(!r.ok||!d.status)return res.status(502).json({error:d.message||'Paystack could not initialise the payment.'});
     res.json({reference,authorization_url:d.data.authorization_url,purpose,currency,amount});
   }catch{res.status(502).json({error:'Unable to reach Paystack right now.'});}
 });
@@ -334,7 +336,7 @@ app.get('/api/payments/verify/:reference',requireAuth,async(req,res)=>{
   if(isDemo){const purpose=reference.includes('-TRANSCRIPT-')?'transcript':'subscription',amount=priceGhs(purpose);const users=readJson('users');const user=users.find(x=>x.id===req.user.id);if(purpose==='subscription')user.subscription={active:true,status:'active',provider:'demo',reference,updatedAt:now()};writeJson('users',users);recordPayment({userId:req.user.id,reference,purpose,amount,currency:'GHS',status:'success'});return res.json({ok:true,purpose,user:safeUser(user),demo:true});}
   if(!paystackReady())return res.status(503).json({error:'Paystack is not configured.'});
   try{
-    const r=await fetch(`https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,{headers:{Authorization:`Bearer ${process.env.PAYSTACK_SECRET_KEY}`}});const d=await r.json();if(!r.ok||!d.status||d.data.status!=='success')return res.status(402).json({error:'Paystack has not confirmed a successful payment.'});
+    const r=await fetch(`https://api.paystack.co/transaction/verify/${encodeURIComponent(reference)}`,{headers:{Authorization:`Bearer ${paystackSecretKey()}`}});const d=await r.json();if(!r.ok||!d.status||d.data.status!=='success')return res.status(402).json({error:'Paystack has not confirmed a successful payment.'});
     const tx=d.data,md=tx.metadata||{};if(md.userId!==req.user.id)return res.status(403).json({error:'Payment owner mismatch.'});const purpose=md.purpose;if(!['subscription','transcript'].includes(purpose))return res.status(400).json({error:'Payment purpose could not be confirmed.'});const expected=checkoutAmount(purpose);if(expected && Number(tx.amount)!==Math.round(expected*100))return res.status(400).json({error:'Verified payment amount does not match the Hub price.'});if(tx.currency && String(tx.currency).toUpperCase()!==paymentCurrency())return res.status(400).json({error:'Verified payment currency does not match the configured checkout currency.'});
     const users=readJson('users'),user=users.find(x=>x.id===req.user.id);if(purpose==='subscription')user.subscription={active:true,status:'active',provider:'paystack',reference,planCode:process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE||null,subscriptionCode:tx.subscription_code||tx.subscription?.subscription_code||null,updatedAt:now()};writeJson('users',users);recordPayment({userId:req.user.id,reference,purpose,amount:Number(tx.amount||0)/100,currency:tx.currency||paymentCurrency(),status:'success'});res.json({ok:true,purpose,user:safeUser(user),demo:false});
   }catch{res.status(502).json({error:'Unable to verify the Paystack transaction right now.'});}
@@ -352,6 +354,72 @@ app.post('/api/transcript-evaluation',requireAuth,requireCsrf,upload.fields([{na
   }catch(e){cleanupFiles(req.files);res.status(400).json({error:e.message||'Unable to process evaluation.'});}
 });
 app.get('/api/transcript-evaluation',requireAuth,(req,res)=>res.json(readJson('submissions').filter(x=>x.userId===req.user.id).map(x=>({reference:x.reference,status:x.status,targetCountry:x.targetCountry,pathwayType:x.pathwayType,recommendation:x.recommendation,createdAt:x.createdAt,updatedAt:x.updatedAt}))));
+
+const LESSON_HTML_ALLOWED_TAGS=new Set(['h4','p','ul','li','b','i','ol']);
+function sanitizeLessonHtml(html){
+  return String(html||'')
+    .replace(/<script[\s\S]*?<\/script>/gi,'')
+    .replace(/<style[\s\S]*?<\/style>/gi,'')
+    .replace(/<\/?([a-zA-Z0-9]+)([^>]*)>/g,(full,tag,attrs)=>{
+      const lower=tag.toLowerCase();
+      if(!LESSON_HTML_ALLOWED_TAGS.has(lower))return '';
+      const closing=full.startsWith('</');
+      return closing?`</${lower}>`:`<${lower}>`;
+    });
+}
+const TRACK_DOMAIN_HINTS={
+  'Nursing Core':['Foundations','Medical-Surgical','Emergency','Emergency & Critical Care','Anatomy','Medication Safety','Infection Prevention','Geriatrics','Palliative Care'],
+  'Midwifery Core':['Maternal','Maternal Care','Midwifery','Postnatal','Newborn Care'],
+  'Community & Public Health':['Community','Community Health','Public Health'],
+  'Professional Practice':['Professional Practice','Leadership','Research','Mental Health'],
+  'Nutrition':['Nutrition']
+};
+function relatedQuestionsFor(module,lesson){
+  const hints=TRACK_DOMAIN_HINTS[module.track]||[];
+  const words=String(lesson).toLowerCase().split(/[^a-z]+/).filter(w=>w.length>3);
+  const scored=readJson('questions').map(q=>{
+    let score=hints.includes(q.domain)?1:0;
+    const text=`${q.question} ${q.domain}`.toLowerCase();
+    for(const w of words) if(text.includes(w)) score+=2;
+    return {q,score};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
+  return scored.slice(0,2).map(x=>x.q);
+}
+const LESSON_ANGLES=[
+  {label:'Assessment first',prompt:'Start by identifying what you would assess first and why, before deciding on any action.'},
+  {label:'Priority and escalation',prompt:'Focus on distinguishing the first priority action from a later one, and knowing exactly when to escalate to a senior colleague.'},
+  {label:'Compare and contrast',prompt:'Compare this concept with a related one you already know from an earlier lesson, and write down what is genuinely different.'},
+  {label:'Teach-back',prompt:'Explain this concept out loud as if teaching a junior colleague, without looking at any notes.'}
+];
+function buildFallbackLessonNotes(module,lesson,lessonIndex,related){
+  const topics=module.topics;
+  const coreTopic=topics[lessonIndex%topics.length]||topics[0];
+  const siblingTopics=topics.filter(t=>t!==coreTopic);
+  const angle=LESSON_ANGLES[lessonIndex%LESSON_ANGLES.length];
+  const worked=related[0]?`<h4>Worked example from the Hub question bank</h4><p><b>Question:</b> ${escapeHtml(related[0].question)}</p><p><b>Why this matters here:</b> ${escapeHtml(related[0].explanation||'Review the related concept and connect it to this scenario.')}</p>`:'';
+  const secondQuestion=related[1]?`<p><b>Try another:</b> ${escapeHtml(related[1].question)}</p>`:'';
+  return `<h4>Learning focus — ${escapeHtml(angle.label)}</h4><p>This lesson, <b>${escapeHtml(lesson)}</b>, is where <b>${escapeHtml(module.title)}</b> gets specific about <b>${escapeHtml(coreTopic)}</b>. ${escapeHtml(angle.prompt)}</p><h4>Core concepts</h4><p>Work through <b>${escapeHtml(coreTopic)}</b> as a sequence: identify the relevant concept, explain the mechanism or rationale, recognise key assessment findings, identify the appropriate priority action, and understand when escalation or referral is needed.</p><p>Related areas in this module: ${siblingTopics.map(t=>`<b>${escapeHtml(t)}</b>`).join(', ')}. Compare them against <b>${escapeHtml(coreTopic)}</b> and note what is similar and what is different.</p>${worked}${secondQuestion}<h4>Why it matters</h4><p>Strong nursing and midwifery practice depends on accurate assessment, safe communication, appropriate prioritisation, documentation, ethical practice and evidence-informed decisions. Ask yourself: <i>What would I assess first? Why? What finding would change my plan? Who should I escalate to?</i></p><h4>Exam focus</h4><p>For licensing-style questions on <b>${escapeHtml(coreTopic)}</b>, identify the task in the stem first. Distinguish the first priority from a later action, distinguish assessment from intervention, and avoid options that are unsafe, outside scope or unsupported by the information in the scenario.</p>`;
+}
+app.post('/api/ai/lesson-notes',requireAuth,requirePremium,requireCsrf,async(req,res)=>{
+  const moduleId=clean(req.body.moduleId,100),lessonIndex=Math.max(0,Number(req.body.lessonIndex||0));
+  const module=readJson('syllabus').find(m=>m.id===moduleId); if(!module)return res.status(404).json({error:'Module not found.'});
+  const lesson=module.lessons[lessonIndex]; if(!lesson)return res.status(404).json({error:'Lesson not found.'});
+  const cacheKey=`${moduleId}::${lessonIndex}`; const cache=readJson('lessonNotes'); const cached=cache.find(x=>x.key===cacheKey);
+  const related=relatedQuestionsFor(module,lesson); const relatedQuestions=related.map(q=>({id:q.id,question:q.question,domain:q.domain}));
+  if(cached)return res.json({notesHtml:cached.notesHtml,ai:cached.ai,relatedQuestions});
+  const fallback=buildFallbackLessonNotes(module,lesson,lessonIndex,related);
+  if(!process.env.OPENAI_API_KEY||!process.env.OPENAI_MODEL){cache.push({key:cacheKey,notesHtml:fallback,ai:false,createdAt:now()});writeJson('lessonNotes',cache.slice(-8000));return res.json({notesHtml:fallback,ai:false,relatedQuestions});}
+  const prompt=`Write detailed nursing/midwifery study notes for Nurses & Midwives Hub, for the lesson "${lesson}" inside the module "${module.title}" (${module.track}). Module topics: ${module.topics.join(', ')}. Write 500-700 words as HTML using only <h4>, <p>, <ul>, <li>, <b>, <i> tags (no <html>/<body>/<script>). Cover: learning focus specific to this exact lesson (not the whole module), core concepts explained step by step, clinical/professional application, common pitfalls, and exam-technique focus for licensing-style questions. Never claim to reproduce an official exam paper and never give individualized diagnosis or prescribing instructions. Return only the HTML, no surrounding commentary or markdown fences.`;
+  try{
+    const r=await fetch(process.env.OPENAI_BASE_URL||'https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_MODEL,input:prompt,max_output_tokens:1400})});
+    const data=await r.json(); if(!r.ok)throw new Error('ai_failed');
+    let text=data.output_text; if(!text&&Array.isArray(data.output))text=data.output.flatMap(x=>x.content||[]).map(x=>x.text||'').join('');
+    text=sanitizeLessonHtml(String(text||'').replace(/^```html\s*|^```\s*|\s*```$/g,'').trim());
+    if(!text)throw new Error('empty');
+    cache.push({key:cacheKey,notesHtml:text,ai:true,createdAt:now()}); writeJson('lessonNotes',cache.slice(-8000));
+    res.json({notesHtml:text,ai:true,relatedQuestions});
+  }catch{cache.push({key:cacheKey,notesHtml:fallback,ai:false,createdAt:now()});writeJson('lessonNotes',cache.slice(-8000));res.json({notesHtml:fallback,ai:false,relatedQuestions});}
+});
 
 app.post('/api/ai/daily-tutorial',requireAuth,requirePremium,requireCsrf,async(req,res)=>{
   const syllabus=readJson('syllabus'); const day=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000); const module=syllabus[day%syllabus.length];
