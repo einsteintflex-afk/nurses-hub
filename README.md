@@ -112,16 +112,15 @@ For real scale, the WebSocket and persistence layer should move to managed infra
 
 ## AI configuration
 
-AI is optional in local development.
+AI is optional in local development. The Hub calls Claude (Anthropic) via the official `@anthropic-ai/sdk`.
 
 Set:
 ```env
-OPENAI_API_KEY=...
-OPENAI_MODEL=...
-OPENAI_BASE_URL=https://api.openai.com/v1/responses
+ANTHROPIC_API_KEY=...
+ANTHROPIC_MODEL=claude-opus-5
 ```
 
-Without an API key/model, the Hub uses a safe fallback tutor/tutorial response so the interface remains usable.
+Without an API key, the Hub uses a safe fallback tutor/tutorial/lesson-notes response so the interface remains usable.
 
 Never place the AI API key in browser JavaScript.
 

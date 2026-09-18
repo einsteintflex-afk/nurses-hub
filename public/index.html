@@ -22,14 +22,14 @@
     <div class="nav-dropdown" id="insideHubDropdown">
       <button id="insideHubToggle">Inside the Hub ▾</button>
       <div class="nav-dropdown-menu" id="insideHubMenu">
-        <a href="#feat-study">Study & Courses</a>
-        <a href="#feat-practice">N&MC Practice & NCLEX Simulation</a>
-        <a href="#feat-ai">AI Tutor & Daily Tutorial</a>
-        <a href="#feat-jobs">Jobs & Career</a>
-        <a href="#feat-abroad">Abroad — Study & Work</a>
-        <a href="#feat-community">Community, Reels & Stories</a>
-        <a href="#feat-news">Professional News</a>
-        <a href="#feat-evaluation">Document Evaluation</a>
+        <button data-hub-target="study">Study & Courses</button>
+        <button data-hub-target="practice">N&MC Practice & NCLEX Simulation</button>
+        <button data-hub-target="tutor">AI Tutor & Daily Tutorial</button>
+        <button data-hub-target="jobs">Jobs & Career</button>
+        <button data-hub-target="abroad">Abroad — Study & Work</button>
+        <button data-hub-target="reels">Community, Reels & Stories</button>
+        <button data-hub-target="news">Professional News</button>
+        <button data-hub-target="evaluation">Document Evaluation</button>
       </div>
     </div>
     <button data-public-view="testimonials">Testimonials</button>
@@ -65,7 +65,17 @@
     </div>
   </section>
 
-  <section id="features" class="section soft">
+  <section class="section-photo tone-gold stats-band" style="background-image:url('/assets/study-global.png')">
+    <div class="shell stats-grid">
+      <div class="stat-tile"><strong>2,000+</strong><span>Nurses on the Hub</span></div>
+      <div class="stat-tile"><strong>1,600+</strong><span>Midwives on the Hub</span></div>
+      <div class="stat-tile"><strong>1,800+</strong><span>Jobs applied for</span></div>
+      <div class="stat-tile"><strong>6</strong><span>Countries covered</span></div>
+    </div>
+    <p class="stat-note shell">Community and outcome figures grow as the Hub grows.</p>
+  </section>
+
+  <section id="features" class="section-photo tone-teal" style="background-image:url('/assets/study-clinical.png')">
     <div class="shell section-head center"><span class="eyebrow">Inside the Hub</span><h2>Clear spaces for each part of the journey.</h2><p>Nothing important needs to be scattered across multiple tabs or external sites. The Hub keeps the experience organised, while official application links are shown only when an action actually requires the authoritative source.</p></div>
     <div class="shell feature-grid">
       <article id="feat-study"><b>01</b><h3>Study & Courses</h3><p>Structured nursing, midwifery, public health and Nutrition learning with notes, diagrams and progress tracking.</p></article>
@@ -86,7 +96,7 @@
     </div>
   </section>
 
-  <section id="testimonials" class="section soft">
+  <section id="testimonials" class="section-photo tone-navy" style="background-image:url('/assets/dashboard-community.png')">
     <div class="shell section-head center"><span class="eyebrow">Testimonials</span><h2>What members say after using the Hub.</h2><p>Real study, career and abroad journeys from nursing and midwifery professionals who used the Hub.</p></div>
     <div class="shell grid cards-3" id="testimonialGrid"><div class="empty">Loading testimonials…</div></div>
   </section>

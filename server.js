@@ -7,8 +7,13 @@ const rateLimit = require('express-rate-limit');
 const multer = require('multer');
 const { WebSocketServer } = require('ws');
 const dotenv = require('dotenv');
+const Anthropic = require('@anthropic-ai/sdk');
 
 dotenv.config();
+function aiConfigured(){ return Boolean(String(process.env.ANTHROPIC_API_KEY||'').trim()); }
+function anthropicClient(){ return new Anthropic({apiKey:String(process.env.ANTHROPIC_API_KEY||'').trim()}); }
+const CLAUDE_MODEL = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
+function claudeText(response){ return (response.content||[]).filter(b=>b.type==='text').map(b=>b.text).join(''); }
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -153,7 +158,7 @@ function broadcastToUser(userId,payload){for(const entry of clients?.values?.()|
 autoMigrateLocalUserData();
 
 app.get('/api/config',(req,res)=>{
-  res.json({subscriptionGhs:priceGhs('subscription'),evaluationGhs:priceGhs('transcript'),paymentCurrency:'GHS',checkoutSubscription:checkoutAmount('subscription'),checkoutEvaluation:checkoutAmount('transcript'),paymentConfigured:paystackReady(),subscriptionPlanConfigured:Boolean(process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE&&!process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE.includes('your_')),autoRefreshMinutes:Number(process.env.AUTO_REFRESH_MINUTES||30),opportunityFeedsConfigured:Boolean(process.env.OPPORTUNITY_FEEDS_JSON&&process.env.OPPORTUNITY_FEEDS_JSON!=='[]'),maxUploadMb:Number(process.env.MAX_UPLOAD_MB||8),aiConfigured:Boolean(process.env.OPENAI_API_KEY),demoPayments:String(process.env.ALLOW_DEMO_PAYMENTS||'true')==='true',trialDays:trialDays()});
+  res.json({subscriptionGhs:priceGhs('subscription'),evaluationGhs:priceGhs('transcript'),paymentCurrency:'GHS',checkoutSubscription:checkoutAmount('subscription'),checkoutEvaluation:checkoutAmount('transcript'),paymentConfigured:paystackReady(),subscriptionPlanConfigured:Boolean(process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE&&!process.env.PAYSTACK_SUBSCRIPTION_PLAN_CODE.includes('your_')),autoRefreshMinutes:Number(process.env.AUTO_REFRESH_MINUTES||30),opportunityFeedsConfigured:Boolean(process.env.OPPORTUNITY_FEEDS_JSON&&process.env.OPPORTUNITY_FEEDS_JSON!=='[]'),maxUploadMb:Number(process.env.MAX_UPLOAD_MB||8),aiConfigured:aiConfigured(),demoPayments:String(process.env.ALLOW_DEMO_PAYMENTS||'true')==='true',trialDays:trialDays()});
 });
 app.get('/api/health',(req,res)=>res.json({ok:true,service:'Nurses & Midwives Hub',time:now()}));
 app.get('/api/institutions',(_,res)=>res.json(readJson('institutions')));
@@ -468,13 +473,11 @@ app.post('/api/ai/lesson-notes',requireAuth,requirePremium,requireCsrf,async(req
   const related=relatedQuestionsFor(module,lesson); const relatedQuestions=related.map(q=>({id:q.id,question:q.question,domain:q.domain}));
   if(cached)return res.json({notesHtml:cached.notesHtml,ai:cached.ai,relatedQuestions});
   const fallback=buildFallbackLessonNotes(module,lesson,lessonIndex,related);
-  if(!process.env.OPENAI_API_KEY||!process.env.OPENAI_MODEL){cache.push({key:cacheKey,notesHtml:fallback,ai:false,createdAt:now()});writeJson('lessonNotes',cache.slice(-8000));return res.json({notesHtml:fallback,ai:false,relatedQuestions});}
+  if(!aiConfigured()){cache.push({key:cacheKey,notesHtml:fallback,ai:false,createdAt:now()});writeJson('lessonNotes',cache.slice(-8000));return res.json({notesHtml:fallback,ai:false,relatedQuestions});}
   const prompt=`Write extensive, textbook-quality nursing/midwifery study notes for Nurses & Midwives Hub, for the lesson "${lesson}" inside the module "${module.title}" (${module.track}). Module topics: ${module.topics.join(', ')}. Write 900-1300 words as HTML using only <h4>, <p>, <ul>, <ol>, <li>, <b>, <i> tags (no <html>/<body>/<script>/<svg>). Structure it like a textbook chapter section with these headings, each covering this exact lesson specifically (not the whole module): "Learning focus", "Core concepts" (as a numbered step-by-step list), "Clinical/professional application" (a short worked scenario), "Common pitfalls", "Exam focus" (licensing-style technique), and "Before you move on" (a short study checklist as a bullet list). Be specific and detailed, not generic. Never claim to reproduce an official exam paper and never give individualized diagnosis or prescribing instructions. Return only the HTML, no surrounding commentary or markdown fences.`;
   try{
-    const r=await fetch(process.env.OPENAI_BASE_URL||'https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_MODEL,input:prompt,max_output_tokens:2400})});
-    const data=await r.json(); if(!r.ok)throw new Error('ai_failed');
-    let text=data.output_text; if(!text&&Array.isArray(data.output))text=data.output.flatMap(x=>x.content||[]).map(x=>x.text||'').join('');
-    text=sanitizeLessonHtml(String(text||'').replace(/^```html\s*|^```\s*|\s*```$/g,'').trim());
+    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:3000,output_config:{effort:'medium'},messages:[{role:'user',content:prompt}]});
+    let text=sanitizeLessonHtml(claudeText(r).replace(/^```html\s*|^```\s*|\s*```$/g,'').trim());
     if(!text)throw new Error('empty');
     cache.push({key:cacheKey,notesHtml:text,ai:true,createdAt:now()}); writeJson('lessonNotes',cache.slice(-8000));
     res.json({notesHtml:text,ai:true,relatedQuestions});
@@ -484,14 +487,13 @@ app.post('/api/ai/lesson-notes',requireAuth,requirePremium,requireCsrf,async(req
 app.post('/api/ai/daily-tutorial',requireAuth,requirePremium,requireCsrf,async(req,res)=>{
   const syllabus=readJson('syllabus'); const day=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/86400000); const module=syllabus[day%syllabus.length];
   const fallback={title:`Daily Tutorial — ${module.title}`,moduleId:module.id,objectives:[`Explain the core concepts of ${module.topics[0]}.`,`Relate ${module.topics[0]} to safe clinical practice.`,`Identify common exam traps and priority decisions.`],lesson:`Today focus on ${module.topics.join(', ')}. Work through the module lessons, make one-page notes, then complete a short practice set.`,practice:[`Define ${module.topics[0]}.`,`List two clinical or professional implications of ${module.topics[1]||module.topics[0]}.`,`Write one exam-style priority question from this topic and justify the answer.`],source:'Nurses & Midwives Hub tutorial engine'};
-  if(!process.env.OPENAI_API_KEY || !process.env.OPENAI_MODEL)return res.json({tutorial:fallback,ai:false});
-  const prompt=`Create an extensive but digestible daily tutorial for Nurses & Midwives Hub based on the syllabus module "${module.title}". Topics: ${module.topics.join(', ')}. Provide title, 4 objectives, a 700-1000 word lesson with headings, why-it-matters explanations, 5 key points, 5 practice prompts, 5 key takeaways, and 3 original MCQs with answers and rationales. Do not claim to reproduce official exam papers. Return JSON with keys title, objectives, lesson, keyPoints, practice, takeaways, mcqs.`;
+  if(!aiConfigured())return res.json({tutorial:fallback,ai:false});
+  const prompt=`Create an extensive but digestible daily tutorial for Nurses & Midwives Hub based on the syllabus module "${module.title}". Topics: ${module.topics.join(', ')}. Provide title, 4 objectives, a 700-1000 word lesson with headings, why-it-matters explanations, 5 key points, 5 practice prompts, 5 key takeaways, and 3 original MCQs with answers and rationales. Do not claim to reproduce official exam papers. Return only JSON, no commentary or markdown fences, with keys title, objectives, lesson, keyPoints, practice, takeaways, mcqs.`;
   try{
-    const r=await fetch(process.env.OPENAI_BASE_URL||'https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_MODEL,input:prompt,max_output_tokens:1000})});
-    const data=await r.json(); if(!r.ok) return res.json({tutorial:fallback,ai:false});
-    let text=data.output_text; if(!text&&Array.isArray(data.output)) text=data.output.flatMap(x=>x.content||[]).map(x=>x.text||'').join('');
+    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:1800,output_config:{effort:'medium'},messages:[{role:'user',content:prompt}]});
+    const text=claudeText(r).replace(/^```json\s*|^```\s*|\s*```$/g,'').trim();
     if(!text)return res.json({tutorial:fallback,ai:false});
-    const json=JSON.parse(String(text).replace(/^```json\s*|\s*```$/g,'')); res.json({tutorial:{...json,moduleId:module.id},ai:true});
+    const json=JSON.parse(text); res.json({tutorial:{...json,moduleId:module.id},ai:true});
   }catch{res.json({tutorial:fallback,ai:false});}
 });
 
@@ -500,9 +502,13 @@ app.post('/api/ai/tutor',requireAuth,requirePremium,requireCsrf,async(req,res)=>
   const question=clean(req.body.question,1200),topic=clean(req.body.topic,180)||'nursing and midwifery practice';
   if(question.length<4)return res.status(400).json({error:'Ask a complete study question.'});
   const matched=readJson('syllabus').find(m=>m.title.toLowerCase().includes(topic.toLowerCase())||m.topics.some(t=>t.toLowerCase().includes(topic.toLowerCase()))); const fallback={answer:`Let's work through this step by step. ${matched?`The relevant Hub module is ${matched.title}. Its key areas include ${matched.topics.slice(0,5).join(', ')}.`:''} Your question is: “${question}”. Start by defining the concept, then connect it to assessment, underlying physiology or rationale, safe practice, common complications and examination priorities. Study the related lesson and explain the idea back in your own words.`,keyPoints:['Define the concept clearly.','Explain why it matters in practice.','Identify priority actions and common pitfalls.','Apply the concept to a short clinical scenario.'],examTip:'For licensing-style questions, read the stem carefully, identify the priority, compare every option against the safest immediate action, and avoid choosing an option merely because it is generally correct.',followUps:['Explain the same concept with a clinical example.','What would change your management priority?','Give me 3 licensing-style MCQs on this topic.']};
-  if(!process.env.OPENAI_API_KEY||!process.env.OPENAI_MODEL)return res.json({answer:fallback,ai:false});
-  const history=Array.isArray(req.body.history)?req.body.history.slice(-8).map(x=>`${x.role||'user'}: ${clean(x.text,900)}`).join('\n'):''; const prompt=`You are the senior educational tutor inside Nurses & Midwives Hub. Teach nurses, midwives, nutrition professionals and public-health learners with a calm, rigorous, exam-ready style. Never claim to be an official regulator, never reproduce official exam papers, and do not provide individualized diagnosis, prescribing, or unsafe treatment instructions. Explain the learner's question in layers: simple explanation first, deeper mechanism/rationale, clinical/professional application, common misconceptions, exam priorities, and a short knowledge check. Topic: ${topic}. Current question: ${question}. Recent conversation for context:\n${history||'(none)'}. Return JSON with keys answer, keyPoints, examTip, followUps, miniQuiz. miniQuiz must contain 2-3 original questions with concise answers.`;
-  try{const r=await fetch(process.env.OPENAI_BASE_URL||'https://api.openai.com/v1/responses',{method:'POST',headers:{Authorization:`Bearer ${process.env.OPENAI_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({model:process.env.OPENAI_MODEL,input:prompt,max_output_tokens:1200})});const d=await r.json();if(!r.ok)return res.json({answer:fallback,ai:false});let text=d.output_text;if(!text&&Array.isArray(d.output))text=d.output.flatMap(x=>x.content||[]).map(x=>x.text||'').join('');const json=JSON.parse(String(text).replace(/^```json\s*|\s*```$/g,''));res.json({answer:json,ai:true});}catch{res.json({answer:fallback,ai:false});}
+  if(!aiConfigured())return res.json({answer:fallback,ai:false});
+  const history=Array.isArray(req.body.history)?req.body.history.slice(-8).map(x=>`${x.role||'user'}: ${clean(x.text,900)}`).join('\n'):''; const prompt=`You are the senior educational tutor inside Nurses & Midwives Hub. Teach nurses, midwives, nutrition professionals and public-health learners with a calm, rigorous, exam-ready style. Never claim to be an official regulator, never reproduce official exam papers, and do not provide individualized diagnosis, prescribing, or unsafe treatment instructions. Explain the learner's question in layers: simple explanation first, deeper mechanism/rationale, clinical/professional application, common misconceptions, exam priorities, and a short knowledge check. Topic: ${topic}. Current question: ${question}. Recent conversation for context:\n${history||'(none)'}. Return only JSON, no commentary or markdown fences, with keys answer, keyPoints, examTip, followUps, miniQuiz. miniQuiz must contain 2-3 original questions with concise answers.`;
+  try{
+    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:1600,output_config:{effort:'medium'},messages:[{role:'user',content:prompt}]});
+    const text=claudeText(r).replace(/^```json\s*|^```\s*|\s*```$/g,'').trim();
+    const json=JSON.parse(text);res.json({answer:json,ai:true});
+  }catch{res.json({answer:fallback,ai:false});}
 });
 
 
