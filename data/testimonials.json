@@ -1,0 +1,62 @@
+[
+  {
+    "id": "tst_ama_boateng",
+    "name": "Ama Boateng",
+    "role": "Final-year Nursing Student",
+    "institution": "Korle Bu Nursing Training College",
+    "location": "Accra, Ghana",
+    "highlight": "N&MC Practice",
+    "quote": "I used the practice sets every evening for six weeks before my licensing exam. The explanations after each question actually taught me why an answer was right, not just what the answer was. My confidence going into the exam hall was completely different.",
+    "avatarColor": "#0c8d82"
+  },
+  {
+    "id": "tst_linda_asante",
+    "name": "Linda Asante",
+    "role": "Registered Midwife",
+    "institution": "Relocated via the UK NMC route",
+    "location": "Manchester, United Kingdom",
+    "highlight": "Abroad + Document Evaluation",
+    "quote": "The Document Evaluation team reviewed my transcripts and told me exactly what was missing before I paid a single overseas application fee. It saved me months of guessing and gave me a clear, honest route to the UK.",
+    "avatarColor": "#2b74d8"
+  },
+  {
+    "id": "tst_kwabena_owusu",
+    "name": "Kwabena Owusu",
+    "role": "Community Health Nurse",
+    "institution": "Job Abroad pathway, Canada",
+    "location": "Toronto, Canada",
+    "highlight": "Jobs & Career Tracker",
+    "quote": "Every job on the Hub is explained in plain language before you ever leave the platform. I tracked three applications on the Career Tracker at once and knew exactly where each one stood. I'm now working in Toronto.",
+    "avatarColor": "#0b3542"
+  },
+  {
+    "id": "tst_efua_mensah",
+    "name": "Efua Mensah",
+    "role": "Midwifery Student",
+    "institution": "SDA Nursing and Midwifery Training College",
+    "location": "Kumasi, Ghana",
+    "highlight": "AI Tutor",
+    "quote": "I struggled with pre-eclampsia and magnesium sulfate for weeks. The AI Tutor broke it down layer by layer — simple explanation first, then the rationale, then an exam-style mini quiz. It finally clicked in one sitting.",
+    "avatarColor": "#b97400"
+  },
+  {
+    "id": "tst_samuel_tetteh",
+    "name": "Samuel Tetteh",
+    "role": "Graduate Nurse",
+    "institution": "Premium Community member",
+    "location": "Takoradi, Ghana",
+    "highlight": "Community",
+    "quote": "The Hub community doesn't feel like a random group chat. I found study partners preparing for the same licensing exam, joined a revision group, and got real answers within minutes whenever I posted a question late at night.",
+    "avatarColor": "#118a55"
+  },
+  {
+    "id": "tst_gifty_owusu_ansah",
+    "name": "Gifty Owusu-Ansah",
+    "role": "Nutrition & Public Health Professional",
+    "institution": "Daily Tutorial subscriber",
+    "location": "Cape Coast, Ghana",
+    "highlight": "Daily Tutorial",
+    "quote": "I open the Hub every morning for the Daily Tutorial before my shift. Ten focused minutes on one topic, with objectives and a practice question, has kept my knowledge sharp in a way that scattered PDFs never could.",
+    "avatarColor": "#b64040"
+  }
+]

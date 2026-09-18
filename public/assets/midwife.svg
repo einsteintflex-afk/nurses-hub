@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 620">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff2e9"/><stop offset="1" stop-color="#e4f6f3"/></linearGradient></defs>
+  <rect width="520" height="620" rx="48" fill="url(#g)"/>
+  <circle cx="102" cy="110" r="65" fill="#f2c5a9" opacity=".55"/>
+  <circle cx="414" cy="500" r="84" fill="#c4e7e1" opacity=".65"/>
+  <path d="M178 206c0-70 39-111 82-111s82 41 82 111v41H178z" fill="#3a2a28"/>
+  <circle cx="260" cy="178" r="74" fill="#9f6c53"/>
+  <path d="M186 159c18-61 56-90 94-81 34 8 54 37 62 75-28-31-66-43-108-29-17 6-32 17-48 35z" fill="#2b1d1c"/>
+  <circle cx="232" cy="180" r="5" fill="#132b3a"/><circle cx="288" cy="180" r="5" fill="#132b3a"/>
+  <path d="M246 210c9 7 20 7 29 0" fill="none" stroke="#5e3b2e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M132 568c7-142 50-222 128-222s121 80 128 222H132z" fill="#f9fbfc" stroke="#b9cdd9" stroke-width="3"/>
+  <path d="M215 351l45 61 45-61" fill="#f5e9e3"/>
+  <path d="M260 412v156" stroke="#b9cdd9" stroke-width="3"/>
+  <rect x="239" y="436" width="42" height="48" rx="10" fill="#d47b9f"/><path d="M249 454c0-8 6-14 14-14s14 6 14 14c0 14-14 20-14 20s-14-6-14-20z" fill="#fff"/>
+  <path d="M150 414c-31 30-43 78-47 139" fill="none" stroke="#9f6c53" stroke-width="25" stroke-linecap="round"/>
+  <path d="M370 414c31 30 43 78 47 139" fill="none" stroke="#9f6c53" stroke-width="25" stroke-linecap="round"/>
+  <circle cx="405" cy="505" r="28" fill="none" stroke="#0b8f87" stroke-width="6"/>
+  <path d="M405 478v54M378 505h54" stroke="#0b8f87" stroke-width="6"/>
+  <text x="34" y="54" font-family="Arial" font-size="18" font-weight="700" fill="#0f3144">MIDWIFE • WOMEN'S & NEWBORN CARE</text>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 390">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8f7f4"/><stop offset="1" stop-color="#edf3ff"/></linearGradient></defs>
+<rect width="620" height="390" rx="36" fill="url(#g)"/>
+<circle cx="160" cy="175" r="105" fill="#c4e8e2"/>
+<circle cx="160" cy="175" r="105" fill="none" stroke="#0c7480" stroke-width="6"/>
+<path d="M160 70c-31 30-42 67-42 105s11 75 42 105M160 70c31 30 42 67 42 105s-11 75-42 105M58 175h204" fill="none" stroke="#0c7480" stroke-width="4"/>
+<rect x="316" y="65" width="244" height="255" rx="23" fill="#fff" stroke="#dce8ed" stroke-width="3"/>
+<path d="M360 218c4-61 20-98 55-98s51 37 55 98H360z" fill="#fff" stroke="#bfcfd7" stroke-width="3"/><circle cx="415" cy="104" r="38" fill="#9e6d54"/><path d="M378 107c5-32 21-49 39-49 20 0 31 12 37 41-19-13-43-13-76 8z" fill="#2d2020"/><rect x="402" y="144" width="26" height="25" rx="5" fill="#0c7480"/><path d="M415 140v33M398 157h34" stroke="#fff" stroke-width="5"/>
+<path d="M465 220c14-16 24-35 26-56" fill="none" stroke="#0f6cb5" stroke-width="8" stroke-linecap="round"/><path d="M495 165l-9 3 5 8" fill="none" stroke="#0f6cb5" stroke-width="4" stroke-linecap="round"/>
+<text x="344" y="258" font-family="Arial" font-size="14" font-weight="800" fill="#0f3240">STUDY ABROAD</text><text x="344" y="281" font-family="Arial" font-size="14" font-weight="800" fill="#0c7480">WORK ABROAD</text>
+<text x="40" y="345" font-family="Arial" font-size="12" font-weight="700" fill="#53707c">COUNTRY PATHWAYS • REGISTRATION • IMMIGRATION</text>
+</svg>

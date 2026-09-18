@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Nurses & Midwives Hub · Admin</title>
+  <link rel="icon" href="/assets/logo.svg"><link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="section shell admin-page">
+  <div class="admin-hero">
+    <div><span class="eyebrow">Nurses & Midwives Hub</span><h1>Administrator workspace</h1><p class="muted">Manage members, document evaluations, support conversations, moderation, verified opportunities and internal news.</p></div>
+    <a class="btn ghost" href="/">Open public site</a>
+  </div>
+  <section id="adminLogin" class="panel admin-login">
+    <span class="eyebrow">SECURE ACCESS</span><h2>Admin sign in</h2>
+    <form id="adminLoginForm" class="form-card" style="max-width:520px"><label>Email<input name="email" type="email" autocomplete="username" required></label><label>Password<input name="password" type="password" autocomplete="current-password" required></label><button class="btn primary">Sign in to admin</button></form>
+  </section>
+
+  <section id="adminPanel" class="hidden">
+    <div class="admin-toolbar panel"><div><span class="eyebrow">OPERATIONS</span><h2>Hub control centre</h2><p class="muted">Review first. Publish verified information. Protect member documents and conversations.</p></div><div class="job-actions"><button id="refreshSources" class="btn secondary">Refresh official sources</button><button id="adminLogout" class="btn ghost">Sign out</button></div></div>
+
+    <div id="summary" class="kpi-grid"></div>
+
+    <div class="admin-grid">
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">DOCUMENT EVALUATIONS</span><h3>Review queue</h3></div></div><div id="evaluations" class="admin-list"></div></section>
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">SUPPORT</span><h3>Member enquiries</h3></div></div><div id="enquiries" class="admin-list"></div></section>
+    </div>
+
+    <div class="admin-grid">
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">MEMBER STORIES</span><h3>Moderation</h3></div></div><div id="stories" class="admin-list"></div></section>
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">SAFETY</span><h3>Message reports</h3></div></div><div id="reports" class="admin-list"></div></section>
+    </div>
+
+    <div class="admin-grid">
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">VERIFIED CAREERS</span><h3>Publish job</h3></div></div>
+        <form id="jobForm" class="form-card"><div class="auth-grid"><input name="country" placeholder="Country" required><input name="title" placeholder="Job title" required></div><div class="auth-grid"><input name="employer" placeholder="Employer" required><input name="location" placeholder="Location"></div><div class="auth-grid"><input name="type" placeholder="Employment type"><input name="closing" placeholder="Closing date/time"></div><input name="source" placeholder="Verified source name" required><input name="applicationUrl" type="url" placeholder="Official application URL" required><input name="sponsorship" placeholder="Sponsorship wording"><textarea name="summary" rows="4" placeholder="Internal summary"></textarea><button class="btn primary">Publish verified job</button></form>
+      </section>
+      <section class="panel"><div class="panel-head"><div><span class="eyebrow">INTERNAL NEWS</span><h3>Publish article</h3></div></div>
+        <form id="newsForm" class="form-card"><div class="auth-grid"><input name="category" placeholder="Category" required><input name="date" placeholder="YYYY-MM-DD"></div><input name="title" placeholder="Headline" required><input name="source" placeholder="Publisher/source" required><input name="sourceUrl" type="url" placeholder="Original source URL" required><textarea name="summary" rows="3" placeholder="Internal summary" required></textarea><textarea name="body" rows="8" placeholder="Full Hub-authored article body. Separate paragraphs with blank lines."></textarea><button class="btn primary">Publish internal news</button></form>
+      </section>
+    </div>
+
+    <section class="panel"><div class="panel-head"><div><span class="eyebrow">MEMBERS</span><h3>Member directory</h3></div></div><div id="users" class="admin-table"></div></section>
+  </section>
+</main>
+<script src="/admin.js"></script>
+</body>
+</html>

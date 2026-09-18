@@ -1,0 +1,606 @@
+[
+  {
+    "name": "University of Ghana, Legon, Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "Valley View University, Oyibi, Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "Central University College, Miotso",
+    "category": "University / University College"
+  },
+  {
+    "name": "St. Karol School of Nursing, Weija, Accra",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Pentecost University College, Sowutuom, Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "West End University College, Weija, Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "Nursing & Midwifery Training School, Korle-Bu, Accra",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing & Midwifery Training School, 37 Military, Accra",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Western Hills School of Nursing, Accra",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nightingale School of Nursing, Accra",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Narh Bita College, Tema",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Pantang",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing & Midwifery Training College, Pantang",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing & Midwifery Training College, Teshie",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Martin Luther Health Training School",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Family Health University College School of Nursing and Midwifery, Teshie-Nungua, Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "Health Concern Ghana, Accra",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nyaniba Health Assistant Training School, Tema",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Ophthalmic Nursing School, Korle-Bu",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Critical Care Nursing & Peri Operative Nursing School",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Public Health Nurses Training School, Korle-Bu",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Golden Sunbeam International College of Science and Technology, Ayikuma-Accra",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Ghana Christian University College, Adenta-Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "Wisconsin International University College, Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "Oak City International College, Madina-Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "Knutsford University College",
+    "category": "University / University College"
+  },
+  {
+    "name": "KNUST, Kumasi",
+    "category": "University / University College"
+  },
+  {
+    "name": "Presby University College Agogo",
+    "category": "University / University College"
+  },
+  {
+    "name": "Christian Service University College, Kumasi",
+    "category": "University / University College"
+  },
+  {
+    "name": "Garden City University College, Kumasi",
+    "category": "University / University College"
+  },
+  {
+    "name": "Presby Nursing and Midwifery Training College, Agogo",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing & Midwifery Training College, Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "SDA Nurses Training College, Kwadaso",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Premier School of Nursing, Moshie Zongo-Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Ashanti Mampong",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Maase Offinso",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Jaachie Pramso",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Samlee Nursing and Midwifery Training College, Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Community Health Nurses Training School, Fomena",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Kokofu",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Tepa",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "ENT Nurses Training School, Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Abot College of Health Sciences and Technology, Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "College of Integrated Healthcare, Obuasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Ghana Baptist University College, Kumasi",
+    "category": "University / University College"
+  },
+  {
+    "name": "Royal Ann College of Health, Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "SDA Midwifery Training College, Asamang",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Neumann College, Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Withrow College",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Manaata School of Midwifery, Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Royal Nursing College",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Methodist University College, Wenchi",
+    "category": "University / University College"
+  },
+  {
+    "name": "Catholic University College, Fiapre",
+    "category": "University / University College"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Sunyani",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Holy Family Nursing and Midwifery Training College, Berekum",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training School, Dormaa Ahenkro",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Seikwa",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Sampa",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Techiman Krobo",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Holy Family Nursing and Midwifery Training College, Kenten-Techiman",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Anglican University College of Technology, Nkoranza",
+    "category": "University / University College"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Yeji",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Goaso",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Community Health Nurses Training School, Tanoso",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "College of Nursing, Ntotroso",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing Training College, Kwapong",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Dadiesoaba",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Presbyterian Midwifery Training College, Duayaw-Nkwanta",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Koforidua",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Holy Family Nurses Training College, Nkawkaw",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training School, Atibie",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Community Health Nurses Training School, Akim Oda",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Osiem",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Afosu",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "VRA College of Nursing, Akosombo",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Hopkins Health Training Institute, Akim Oda",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "All Nations University College",
+    "category": "University / University College"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Odumase-Krobo",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "University of Health & Allied Sciences, Ho",
+    "category": "University / University College"
+  },
+  {
+    "name": "Nurses Training College, Ho",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Hohoe",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Keta",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Modal College, Sogakope",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Kete Krachi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "University of Cape Coast",
+    "category": "University / University College"
+  },
+  {
+    "name": "KAAF University College, Kasoa",
+    "category": "University / University College"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Cape Coast",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Ankaful, Cape Coast",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Community Health Nurses Training College, Winneba",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Twifo Praso",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Dunkwa-On-Offin",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "BIMAKS College of Business and Health Sciences, Agona Swedru",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Godfery Memorial Midwifery Training School, Apam",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Sekondi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Tarkwa",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Asakrangwa",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Community Health Nurses Training College, Esiama",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Asanta",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Porters College, SON",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Bibiani College of Health Science",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Sefwi Wiawso",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "College of Health, Sefwi Asafo",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "University for Development Studies, Tamale",
+    "category": "University / University College"
+  },
+  {
+    "name": "Nursing and Midwifery Training School, Tamale",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Community Health Nurses Training School, Tamale",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Gushegu",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Technical University College, Tamale",
+    "category": "University / University College"
+  },
+  {
+    "name": "New Life College, Tamale",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Yendi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "College of Nursing and Midwifery, Nalerigu",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Community Health Nurses Training School, Bole",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Kpembe",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Damongo",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Bolgatanga",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Presbyterian Nurses Training College, Bawku",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nursing and Midwifery Training College, Zuarungu",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Bolgatanga",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Community Health Nurses Training College, Navrongo",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Jirapa",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Jirapa",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Tumu",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Midwifery Training School, Nandom",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Community Health Nurses Training School, Jirapa",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Wa",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Nurses Training College, Lawra",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Rans-Elliot School of Nursing, Koforidua",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Margret Marguart Catholic Nursing Training College, Kpando",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Flosam Institute of Nursing, Midwifery and Allied Health Sciences, Suhum",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Islamic Nursing Training School, Accra",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Mieazah College of Health, Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Wisconsin International University College, Kumasi Campus",
+    "category": "University / University College"
+  },
+  {
+    "name": "Amen College of Health Science, Kumasi",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Valley View University, Techiman",
+    "category": "University / University College"
+  },
+  {
+    "name": "University of Energy and Natural Resources, Sunyani",
+    "category": "University / University College"
+  },
+  {
+    "name": "College of Community Health Nursing, Nkanchina/Kpandai",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Fountainhead Christian College, Tema",
+    "category": "University / University College"
+  },
+  {
+    "name": "Heritage Christian College, Amasaman",
+    "category": "University / University College"
+  },
+  {
+    "name": "River View College, Weija",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Valley View University, Kumasi",
+    "category": "University / University College"
+  },
+  {
+    "name": "St. Mary's College of Health, Baatsona",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Holy Eucharist University College, Half Assini",
+    "category": "University / University College"
+  },
+  {
+    "name": "Radford University College, East Legon",
+    "category": "University / University College"
+  },
+  {
+    "name": "Islamic University College, Cantonments, Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "Entrance University College, Spintex, Accra",
+    "category": "University / University College"
+  },
+  {
+    "name": "SDA College of Health, Barekese",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Kessben University College, Adum-Kumasi",
+    "category": "University / University College"
+  },
+  {
+    "name": "College of Nursing and Midwifery, Kubori",
+    "category": "Nursing / Midwifery / Health Training Institution"
+  },
+  {
+    "name": "Delexes University College, Tema",
+    "category": "University / University College"
+  },
+  {
+    "name": "Greenfield University College, Sunyani",
+    "category": "University / University College"
+  },
+  {
+    "name": "Anglican University College of Technology, Kumasi Campus",
+    "category": "University / University College"
+  },
+  {
+    "name": "Other / institution not listed",
+    "category": "Other"
+  }
+]

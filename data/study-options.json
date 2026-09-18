@@ -1,0 +1,138 @@
+[
+  {
+    "id": "auckland",
+    "country": "New Zealand",
+    "institution": "University of Auckland",
+    "flag": "🇳🇿",
+    "summary": "Official University of Auckland study finder for Nursing. Use it to confirm the current undergraduate, postgraduate and doctoral options, entry requirements, dates and fees before applying.",
+    "levels": [
+      "Undergraduate",
+      "Postgraduate",
+      "Doctoral"
+    ],
+    "officialUrl": "https://www.auckland.ac.nz/en/study/study-options/find-a-study-option/nursing.html",
+    "applicationUrl": "https://www.auckland.ac.nz/en/study/applications-and-admissions.html"
+  },
+  {
+    "id": "sydney",
+    "country": "Australia",
+    "institution": "The University of Sydney",
+    "flag": "🇦🇺",
+    "summary": "Official University of Sydney nursing study area. Review current nursing degrees and postgraduate options, accreditation, entry requirements and application instructions on the university site.",
+    "levels": [
+      "Undergraduate",
+      "Postgraduate"
+    ],
+    "officialUrl": "https://www.sydney.edu.au/medicine-health/study-medicine-and-health/study-areas/nursing.html",
+    "applicationUrl": "https://www.sydney.edu.au/study/how-to-apply.html"
+  },
+  {
+    "id": "melbourne",
+    "country": "Australia",
+    "institution": "The University of Melbourne",
+    "flag": "🇦🇺",
+    "summary": "Official nursing pathway information from the University of Melbourne. Confirm the current undergraduate-to-graduate pathway, Master of Nursing Science details and admission requirements.",
+    "levels": [
+      "Undergraduate pathway",
+      "Postgraduate"
+    ],
+    "officialUrl": "https://study.unimelb.edu.au/find/pathways/nurse",
+    "applicationUrl": "https://study.unimelb.edu.au/how-to-apply"
+  },
+  {
+    "id": "kcl",
+    "country": "United Kingdom",
+    "institution": "King's College London",
+    "flag": "🇬🇧",
+    "summary": "King's College London Florence Nightingale Faculty offers nursing and midwifery study. Explore the official pre-registration and postgraduate listings and verify current international eligibility before applying.",
+    "levels": [
+      "Undergraduate",
+      "Postgraduate"
+    ],
+    "officialUrl": "https://www.kcl.ac.uk/nmpc/pre-registration",
+    "applicationUrl": "https://www.kcl.ac.uk/study/undergraduate/how-to-apply"
+  },
+  {
+    "id": "manchester",
+    "country": "United Kingdom",
+    "institution": "The University of Manchester",
+    "flag": "🇬🇧",
+    "summary": "Official University of Manchester nursing study information. Confirm the current undergraduate and postgraduate routes, entry requirements and application process.",
+    "levels": [
+      "Undergraduate",
+      "Postgraduate"
+    ],
+    "officialUrl": "https://www.manchester.ac.uk/study/undergraduate/courses/2026/10971/bnurs-adult-nursing/",
+    "applicationUrl": "https://www.manchester.ac.uk/study/undergraduate/applying/"
+  },
+  {
+    "id": "toronto",
+    "country": "Canada",
+    "institution": "University of Toronto",
+    "flag": "🇨🇦",
+    "summary": "Use the university's official admissions and program finder to confirm currently available nursing/health programmes, degree level, international requirements and application route.",
+    "levels": [
+      "Undergraduate",
+      "Graduate",
+      "Doctoral"
+    ],
+    "officialUrl": "https://www.utoronto.ca/academics/programs-directory",
+    "applicationUrl": "https://future.utoronto.ca/apply/"
+  },
+  {
+    "id": "ubc",
+    "country": "Canada",
+    "institution": "University of British Columbia",
+    "flag": "🇨🇦",
+    "summary": "Use UBC's official program and admissions resources to confirm current nursing/health programmes, degree level, international admission requirements and application route.",
+    "levels": [
+      "Undergraduate",
+      "Graduate",
+      "Doctoral"
+    ],
+    "officialUrl": "https://www.ubc.ca/education/",
+    "applicationUrl": "https://you.ubc.ca/applying-ubc/"
+  },
+  {
+    "id": "mcgill",
+    "country": "Canada",
+    "institution": "McGill University",
+    "flag": "🇨🇦",
+    "summary": "Use McGill's official programme and admissions resources to confirm current nursing and health-related options, level, requirements and application route.",
+    "levels": [
+      "Undergraduate",
+      "Graduate",
+      "Doctoral"
+    ],
+    "officialUrl": "https://www.mcgill.ca/study/",
+    "applicationUrl": "https://www.mcgill.ca/undergraduate-admissions/apply"
+  },
+  {
+    "id": "penn-nursing",
+    "country": "United States",
+    "institution": "University of Pennsylvania School of Nursing",
+    "flag": "🇺🇸",
+    "summary": "Official School of Nursing programme information. Verify the current undergraduate and graduate programme list, international requirements and application route before applying.",
+    "levels": [
+      "Undergraduate",
+      "Graduate",
+      "Doctoral"
+    ],
+    "officialUrl": "https://www.nursing.upenn.edu/",
+    "applicationUrl": "https://www.nursing.upenn.edu/admissions/"
+  },
+  {
+    "id": "johns-hopkins-nursing",
+    "country": "United States",
+    "institution": "Johns Hopkins School of Nursing",
+    "flag": "🇺🇸",
+    "summary": "Official Johns Hopkins School of Nursing programme and admissions information. Confirm the current degree options, prerequisites and application requirements.",
+    "levels": [
+      "Undergraduate",
+      "Graduate",
+      "Doctoral"
+    ],
+    "officialUrl": "https://nursing.jhu.edu/",
+    "applicationUrl": "https://nursing.jhu.edu/admissions/"
+  }
+]

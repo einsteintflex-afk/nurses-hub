@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Nursing and Midwifery Council of Ghana \u2014 Examination & Licensing",
+    "category": "Ghana regulation",
+    "description": "Official N&MC information on licensing examinations, eligibility and registration.",
+    "sourceUrl": "https://nmc.gov.gh/web/examination-licensing"
+  },
+  {
+    "name": "Nursing and Midwifery Council of Ghana \u2014 Scope of Practice",
+    "category": "Ghana regulation",
+    "description": "Official scope-of-practice material for nursing and midwifery.",
+    "sourceUrl": "https://nmc.gov.gh/sop/"
+  },
+  {
+    "name": "Ghana Ministry of Health Recruitment Portal",
+    "category": "Ghana government",
+    "description": "Government recruitment and international health-professional notices.",
+    "sourceUrl": "https://hr.moh.gov.gh/"
+  },
+  {
+    "name": "UK Nursing and Midwifery Council \u2014 International Registration",
+    "category": "UK regulator",
+    "description": "Official overseas-trained nurse and midwife registration route.",
+    "sourceUrl": "https://www.nmc.org.uk/registration/joining-the-register/register-nurse-midwife/trained-outside-uk/"
+  },
+  {
+    "name": "NHS Jobs",
+    "category": "UK employment",
+    "description": "Official NHS vacancy search platform.",
+    "sourceUrl": "https://www.jobs.nhs.uk/candidate/search"
+  },
+  {
+    "name": "Nursing Council of New Zealand \u2014 IQN",
+    "category": "New Zealand regulator",
+    "description": "Internationally qualified nurse information and registration pathway.",
+    "sourceUrl": "https://www.nursingcouncil.org.nz/IQN"
+  },
+  {
+    "name": "Health New Zealand \u2014 Nursing Careers",
+    "category": "New Zealand employment",
+    "description": "Official Health New Zealand nursing careers information.",
+    "sourceUrl": "https://www.healthnz.govt.nz/careers/roles/clinical/nurses"
+  },
+  {
+    "name": "NNAS",
+    "category": "Canada nursing registration",
+    "description": "Starting point for many internationally educated nurses seeking Canadian registration.",
+    "sourceUrl": "https://www.nnas.ca/"
+  },
+  {
+    "name": "Ahpra / NMBA \u2014 International Registration",
+    "category": "Australia regulator",
+    "description": "Official Australian international registration information for nurses and midwives.",
+    "sourceUrl": "https://www.ahpra.gov.au/Registration/International.aspx"
+  },
+  {
+    "name": "WHO \u2014 Nursing & Midwifery",
+    "category": "Global health",
+    "description": "Global workforce data, policy and nursing/midwifery information.",
+    "sourceUrl": "https://www.who.int/news-room/fact-sheets/detail/nursing-and-midwifery"
+  }
+]

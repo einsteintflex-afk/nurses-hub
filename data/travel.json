@@ -1,0 +1,239 @@
+[
+  {
+    "id": "uk-work",
+    "country": "United Kingdom",
+    "mode": "work",
+    "title": "Nurse or midwife registration and employment",
+    "authority": "Nursing and Midwifery Council (NMC)",
+    "summary": "A structured route from eligibility and evidence preparation through UK professional registration and employer recruitment.",
+    "steps": [
+      "Profile the profession and qualification",
+      "Prepare identity and qualification evidence",
+      "Meet the current English-language requirements",
+      "Complete the NMC assessment/Test of Competence route where required",
+      "Complete health, character and registration steps",
+      "Search and apply to eligible employers",
+      "Complete the appropriate immigration route after a suitable offer"
+    ],
+    "links": [
+      [
+        "NMC international registration",
+        "https://www.nmc.org.uk/registration/joining-the-register/register-nurse-midwife/trained-outside-uk/"
+      ],
+      [
+        "NHS Jobs",
+        "https://www.jobs.nhs.uk/candidate/search"
+      ]
+    ]
+  },
+  {
+    "id": "uk-study",
+    "country": "United Kingdom",
+    "mode": "study",
+    "title": "Study in the UK",
+    "authority": "UK institution + UK Visas and Immigration",
+    "summary": "Select an institution and programme, secure admission, then complete the appropriate student immigration requirements.",
+    "steps": [
+      "Choose an institution and programme",
+      "Check entry and English requirements",
+      "Prepare transcripts, references and funding evidence",
+      "Apply and receive an offer",
+      "Complete CAS/student-visa requirements where applicable",
+      "Plan professional registration separately if you intend to practise"
+    ],
+    "links": [
+      [
+        "UK Student visa",
+        "https://www.gov.uk/student-visa"
+      ]
+    ]
+  },
+  {
+    "id": "nz-work",
+    "country": "New Zealand",
+    "mode": "work",
+    "title": "Internationally qualified nurse pathway",
+    "authority": "Nursing Council of New Zealand + employer",
+    "summary": "Review the IQN route, complete document verification and Council requirements, then use legitimate employer pathways.",
+    "steps": [
+      "Review the IQN eligibility route",
+      "Complete required verification",
+      "Apply to the Nursing Council",
+      "Meet competence, English and fitness requirements where applicable",
+      "Use Health NZ or another legitimate employer pathway",
+      "Complete immigration requirements"
+    ],
+    "links": [
+      [
+        "Nursing Council IQN",
+        "https://www.nursingcouncil.org.nz/IQN"
+      ],
+      [
+        "Health NZ nursing careers",
+        "https://www.healthnz.govt.nz/careers/roles/clinical/nurses"
+      ]
+    ]
+  },
+  {
+    "id": "nz-study",
+    "country": "New Zealand",
+    "mode": "study",
+    "title": "Study in New Zealand",
+    "authority": "Institution + Immigration New Zealand",
+    "summary": "Admission and student visa steps are distinct from professional registration if you intend to practise after study.",
+    "steps": [
+      "Choose an approved programme",
+      "Check entry and English requirements",
+      "Apply for admission",
+      "Prepare funding and identity evidence",
+      "Apply for the appropriate student visa",
+      "Plan future professional registration separately"
+    ],
+    "links": [
+      [
+        "Immigration NZ student visa",
+        "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/student-visa"
+      ]
+    ]
+  },
+  {
+    "id": "canada-work",
+    "country": "Canada",
+    "mode": "work",
+    "title": "Internationally educated nurse registration pathway",
+    "authority": "Provincial/territorial regulator + NNAS where applicable",
+    "summary": "Canadian nursing registration is provincial/territorial. Credential assessment and regulator requirements must be checked for the chosen province.",
+    "steps": [
+      "Choose the province or territory",
+      "Review the local regulator's requirements",
+      "Use NNAS where applicable",
+      "Complete credential assessment and verification",
+      "Complete regulator-specific examination or competence requirements",
+      "Apply to eligible employers"
+    ],
+    "links": [
+      [
+        "NNAS",
+        "https://www.nnas.ca/"
+      ],
+      [
+        "Government of Canada immigration",
+        "https://www.canada.ca/en/services/immigration-citizenship.html"
+      ]
+    ]
+  },
+  {
+    "id": "canada-study",
+    "country": "Canada",
+    "mode": "study",
+    "title": "Study in Canada",
+    "authority": "Designated learning institution + IRCC",
+    "summary": "Admission, study permit and future professional licensing are separate steps.",
+    "steps": [
+      "Choose a designated learning institution",
+      "Check academic and English requirements",
+      "Apply for admission",
+      "Prepare financial and identity documents",
+      "Apply for the study permit",
+      "Plan future registration or licensure separately"
+    ],
+    "links": [
+      [
+        "Canada study permit",
+        "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit.html"
+      ]
+    ]
+  },
+  {
+    "id": "australia-work",
+    "country": "Australia",
+    "mode": "work",
+    "title": "Internationally qualified nurse or midwife pathway",
+    "authority": "Ahpra + Nursing and Midwifery Board of Australia",
+    "summary": "The IQNM pathway includes assessment steps and registration standards before employment as a registered practitioner.",
+    "steps": [
+      "Review the IQNM pathway",
+      "Complete the required self-check/application steps",
+      "Meet registration standards",
+      "Complete required assessment or examination",
+      "Apply for registration",
+      "Apply to legitimate employers and then complete immigration steps"
+    ],
+    "links": [
+      [
+        "Ahpra international registration",
+        "https://www.ahpra.gov.au/Registration/International.aspx"
+      ],
+      [
+        "NMBA registration standards",
+        "https://www.ahpra.gov.au/Registration/Registration-Standards.aspx"
+      ]
+    ]
+  },
+  {
+    "id": "australia-study",
+    "country": "Australia",
+    "mode": "study",
+    "title": "Study in Australia",
+    "authority": "Australian institution + Department of Home Affairs",
+    "summary": "Choose a CRICOS-registered programme and complete admission and student-visa requirements.",
+    "steps": [
+      "Choose a CRICOS-registered programme",
+      "Check entry and English requirements",
+      "Obtain enrolment confirmation",
+      "Review Genuine Student and evidence requirements",
+      "Apply for the appropriate student visa",
+      "Plan professional registration separately"
+    ],
+    "links": [
+      [
+        "Australian Student visa",
+        "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500"
+      ]
+    ]
+  },
+  {
+    "id": "usa-work",
+    "country": "United States",
+    "mode": "work",
+    "title": "Registered nurse employment and state licensure",
+    "authority": "State board of nursing + relevant credentialing bodies",
+    "summary": "Nursing regulation is state-based. Requirements can include credential evaluation, English evidence, NCLEX-RN and state-specific requirements.",
+    "steps": [
+      "Choose the state",
+      "Read the state board's internationally educated nurse requirements",
+      "Complete any required credential evaluation",
+      "Meet English requirements where applicable",
+      "Complete NCLEX-RN and state licensing requirements",
+      "Use legitimate employer and immigration pathways"
+    ],
+    "links": [
+      [
+        "TruMerit",
+        "https://www.trumerit.org/"
+      ]
+    ]
+  },
+  {
+    "id": "usa-study",
+    "country": "United States",
+    "mode": "study",
+    "title": "Study in the United States",
+    "authority": "Institution + U.S. immigration authorities",
+    "summary": "Admission and immigration are separate decisions; nursing practice also remains subject to state regulation.",
+    "steps": [
+      "Choose an institution and programme",
+      "Check admission and English requirements",
+      "Prepare funding and identity evidence",
+      "Apply and receive admission documents",
+      "Complete student immigration requirements",
+      "Plan state professional registration separately"
+    ],
+    "links": [
+      [
+        "Study in the USA \u2014 EducationUSA",
+        "https://educationusa.state.gov/"
+      ]
+    ]
+  }
+]

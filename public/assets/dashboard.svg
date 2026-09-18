@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 460">
+<defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e9f7f5"/><stop offset="1" stop-color="#e9f0fc"/></linearGradient></defs>
+<rect width="680" height="460" rx="34" fill="url(#b)"/>
+<rect x="54" y="50" width="572" height="330" rx="24" fill="#fff" stroke="#d9e8ed" stroke-width="4"/>
+<rect x="80" y="82" width="255" height="265" rx="18" fill="#f4f9fa"/>
+<circle cx="208" cy="144" r="44" fill="#a87358"/>
+<path d="M164 143c7-40 30-59 48-59 26 0 43 17 49 53-21-14-44-17-60-10-13 6-25 14-37 27z" fill="#3a2926"/>
+<path d="M137 325c5-93 30-151 71-151s66 58 71 151H137z" fill="#fff" stroke="#c5d5dc" stroke-width="3"/>
+<path d="M192 206l16 22 16-22" fill="#ecf2f6"/><path d="M208 228v97" stroke="#c5d5dc" stroke-width="3"/>
+<rect x="195" y="245" width="26" height="26" rx="5" fill="#0c7480"/><path d="M208 240v36M190 258h36" stroke="#fff" stroke-width="6"/>
+<rect x="360" y="86" width="230" height="53" rx="12" fill="#0f3240"/><text x="383" y="118" font-family="Arial" font-size="16" font-weight="700" fill="#fff">STUDY DASHBOARD</text>
+<rect x="360" y="157" width="230" height="19" rx="9" fill="#e3edf0"/><rect x="360" y="157" width="176" height="19" rx="9" fill="#0c7480"/>
+<rect x="360" y="192" width="230" height="17" rx="8" fill="#e3edf0"/><rect x="360" y="192" width="133" height="17" rx="8" fill="#59a6b0"/>
+<rect x="360" y="225" width="230" height="17" rx="8" fill="#e3edf0"/><rect x="360" y="225" width="92" height="17" rx="8" fill="#91c6cc"/>
+<rect x="360" y="267" width="103" height="56" rx="14" fill="#e9f7f5"/><text x="383" y="291" font-family="Arial" font-size="11" fill="#0c7480">QUESTIONS</text><text x="383" y="312" font-family="Arial" font-size="20" font-weight="800" fill="#0f3240">124</text>
+<rect x="475" y="267" width="115" height="56" rx="14" fill="#eef2fb"/><text x="495" y="291" font-family="Arial" font-size="11" fill="#406b9d">ACCURACY</text><text x="495" y="312" font-family="Arial" font-size="20" font-weight="800" fill="#0f3240">78%</text>
+<circle cx="580" cy="410" r="16" fill="#0c7480" opacity=".18"/><circle cx="110" cy="410" r="22" fill="#0c7480" opacity=".12"/>
+<text x="54" y="424" font-family="Arial" font-size="11" font-weight="700" fill="#56707d">ONE WORKSPACE • STUDY • CAREER • GLOBAL • COMMUNITY</text>
+</svg>

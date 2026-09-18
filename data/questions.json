@@ -1,0 +1,662 @@
+[
+  {
+    "id": "q001",
+    "domain": "Foundations",
+    "difficulty": "Easy",
+    "question": "A nurse collects subjective and objective information before identifying nursing problems. Which nursing-process phase is being performed?",
+    "options": [
+      "Planning",
+      "Assessment",
+      "Implementation",
+      "Evaluation"
+    ],
+    "answer": 1,
+    "explanation": "Assessment is the systematic collection and validation of subjective and objective data."
+  },
+  {
+    "id": "q002",
+    "domain": "Medication Safety",
+    "difficulty": "Easy",
+    "question": "The medication label and medication administration record do not agree. What should the nurse do first?",
+    "options": [
+      "Administer the medicine using the label",
+      "Clarify the discrepancy before administration",
+      "Ask the patient to choose",
+      "Document after giving the medicine"
+    ],
+    "answer": 1,
+    "explanation": "A discrepancy should be clarified before administration to reduce preventable medication errors."
+  },
+  {
+    "id": "q003",
+    "domain": "Emergency",
+    "difficulty": "Medium",
+    "question": "A patient suddenly becomes confused with increased work of breathing. Which action should take priority?",
+    "options": [
+      "Finish the nursing notes first",
+      "Begin an immediate ABC assessment and escalate",
+      "Offer a large meal",
+      "Wait for the routine ward round"
+    ],
+    "answer": 1,
+    "explanation": "Acute deterioration requires immediate airway, breathing and circulation assessment with prompt escalation."
+  },
+  {
+    "id": "q004",
+    "domain": "Maternal",
+    "difficulty": "Medium",
+    "question": "A labouring client develops fresh vaginal bleeding and maternal instability. What is the priority?",
+    "options": [
+      "Continue routine observations",
+      "Urgent assessment and emergency escalation",
+      "Encourage oral fluids",
+      "Wait for the next scheduled examination"
+    ],
+    "answer": 1,
+    "explanation": "Bleeding with instability may indicate a major obstetric emergency and requires urgent action."
+  },
+  {
+    "id": "q005",
+    "domain": "Paediatrics",
+    "difficulty": "Easy",
+    "question": "A child with respiratory distress becomes less responsive. Which principle should guide the immediate response?",
+    "options": [
+      "Complete the history first",
+      "Prioritise airway, breathing and circulation",
+      "Offer food",
+      "Wait for routine review"
+    ],
+    "answer": 1,
+    "explanation": "Deterioration in a child requires immediate ABC assessment and emergency response."
+  },
+  {
+    "id": "q006",
+    "domain": "Community",
+    "difficulty": "Easy",
+    "question": "Which is an example of primary prevention?",
+    "options": [
+      "Stroke rehabilitation",
+      "Cancer screening",
+      "Routine immunisation",
+      "Treatment of established pneumonia"
+    ],
+    "answer": 2,
+    "explanation": "Immunisation acts before disease occurs and is therefore a primary-prevention intervention."
+  },
+  {
+    "id": "q007",
+    "domain": "Mental Health",
+    "difficulty": "Easy",
+    "question": "Which response best demonstrates therapeutic communication?",
+    "options": [
+      "You should stop thinking about it.",
+      "Why did you do that?",
+      "Tell me more about what you are experiencing.",
+      "Everyone feels that way."
+    ],
+    "answer": 2,
+    "explanation": "Open-ended, non-judgmental exploration helps the person describe their experience."
+  },
+  {
+    "id": "q008",
+    "domain": "Anatomy",
+    "difficulty": "Medium",
+    "question": "Which organ system changes carbon dioxide elimination rapidly and therefore contributes to acid-base regulation?",
+    "options": [
+      "Respiratory system",
+      "Integumentary system",
+      "Skeletal system",
+      "Reproductive system"
+    ],
+    "answer": 0,
+    "explanation": "Ventilation changes carbon dioxide elimination and can alter acid-base balance quickly."
+  },
+  {
+    "id": "q009",
+    "domain": "Medical-Surgical",
+    "difficulty": "Medium",
+    "question": "A patient develops sudden chest pain and shortness of breath. What is the most appropriate initial nursing approach?",
+    "options": [
+      "Ignore it unless the pain persists",
+      "Assess immediately and activate the appropriate emergency pathway",
+      "Offer a meal",
+      "Schedule a review next week"
+    ],
+    "answer": 1,
+    "explanation": "Acute chest pain and dyspnoea can represent a time-critical condition and need immediate assessment."
+  },
+  {
+    "id": "q010",
+    "domain": "Professional Practice",
+    "difficulty": "Easy",
+    "question": "Which action best supports patient identification before medication administration?",
+    "options": [
+      "Use bed number only",
+      "Use approved patient identifiers",
+      "Ask another patient to identify the person",
+      "Use the medicine colour"
+    ],
+    "answer": 1,
+    "explanation": "Approved identifiers reduce wrong-patient medication errors; bed number alone is not sufficient."
+  },
+  {
+    "id": "q011",
+    "domain": "Research",
+    "difficulty": "Medium",
+    "question": "After identifying a clinical uncertainty, the best next step in evidence-based practice is to:",
+    "options": [
+      "Formulate a focused answerable question and search evidence",
+      "Change every practice immediately",
+      "Ignore existing evidence",
+      "Publish a conclusion before searching"
+    ],
+    "answer": 0,
+    "explanation": "A focused question helps direct an efficient search for relevant and trustworthy evidence."
+  },
+  {
+    "id": "q012",
+    "domain": "Maternal",
+    "difficulty": "Medium",
+    "question": "A labour-monitoring chart is primarily used to:",
+    "options": [
+      "Replace all clinical assessment",
+      "Support recognition of abnormal labour progress and maternal/fetal concerns",
+      "Determine blood group",
+      "Replace documentation"
+    ],
+    "answer": 1,
+    "explanation": "Labour-monitoring tools support recognition of abnormal progress while complementing clinical assessment."
+  },
+  {
+    "id": "q013",
+    "domain": "Infection Prevention",
+    "difficulty": "Easy",
+    "question": "Which intervention directly interrupts the chain of infection at the point of transmission?",
+    "options": [
+      "Hand hygiene",
+      "Giving antibiotics to every patient",
+      "Skipping environmental cleaning",
+      "Sharing equipment between patients"
+    ],
+    "answer": 0,
+    "explanation": "Effective hand hygiene can interrupt transmission between people and contaminated surfaces."
+  },
+  {
+    "id": "q014",
+    "domain": "Pharmacology",
+    "difficulty": "Medium",
+    "question": "A patient develops an unexpected rash and breathing difficulty immediately after a medicine. What is the priority?",
+    "options": [
+      "Continue the medicine and recheck later",
+      "Treat it as a possible serious adverse reaction and escalate immediately",
+      "Give the next dose early",
+      "Hide the event from the record"
+    ],
+    "answer": 1,
+    "explanation": "Breathing difficulty with a new rash may indicate a serious hypersensitivity reaction requiring urgent care and documentation."
+  },
+  {
+    "id": "q015",
+    "domain": "Postnatal",
+    "difficulty": "Easy",
+    "question": "Which newborn observation requires prompt clinical attention?",
+    "options": [
+      "Effective feeding",
+      "Normal skin colour",
+      "Persistent difficulty breathing",
+      "Quiet sleep after feeding"
+    ],
+    "answer": 2,
+    "explanation": "Persistent breathing difficulty is a neonatal danger sign requiring urgent assessment."
+  },
+  {
+    "id": "q016",
+    "domain": "Midwifery",
+    "difficulty": "Medium",
+    "question": "During antenatal care, which finding should prompt timely review rather than routine reassurance?",
+    "options": [
+      "Normal fetal movement",
+      "Severe headache with visual disturbance",
+      "Mild tiredness",
+      "Normal appetite"
+    ],
+    "answer": 1,
+    "explanation": "Severe headache with visual disturbance can be associated with hypertensive disease and needs prompt assessment."
+  },
+  {
+    "id": "q017",
+    "domain": "Community",
+    "difficulty": "Medium",
+    "question": "A community nurse wants to identify the main health problems affecting a population before planning an intervention. Which approach is most appropriate?",
+    "options": [
+      "Community assessment or diagnosis",
+      "Randomly choose an intervention",
+      "Use hospital data only",
+      "Skip baseline information"
+    ],
+    "answer": 0,
+    "explanation": "Community assessment helps establish needs, risk factors, resources and priorities before intervention planning."
+  },
+  {
+    "id": "q018",
+    "domain": "Leadership",
+    "difficulty": "Medium",
+    "question": "When delegating a task, the nurse should consider the delegatee's competence, the patient's needs and:",
+    "options": [
+      "Whether the nurse wants less work",
+      "Availability of supervision and accountability",
+      "The patient's room number",
+      "Only the time of day"
+    ],
+    "answer": 1,
+    "explanation": "Safe delegation requires competence matching, appropriate supervision and clear accountability."
+  },
+  {
+    "id": "q019",
+    "domain": "Paediatrics",
+    "difficulty": "Easy",
+    "question": "A key reason for plotting a child's growth over time is to:",
+    "options": [
+      "Replace clinical examination",
+      "Identify growth patterns and deviations early",
+      "Determine blood group",
+      "Replace immunisation"
+    ],
+    "answer": 1,
+    "explanation": "Trend monitoring helps identify growth faltering or abnormal patterns early."
+  },
+  {
+    "id": "q020",
+    "domain": "Research",
+    "difficulty": "Easy",
+    "question": "In a study, a sample is the:",
+    "options": [
+      "Entire population of interest",
+      "Selected subset of the population included in the study",
+      "Research question",
+      "Study conclusion"
+    ],
+    "answer": 1,
+    "explanation": "A sample is the selected subset from the target population that is actually studied."
+  },
+  {
+    "id": "q021",
+    "type": "mcq",
+    "domain": "Foundations",
+    "difficulty": "Medium",
+    "question": "A patient becomes acutely confused in the ward. Which assessment is most appropriate first?",
+    "options": [
+      "Ask the family to take the patient home",
+      "Assess airway, breathing, circulation and immediate causes",
+      "Give a sedative without assessment",
+      "Wait for the next routine round"
+    ],
+    "answer": 1,
+    "explanation": "Acute confusion may signal a time-critical physiological problem. Immediate assessment should look for instability and reversible causes."
+  },
+  {
+    "id": "q022",
+    "type": "mcq",
+    "domain": "Infection Prevention",
+    "difficulty": "Easy",
+    "question": "Which action most directly reduces transmission of microorganisms between patients?",
+    "options": [
+      "Using the same gloves for several patients",
+      "Performing appropriate hand hygiene between patient contacts",
+      "Keeping all doors closed",
+      "Giving antibiotics to every patient"
+    ],
+    "answer": 1,
+    "explanation": "Hand hygiene at the appropriate moments is a core measure for preventing cross-transmission of microorganisms."
+  },
+  {
+    "id": "q023",
+    "type": "mcq",
+    "domain": "Pharmacology",
+    "difficulty": "Medium",
+    "question": "A patient develops wheeze, facial swelling and difficulty breathing soon after a medicine is given. What is the priority?",
+    "options": [
+      "Document and continue the medicine",
+      "Recognise a possible severe hypersensitivity reaction and initiate urgent response",
+      "Offer a meal",
+      "Ask the patient to walk around"
+    ],
+    "answer": 1,
+    "explanation": "Wheeze, swelling and breathing difficulty after a medicine can indicate a severe hypersensitivity reaction requiring immediate emergency management."
+  },
+  {
+    "id": "q024",
+    "type": "mcq",
+    "domain": "Maternal Care",
+    "difficulty": "Medium",
+    "question": "During labour, a fetal heart rate pattern changes and the mother has severe abdominal pain. What should guide the nurse or midwife's next action?",
+    "options": [
+      "Ignore the fetal assessment",
+      "Immediate maternal and fetal assessment and escalation according to protocol",
+      "Give oral fluids only",
+      "Wait until the next shift"
+    ],
+    "answer": 1,
+    "explanation": "New severe pain with an abnormal fetal assessment can indicate an obstetric emergency and requires immediate reassessment and escalation."
+  },
+  {
+    "id": "q025",
+    "type": "mcq",
+    "domain": "Midwifery",
+    "difficulty": "Easy",
+    "question": "A major goal of antenatal care is to:",
+    "options": [
+      "Detect and manage risks early while promoting maternal and fetal wellbeing",
+      "Avoid all laboratory tests",
+      "Guarantee a particular mode of delivery",
+      "Replace intrapartum care"
+    ],
+    "answer": 0,
+    "explanation": "Antenatal care includes risk assessment, prevention, health education and preparation for safe pregnancy and birth."
+  },
+  {
+    "id": "q026",
+    "type": "mcq",
+    "domain": "Newborn Care",
+    "difficulty": "Medium",
+    "question": "Which newborn finding requires urgent assessment?",
+    "options": [
+      "A brief cry after birth",
+      "Persistent central cyanosis",
+      "Normal flexed posture",
+      "Normal rooting reflex"
+    ],
+    "answer": 1,
+    "explanation": "Persistent central cyanosis may indicate significant oxygenation problems and requires urgent assessment."
+  },
+  {
+    "id": "q027",
+    "type": "mcq",
+    "domain": "Paediatrics",
+    "difficulty": "Easy",
+    "question": "A key purpose of oral rehydration solution in a child with diarrhoeal dehydration is to:",
+    "options": [
+      "Replace water and electrolytes through the gastrointestinal tract",
+      "Stop all stool output immediately",
+      "Provide antibiotics",
+      "Induce sleep"
+    ],
+    "answer": 0,
+    "explanation": "Oral rehydration solution replaces water and essential electrolytes and is a mainstay of rehydration when the child can drink."
+  },
+  {
+    "id": "q028",
+    "type": "mcq",
+    "domain": "Community Health",
+    "difficulty": "Medium",
+    "question": "Which activity is an example of primary prevention?",
+    "options": [
+      "Rehabilitation after stroke",
+      "Vaccination",
+      "Dialysis for kidney failure",
+      "Wound dressing after surgery"
+    ],
+    "answer": 1,
+    "explanation": "Primary prevention aims to prevent disease before it occurs; immunisation is a classic example."
+  },
+  {
+    "id": "q029",
+    "type": "mcq",
+    "domain": "Mental Health",
+    "difficulty": "Medium",
+    "question": "Which response best demonstrates therapeutic communication when a client says, 'I feel hopeless' ?",
+    "options": [
+      "You should not feel that way",
+      "Tell me more about what is making you feel hopeless",
+      "Everyone feels like that",
+      "Forget about it"
+    ],
+    "answer": 1,
+    "explanation": "Open-ended, non-judgmental responses encourage the client to explore feelings and support therapeutic communication."
+  },
+  {
+    "id": "q030",
+    "type": "mcq",
+    "domain": "Medical-Surgical",
+    "difficulty": "Medium",
+    "question": "A patient with suspected hypoglycaemia is conscious and able to swallow. Which action is appropriate according to the local protocol?",
+    "options": [
+      "Give a rapid source of glucose",
+      "Withhold all oral intake",
+      "Send the patient for exercise",
+      "Give a sedative"
+    ],
+    "answer": 0,
+    "explanation": "For a conscious patient who can swallow, a rapid source of glucose is commonly used to treat hypoglycaemia, followed by reassessment according to protocol."
+  },
+  {
+    "id": "q031",
+    "type": "mcq",
+    "domain": "Emergency & Critical Care",
+    "difficulty": "Easy",
+    "question": "In an emergency assessment, which sequence is commonly prioritised first?",
+    "options": [
+      "Airway, breathing and circulation",
+      "Diet, sleep and exercise",
+      "History before all immediate assessment",
+      "Discharge planning"
+    ],
+    "answer": 0,
+    "explanation": "Immediate assessment prioritises threats to airway, breathing and circulation before less urgent considerations."
+  },
+  {
+    "id": "q032",
+    "type": "mcq",
+    "domain": "Medication Safety",
+    "difficulty": "Medium",
+    "question": "Which practice best reduces medication administration errors?",
+    "options": [
+      "Using two identifiers and checking the medicine against the order",
+      "Relying on memory",
+      "Skipping allergy checks",
+      "Administering from an unlabeled container"
+    ],
+    "answer": 0,
+    "explanation": "Patient identification and systematic checking of the medication order are core medication-safety controls."
+  },
+  {
+    "id": "q033",
+    "type": "mcq",
+    "domain": "Nutrition",
+    "difficulty": "Easy",
+    "question": "Protein is especially important in wound healing because it supports:",
+    "options": [
+      "Tissue repair and synthesis of body proteins",
+      "Only urine production",
+      "Only body temperature reduction",
+      "Vision alone"
+    ],
+    "answer": 0,
+    "explanation": "Adequate protein supplies amino acids needed for tissue repair, immune function and synthesis of body proteins."
+  },
+  {
+    "id": "q034",
+    "type": "mcq",
+    "domain": "Nutrition",
+    "difficulty": "Medium",
+    "question": "Which nutrient deficiency is classically associated with impaired oxygen-carrying capacity?",
+    "options": [
+      "Iron",
+      "Water",
+      "Sodium only",
+      "Fibre"
+    ],
+    "answer": 0,
+    "explanation": "Iron is required for haemoglobin synthesis; deficiency can contribute to iron-deficiency anaemia."
+  },
+  {
+    "id": "q035",
+    "type": "mcq",
+    "domain": "Public Health",
+    "difficulty": "Medium",
+    "question": "Which measure is most useful for describing new cases of a disease occurring in a population over a defined period?",
+    "options": [
+      "Incidence",
+      "Prevalence",
+      "Case fatality only",
+      "Sensitivity"
+    ],
+    "answer": 0,
+    "explanation": "Incidence measures new cases occurring during a specified time period among a population at risk."
+  },
+  {
+    "id": "q036",
+    "type": "mcq",
+    "domain": "Research",
+    "difficulty": "Medium",
+    "question": "A study tool gives similar results when repeated under the same conditions. This supports its:",
+    "options": [
+      "Reliability",
+      "Randomisation",
+      "Blinding",
+      "Confounding"
+    ],
+    "answer": 0,
+    "explanation": "Reliability refers to consistency or repeatability of measurement."
+  },
+  {
+    "id": "q037",
+    "type": "mcq",
+    "domain": "Leadership",
+    "difficulty": "Medium",
+    "question": "Delegation of a nursing task should include:",
+    "options": [
+      "Matching the task to competence and maintaining appropriate supervision",
+      "Giving every task to the newest staff member",
+      "No communication",
+      "No follow-up"
+    ],
+    "answer": 0,
+    "explanation": "Safe delegation considers the person's competence, the task, the patient situation, and required supervision or review."
+  },
+  {
+    "id": "q038",
+    "type": "mcq",
+    "domain": "Geriatrics",
+    "difficulty": "Medium",
+    "question": "An older adult becomes dizzy when standing. Which risk should the nurse assess promptly?",
+    "options": [
+      "Falls related to postural blood-pressure changes",
+      "Improved appetite",
+      "Hearing improvement",
+      "Increased hair growth"
+    ],
+    "answer": 0,
+    "explanation": "Dizziness on standing may indicate orthostatic changes and increases the risk of falls."
+  },
+  {
+    "id": "q039",
+    "type": "mcq",
+    "domain": "Palliative Care",
+    "difficulty": "Easy",
+    "question": "A core goal of palliative care is to:",
+    "options": [
+      "Improve quality of life and relieve suffering",
+      "Cure every terminal illness",
+      "Stop all communication",
+      "Avoid symptom assessment"
+    ],
+    "answer": 0,
+    "explanation": "Palliative care focuses on quality of life, symptom relief, psychosocial support and person-centred care."
+  },
+  {
+    "id": "q040",
+    "type": "mcq",
+    "domain": "Professional Practice",
+    "difficulty": "Medium",
+    "question": "Which documentation principle is most important?",
+    "options": [
+      "Record relevant, accurate, timely and factual information",
+      "Write only what you remember days later",
+      "Use ambiguous abbreviations",
+      "Document care that was not provided"
+    ],
+    "answer": 0,
+    "explanation": "High-quality documentation should be accurate, timely, relevant and factual and should reflect care actually provided."
+  },
+  {
+    "id": "q041",
+    "type": "theory",
+    "domain": "Foundations",
+    "difficulty": "Theory",
+    "question": "Explain the nursing process and show how assessment findings influence the remaining steps.",
+    "theoryGuide": "Define assessment, diagnosis/problem identification, planning, implementation and evaluation. Explain the feedback loop between evaluation and reassessment."
+  },
+  {
+    "id": "q042",
+    "type": "theory",
+    "domain": "Maternal Care",
+    "difficulty": "Theory",
+    "question": "Describe the important components of antenatal assessment and explain why early identification of risk factors matters.",
+    "theoryGuide": "Cover history, physical assessment, routine investigations, health education, danger signs and referral/escalation."
+  },
+  {
+    "id": "q043",
+    "type": "theory",
+    "domain": "Midwifery",
+    "difficulty": "Theory",
+    "question": "Discuss the stages of labour and the key observations a midwife should make during each stage.",
+    "theoryGuide": "Organise the answer by stages and include maternal observations, fetal wellbeing, progress of labour and documentation."
+  },
+  {
+    "id": "q044",
+    "type": "theory",
+    "domain": "Paediatrics",
+    "difficulty": "Theory",
+    "question": "Discuss a structured approach to assessing a child with acute diarrhoea and dehydration.",
+    "theoryGuide": "Explain history, general appearance, vital signs, hydration assessment, red flags, rehydration strategy and monitoring."
+  },
+  {
+    "id": "q045",
+    "type": "theory",
+    "domain": "Mental Health",
+    "difficulty": "Theory",
+    "question": "Explain therapeutic communication and give examples of responses that build a safe nurse-client relationship.",
+    "theoryGuide": "Discuss empathy, active listening, open questions, reflection, boundaries and avoidance of judgement."
+  },
+  {
+    "id": "q046",
+    "type": "theory",
+    "domain": "Nutrition",
+    "difficulty": "Theory",
+    "question": "Explain how nutrition affects wound healing and describe nutrition factors that should be assessed in a patient with a chronic wound.",
+    "theoryGuide": "Discuss energy, protein, micronutrients, hydration, appetite, disease burden, swallowing and access to food."
+  },
+  {
+    "id": "q047",
+    "type": "theory",
+    "domain": "Community Health",
+    "difficulty": "Theory",
+    "question": "Distinguish between primary, secondary and tertiary prevention and give two nursing examples for each.",
+    "theoryGuide": "Link each level to its aim and use clear examples from immunisation, screening, treatment and rehabilitation."
+  },
+  {
+    "id": "q048",
+    "type": "theory",
+    "domain": "Pharmacology",
+    "difficulty": "Theory",
+    "question": "Outline a safe medication-administration checklist and explain why each major check matters.",
+    "theoryGuide": "Cover patient identification, medication/order checks, allergies, dose, route, timing, documentation, monitoring and patient education."
+  },
+  {
+    "id": "q049",
+    "type": "theory",
+    "domain": "Research",
+    "difficulty": "Theory",
+    "question": "Differentiate validity, reliability and bias in health research.",
+    "theoryGuide": "Define each concept, explain how each can affect conclusions and give a simple clinical-research example."
+  },
+  {
+    "id": "q050",
+    "type": "theory",
+    "domain": "Professional Practice",
+    "difficulty": "Theory",
+    "question": "Discuss the role of a nurse or midwife in safeguarding confidentiality while using digital systems and social media.",
+    "theoryGuide": "Cover privacy, patient identifiers, access controls, secure communication, professional boundaries and incident reporting."
+  }
+]

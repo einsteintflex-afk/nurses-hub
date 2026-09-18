@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 540">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dff3ef"/><stop offset="1" stop-color="#e7efff"/></linearGradient></defs>
+  <rect width="760" height="540" rx="46" fill="url(#bg)"/>
+  <circle cx="600" cy="100" r="80" fill="#b3ded9" opacity=".6"/>
+  <circle cx="100" cy="450" r="100" fill="#d2def7" opacity=".5"/>
+  <g transform="translate(65 48) scale(.72)"><rect x="0" y="0" width="520" height="620" rx="48" fill="#ffffff" opacity=".55"/></g>
+  <g transform="translate(55 45) scale(.62)"><path d="M178 204c0-71 37-111 82-111s82 40 82 111v44H178z" fill="#8b604b"/><circle cx="260" cy="176" r="74" fill="#a56e54"/><path d="M185 171c7-63 38-95 79-95 36 0 69 21 78 71-21-19-44-29-76-26-26 3-53 17-81 50z" fill="#4c2e2a"/><path d="M132 568c7-142 50-222 128-222s121 80 128 222H132z" fill="#fff" stroke="#b9cdd9" stroke-width="3"/><path d="M247 438h26v26h-26z" fill="#0b8f87"/><path d="M260 425v52M247 451h26" stroke="#fff" stroke-width="7"/></g>
+  <g transform="translate(395 60) scale(.62)"><path d="M178 206c0-70 39-111 82-111s82 41 82 111v41H178z" fill="#3a2a28"/><circle cx="260" cy="178" r="74" fill="#9f6c53"/><path d="M186 159c18-61 56-90 94-81 34 8 54 37 62 75-28-31-66-43-108-29-17 6-32 17-48 35z" fill="#2b1d1c"/><path d="M132 568c7-142 50-222 128-222s121 80 128 222H132z" fill="#f9fbfc" stroke="#b9cdd9" stroke-width="3"/><rect x="239" y="436" width="42" height="48" rx="10" fill="#d47b9f"/><path d="M249 454c0-8 6-14 14-14s14 6 14 14c0 14-14 20-14 20s-14-6-14-20z" fill="#fff"/></g>
+  <path d="M590 382c49-37 93-30 117 4 19 27 14 61-2 79" fill="none" stroke="#1f6feb" stroke-width="10" stroke-linecap="round"/>
+  <rect x="556" y="352" width="170" height="112" rx="20" fill="#0f3144" opacity=".94"/><text x="580" y="389" fill="#fff" font-family="Arial" font-size="18" font-weight="700">NURSE + MIDWIFE</text><text x="580" y="418" fill="#a6e9e1" font-family="Arial" font-size="14">LEARN • WORK • GROW</text>
+</svg>

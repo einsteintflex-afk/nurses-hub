@@ -1,0 +1,14 @@
+node_modules/
+.env
+data/*.json
+!data/questions.json
+!data/jobs.json
+!data/news.json
+!data/resources.json
+!data/institutions.json
+!data/study-options.json
+!data/syllabus.json
+!data/travel.json
+!data/testimonials.json
+uploads/
+*.log

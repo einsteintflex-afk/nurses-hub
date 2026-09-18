@@ -1,0 +1,438 @@
+[
+  {
+    "id": "nursing-foundations",
+    "track": "Nursing Core",
+    "title": "Foundations of Nursing Practice",
+    "description": "Professional practice, nursing process, assessment, therapeutic communication, documentation, safety, ethics and infection prevention.",
+    "topics": [
+      "Nursing process",
+      "Health assessment",
+      "Therapeutic communication",
+      "Patient safety",
+      "Infection prevention",
+      "Ethics and law",
+      "Documentation"
+    ],
+    "lessons": [
+      "Nursing process and clinical reasoning",
+      "Comprehensive health assessment",
+      "Therapeutic communication and patient education",
+      "Infection prevention and isolation",
+      "Documentation, confidentiality and consent",
+      "Patient safety and incident reporting"
+    ]
+  },
+  {
+    "id": "anatomy-physiology",
+    "track": "Nursing Core",
+    "title": "Anatomy, Physiology & Pathophysiology",
+    "description": "Human body structure and function linked to common disease processes and clinical signs.",
+    "topics": [
+      "Cells and tissues",
+      "Cardiovascular",
+      "Respiratory",
+      "Renal",
+      "Neurological",
+      "Endocrine",
+      "GI",
+      "Musculoskeletal"
+    ],
+    "lessons": [
+      "Cellular function and homeostasis",
+      "Cardiovascular system",
+      "Respiratory system",
+      "Renal and fluid balance",
+      "Neurological system",
+      "Endocrine system",
+      "GI and musculoskeletal systems"
+    ]
+  },
+  {
+    "id": "microbiology",
+    "track": "Nursing Core",
+    "title": "Microbiology, Infection & Immunology",
+    "description": "Microorganisms, transmission, host defence and infection-prevention practices relevant to nursing and midwifery.",
+    "topics": [
+      "Bacteria",
+      "Viruses",
+      "Fungi",
+      "Parasites",
+      "Chain of infection",
+      "Sterilisation",
+      "Immunity"
+    ],
+    "lessons": [
+      "Pathogenic microorganisms",
+      "Chain of infection",
+      "Aseptic technique",
+      "Disinfection and sterilisation",
+      "Immune responses",
+      "Healthcare-associated infection prevention"
+    ]
+  },
+  {
+    "id": "nutrition",
+    "track": "Nursing Core",
+    "title": "Nutrition, Diet Therapy & Health Promotion",
+    "description": "Nutrition fundamentals, therapeutic diets, nutrition assessment and health-promotion counselling.",
+    "topics": [
+      "Nutrition assessment",
+      "Macronutrients",
+      "Micronutrients",
+      "Therapeutic diets",
+      "Malnutrition",
+      "Health promotion"
+    ],
+    "lessons": [
+      "Nutritional assessment",
+      "Balanced diet and micronutrients",
+      "Therapeutic diets",
+      "Malnutrition and screening",
+      "Diet counselling and health promotion"
+    ]
+  },
+  {
+    "id": "pharmacology",
+    "track": "Nursing Core",
+    "title": "Pharmacology & Medication Safety",
+    "description": "Medication classes, safe administration, dosage calculations, monitoring, adverse reactions and patient education.",
+    "topics": [
+      "Dose calculations",
+      "Medication rights",
+      "Routes",
+      "Adverse reactions",
+      "High-alert medicines",
+      "Medication reconciliation",
+      "Patient education"
+    ],
+    "lessons": [
+      "Medication safety principles",
+      "Dosage and infusion calculations",
+      "Routes and administration",
+      "Adverse drug reactions",
+      "High-alert medicines",
+      "Medication reconciliation and counselling"
+    ]
+  },
+  {
+    "id": "medical-surgical",
+    "track": "Nursing Core",
+    "title": "Medical-Surgical Nursing",
+    "description": "Assessment and nursing care for major adult health disorders across body systems.",
+    "topics": [
+      "Cardiovascular",
+      "Respiratory",
+      "GI",
+      "Renal",
+      "Neurology",
+      "Endocrine",
+      "Infectious disease",
+      "Oncology"
+    ],
+    "lessons": [
+      "Cardiovascular disorders",
+      "Respiratory disorders",
+      "Renal and urinary disorders",
+      "Neurological disorders",
+      "Endocrine disorders",
+      "Infectious and oncological care"
+    ]
+  },
+  {
+    "id": "perioperative",
+    "track": "Nursing Core",
+    "title": "Perioperative & Surgical Nursing",
+    "description": "Pre-operative, intra-operative and post-operative care including wound, pain and complication monitoring.",
+    "topics": [
+      "Pre-op assessment",
+      "Surgical safety",
+      "Asepsis",
+      "Anaesthesia basics",
+      "Post-op monitoring",
+      "Wound care",
+      "Pain management"
+    ],
+    "lessons": [
+      "Pre-operative assessment",
+      "Surgical safety and asepsis",
+      "Intra-operative roles",
+      "Post-operative assessment",
+      "Wound care",
+      "Post-operative pain and complications"
+    ]
+  },
+  {
+    "id": "emergency-critical",
+    "track": "Nursing Core",
+    "title": "Emergency, Trauma & Critical Care",
+    "description": "Rapid assessment, prioritisation and supportive nursing management for deteriorating patients.",
+    "topics": [
+      "ABCDE",
+      "Triage",
+      "Shock",
+      "Resuscitation",
+      "Trauma",
+      "Critical care",
+      "Escalation"
+    ],
+    "lessons": [
+      "ABCDE assessment",
+      "Triage and prioritisation",
+      "Shock and emergency response",
+      "Basic resuscitation principles",
+      "Trauma nursing",
+      "Critical care monitoring"
+    ]
+  },
+  {
+    "id": "maternal-antenatal",
+    "track": "Midwifery Core",
+    "title": "Antenatal & Reproductive Health",
+    "description": "Antenatal assessment, maternal wellbeing, screening, counselling and reproductive health across the life course.",
+    "topics": [
+      "Booking visit",
+      "Antenatal assessment",
+      "Screening",
+      "Maternal nutrition",
+      "Family planning",
+      "Reproductive health"
+    ],
+    "lessons": [
+      "Antenatal booking and history",
+      "Physical assessment and danger signs",
+      "Antenatal screening",
+      "Nutrition and supplementation",
+      "Family planning counselling",
+      "Reproductive health"
+    ]
+  },
+  {
+    "id": "midwifery-labour",
+    "track": "Midwifery Core",
+    "title": "Normal Labour & Intrapartum Care",
+    "description": "Physiology of labour, monitoring, supportive care and safe intrapartum practice.",
+    "topics": [
+      "Stages of labour",
+      "Labour monitoring",
+      "Partograph concepts",
+      "Comfort measures",
+      "Fetal assessment",
+      "Birth preparedness"
+    ],
+    "lessons": [
+      "Stages and mechanisms of labour",
+      "Admission assessment",
+      "Labour monitoring",
+      "Maternal and fetal assessment",
+      "Supportive care and pain management",
+      "Normal birth care"
+    ]
+  },
+  {
+    "id": "obstetric-emergencies",
+    "track": "Midwifery Core",
+    "title": "Complicated Pregnancy & Obstetric Emergencies",
+    "description": "Recognition and first-response principles for high-risk pregnancy and obstetric emergencies.",
+    "topics": [
+      "Hypertensive disorders",
+      "APH",
+      "PPH",
+      "Obstructed labour",
+      "Sepsis",
+      "Eclampsia",
+      "Referral"
+    ],
+    "lessons": [
+      "High-risk pregnancy",
+      "Hypertensive emergencies",
+      "Antepartum haemorrhage",
+      "Postpartum haemorrhage",
+      "Sepsis and infection",
+      "Referral and emergency escalation"
+    ]
+  },
+  {
+    "id": "postnatal-newborn",
+    "track": "Midwifery Core",
+    "title": "Postnatal, Newborn & Neonatal Care",
+    "description": "Postpartum maternal assessment, newborn assessment, feeding, danger signs and essential neonatal care.",
+    "topics": [
+      "Postnatal assessment",
+      "Breastfeeding",
+      "Newborn examination",
+      "Thermoregulation",
+      "Jaundice",
+      "Neonatal danger signs"
+    ],
+    "lessons": [
+      "Postnatal assessment",
+      "Breastfeeding support",
+      "Newborn examination",
+      "Thermal care and feeding",
+      "Neonatal danger signs",
+      "Discharge education"
+    ]
+  },
+  {
+    "id": "paediatric",
+    "track": "Nursing Core",
+    "title": "Paediatric & Child Health Nursing",
+    "description": "Growth and development, childhood illness, immunisation, nutrition and family-centred nursing.",
+    "topics": [
+      "Growth and development",
+      "Immunisation",
+      "Paediatric assessment",
+      "Nutrition",
+      "Respiratory illness",
+      "Diarrhoeal disease",
+      "Family-centred care"
+    ],
+    "lessons": [
+      "Growth and developmental assessment",
+      "Integrated child assessment",
+      "Immunisation principles",
+      "Paediatric nutrition",
+      "Common respiratory and GI conditions",
+      "Family education"
+    ]
+  },
+  {
+    "id": "mental-health",
+    "track": "Nursing Core",
+    "title": "Mental Health & Psychiatric Nursing",
+    "description": "Mental-status assessment, therapeutic communication, crisis care, common disorders and recovery-oriented practice.",
+    "topics": [
+      "Mental status exam",
+      "Therapeutic communication",
+      "Psychiatric disorders",
+      "Crisis care",
+      "Psychopharmacology",
+      "Recovery"
+    ],
+    "lessons": [
+      "Mental status examination",
+      "Therapeutic communication",
+      "Common mental-health disorders",
+      "Crisis and risk assessment",
+      "Psychotropic medicine safety",
+      "Recovery-oriented nursing"
+    ]
+  },
+  {
+    "id": "community",
+    "track": "Community & Public Health",
+    "title": "Community & Public Health Nursing",
+    "description": "Population health, primary health care, epidemiology, prevention, environmental health and health education.",
+    "topics": [
+      "Primary health care",
+      "Epidemiology",
+      "Health promotion",
+      "Environmental health",
+      "Community diagnosis",
+      "Disease prevention"
+    ],
+    "lessons": [
+      "Primary health care",
+      "Community assessment",
+      "Basic epidemiology",
+      "Health education",
+      "Environmental health",
+      "Prevention and surveillance"
+    ]
+  },
+  {
+    "id": "gerontology",
+    "track": "Nursing Core",
+    "title": "Gerontological & Palliative Nursing",
+    "description": "Person-centred nursing for ageing, chronic illness, frailty, end-of-life and palliative care.",
+    "topics": [
+      "Ageing",
+      "Frailty",
+      "Polypharmacy",
+      "Falls",
+      "Palliative care",
+      "Pain",
+      "Bereavement"
+    ],
+    "lessons": [
+      "Healthy ageing",
+      "Frailty and falls",
+      "Polypharmacy and medication safety",
+      "Palliative assessment",
+      "Pain and symptom management",
+      "Communication and bereavement"
+    ]
+  },
+  {
+    "id": "research",
+    "track": "Professional Practice",
+    "title": "Research, Evidence-Based Practice & Statistics",
+    "description": "Research design, appraisal, basic statistics, evidence-based practice and academic integrity.",
+    "topics": [
+      "Research questions",
+      "Study designs",
+      "Sampling",
+      "Bias",
+      "Basic statistics",
+      "Evidence appraisal"
+    ],
+    "lessons": [
+      "Formulating clinical questions",
+      "Study designs",
+      "Sampling and data collection",
+      "Bias and confounding",
+      "Descriptive statistics",
+      "Critical appraisal"
+    ]
+  },
+  {
+    "id": "leadership",
+    "track": "Professional Practice",
+    "title": "Leadership, Management, Law, Ethics & Professional Development",
+    "description": "Leadership, delegation, quality improvement, regulation, ethics, professionalism, digital practice and lifelong learning.",
+    "topics": [
+      "Leadership",
+      "Delegation",
+      "Quality improvement",
+      "Professional regulation",
+      "Ethics",
+      "CPD",
+      "Health informatics"
+    ],
+    "lessons": [
+      "Leadership styles",
+      "Delegation and supervision",
+      "Quality improvement",
+      "Professional accountability",
+      "Ethical decision-making",
+      "CPD and lifelong learning",
+      "Digital health and documentation"
+    ]
+  },
+  {
+    "id": "nutrition-science",
+    "track": "Nutrition",
+    "title": "Nutrition Science & Clinical Nutrition",
+    "description": "A complete nutrition course covering nutrients, life-stage nutrition, diet assessment, therapeutic diets, malnutrition, food safety and nutrition counselling for health professionals.",
+    "topics": [
+      "Macronutrients and micronutrients",
+      "Nutrition assessment",
+      "Lifecycle nutrition",
+      "Therapeutic diets",
+      "Malnutrition and obesity",
+      "Nutrition in chronic disease",
+      "Food safety",
+      "Nutrition counselling"
+    ],
+    "lessons": [
+      "Nutrients, energy balance and metabolism",
+      "Nutrition assessment and dietary history",
+      "Infant, child, adolescent and adult nutrition",
+      "Pregnancy, lactation and older-adult nutrition",
+      "Therapeutic diets and hospital nutrition",
+      "Malnutrition, micronutrient deficiencies and obesity",
+      "Nutrition in diabetes, hypertension, kidney and cardiovascular disease",
+      "Food safety, sanitation and nutrition counselling"
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 620">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8f7f5"/><stop offset="1" stop-color="#d9eafe"/></linearGradient></defs>
+  <rect width="520" height="620" rx="48" fill="url(#g)"/>
+  <circle cx="410" cy="110" r="62" fill="#b7e2de" opacity=".6"/>
+  <circle cx="100" cy="500" r="80" fill="#cfe0fb" opacity=".6"/>
+  <path d="M178 204c0-71 37-111 82-111s82 40 82 111v44H178z" fill="#8b604b"/>
+  <circle cx="260" cy="176" r="74" fill="#a56e54"/>
+  <path d="M185 171c7-63 38-95 79-95 36 0 69 21 78 71-21-19-44-29-76-26-26 3-53 17-81 50z" fill="#4c2e2a"/>
+  <circle cx="232" cy="178" r="5" fill="#132b3a"/><circle cx="288" cy="178" r="5" fill="#132b3a"/>
+  <path d="M246 208c9 7 20 7 29 0" fill="none" stroke="#5e3b2e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M132 568c7-142 50-222 128-222s121 80 128 222H132z" fill="#ffffff" stroke="#b9cdd9" stroke-width="3"/>
+  <path d="M215 351l45 61 45-61" fill="#e8f0f5"/>
+  <path d="M260 412v156" stroke="#b9cdd9" stroke-width="3"/>
+  <path d="M247 438h26v26h-26z" fill="#0b8f87"/><path d="M260 425v52M247 451h26" stroke="#fff" stroke-width="7"/>
+  <path d="M150 414c-32 32-43 77-47 139" fill="none" stroke="#a56e54" stroke-width="25" stroke-linecap="round"/>
+  <path d="M370 414c32 32 43 77 47 139" fill="none" stroke="#a56e54" stroke-width="25" stroke-linecap="round"/>
+  <path d="M370 386c-31 10-57 31-74 60" fill="none" stroke="#1f6feb" stroke-width="8"/>
+  <path d="M368 446c25 10 36 29 38 56" fill="none" stroke="#1f6feb" stroke-width="8"/>
+  <text x="34" y="54" font-family="Arial" font-size="18" font-weight="700" fill="#0f3144">NURSE • PROFESSIONAL PRACTICE</text>
+</svg>
