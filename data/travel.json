@@ -24,6 +24,13 @@
         "NHS Jobs",
         "https://www.jobs.nhs.uk/candidate/search"
       ]
+    ],
+    "criteria": [
+      "A recognised nursing or midwifery qualification, verified through the NMC",
+      "English language evidence (e.g. IELTS/OET at the NMC-required level)",
+      "The NMC Test of Competence (CBT and OSCE) if your qualification requires it",
+      "A satisfactory health and character declaration",
+      "A confirmed job offer to apply for the Health and Care Worker visa"
     ]
   },
   {
@@ -46,6 +53,12 @@
         "UK Student visa",
         "https://www.gov.uk/student-visa"
       ]
+    ],
+    "criteria": [
+      "Academic transcripts meeting the programme's published entry requirements",
+      "English language evidence (usually IELTS Academic)",
+      "A personal statement and academic/professional references",
+      "A confirmed offer and CAS to apply for the Student visa"
     ]
   },
   {
@@ -72,6 +85,13 @@
         "Health NZ nursing careers",
         "https://www.healthnz.govt.nz/careers/roles/clinical/nurses"
       ]
+    ],
+    "criteria": [
+      "A qualification assessed as comparable by the Nursing Council of New Zealand (NCNZ)",
+      "English language evidence at the NCNZ-required level",
+      "A Competence Assessment Programme (CAP) if your qualification requires it",
+      "Satisfactory health and character checks",
+      "NCNZ registration before an employer-sponsored work visa"
     ]
   },
   {
@@ -94,6 +114,12 @@
         "Immigration NZ student visa",
         "https://www.immigration.govt.nz/new-zealand-visas/visas/visa/student-visa"
       ]
+    ],
+    "criteria": [
+      "Academic transcripts meeting the institution's entry requirements",
+      "English language evidence (IELTS Academic or equivalent)",
+      "A completed application through the institution's portal",
+      "A confirmed offer to apply for a Student visa"
     ]
   },
   {
@@ -120,6 +146,13 @@
         "Government of Canada immigration",
         "https://www.canada.ca/en/services/immigration-citizenship.html"
       ]
+    ],
+    "criteria": [
+      "An National Nursing Assessment Service (NNAS) application and credential report",
+      "A pass in the relevant provincial licensing exam (commonly NCLEX-RN)",
+      "English or French language evidence depending on the province",
+      "Provincial regulatory body registration before working",
+      "An eligible immigration pathway or employer-sponsored route"
     ]
   },
   {
@@ -142,6 +175,12 @@
         "Canada study permit",
         "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit.html"
       ]
+    ],
+    "criteria": [
+      "Academic transcripts meeting the programme's entry requirements",
+      "English or French language evidence",
+      "A confirmed Letter of Acceptance from a Designated Learning Institution",
+      "A study permit application after acceptance"
     ]
   },
   {
@@ -168,6 +207,13 @@
         "NMBA registration standards",
         "https://www.ahpra.gov.au/Registration/Registration-Standards.aspx"
       ]
+    ],
+    "criteria": [
+      "A qualification assessed by ANMAC as comparable to an Australian standard",
+      "English language evidence (IELTS/OET at the NMBA-required level)",
+      "The NCLEX-RN or an approved bridging program if required",
+      "AHPRA/NMBA registration before working",
+      "An eligible skilled or employer-sponsored visa pathway"
     ]
   },
   {
@@ -190,6 +236,12 @@
         "Australian Student visa",
         "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500"
       ]
+    ],
+    "criteria": [
+      "Academic transcripts meeting the university's entry requirements",
+      "English language evidence (IELTS Academic or equivalent)",
+      "A confirmed offer (CoE) from the institution",
+      "A Student visa (subclass 500) application after acceptance"
     ]
   },
   {
@@ -212,6 +264,13 @@
         "TruMerit",
         "https://www.trumerit.org/"
       ]
+    ],
+    "criteria": [
+      "A CGFNS credential evaluation (and CGFNS Certification for many pathways)",
+      "A pass in the NCLEX-RN examination",
+      "English language evidence where required",
+      "A VisaScreen certificate and state board licensure",
+      "An eligible employer-sponsored visa route (e.g. H-1B or EB-3)"
     ]
   },
   {
@@ -231,9 +290,15 @@
     ],
     "links": [
       [
-        "Study in the USA \u2014 EducationUSA",
+        "Study in the USA — EducationUSA",
         "https://educationusa.state.gov/"
       ]
+    ],
+    "criteria": [
+      "Academic transcripts meeting the programme's entry requirements",
+      "English language evidence (TOEFL/IELTS)",
+      "A confirmed Form I-20 from the institution",
+      "An F-1 Student visa application after acceptance"
     ]
   }
 ]
