@@ -110,7 +110,7 @@ app.post('/api/payments/webhook', express.raw({type:'application/json',limit:'2m
   writeJson('users',users); res.sendStatus(200);
 });
 
-app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'data:'],connectSrc:["'self'","ws:","wss:"],fontSrc:["'self'"],frameAncestors:["'none'"]}}}));
+app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],scriptSrcAttr:["'unsafe-inline'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'data:'],connectSrc:["'self'","ws:","wss:"],fontSrc:["'self'"],frameAncestors:["'none'"]}}}));
 app.use(express.json({limit:'2mb'}));
 app.use(express.urlencoded({extended:true,limit:'2mb'}));
 app.use(rateLimit({windowMs:15*60*1000,limit:400,standardHeaders:'draft-7',legacyHeaders:false}));
