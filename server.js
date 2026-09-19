@@ -66,7 +66,11 @@ function clearCookie(res){ res.setHeader('Set-Cookie','nursinghub=; Max-Age=0; P
 function sessionFor(req){ const token=parseCookies(req).nursinghub; if(!token) return null; return readJson('sessions').find(s=>s.token===token && new Date(s.expiresAt)>new Date()) || null; }
 function createSession(res,userId,role='user'){ const days=Math.max(1,Number(process.env.SESSION_DAYS||7)); const token=crypto.randomBytes(32).toString('hex'); const csrf=crypto.randomBytes(24).toString('hex'); const list=readJson('sessions').filter(s=>new Date(s.expiresAt)>new Date()); list.push({token,csrf,userId,role,createdAt:now(),expiresAt:new Date(Date.now()+days*86400000).toISOString()}); writeJson('sessions',list); setCookie(res,token,days); return csrf; }
 function current(req){ const s=sessionFor(req); if(!s) return {session:null,user:null}; if(s.role==='admin') return {session:s,user:{id:s.userId,name:'Administrator',email:process.env.ADMIN_EMAIL||'admin',role:'admin',profession:'Platform Administration',subscription:{active:true}}}; const users=readJson('users'); const u=users.find(x=>x.id===s.userId); if(u){ensureTrial(u); writeJson('users',users);} return {session:s,user:u||null}; }
-function isVerified(u){ return u?.emailVerified!==false; }
+// Email verification enforcement is temporarily disabled at this single check point (no verified
+// sending domain configured yet). All the verification scaffolding below (token issuance, the
+// verify-email/resend-verification routes, the emailVerified field) is left intact and unused so
+// this can be re-enabled later by reverting this line and the register-route change below it.
+function isVerified(){ return true; }
 function safeUser(u){ if(!u) return null; syncMembership(u); return {id:u.id,name:u.name,email:u.email,role:u.role,profession:u.profession,institution:u.institution||null,studyLevel:u.studyLevel||null,programme:u.programme||null,avatar:u.avatar?`/api/profile/avatar/${encodeURIComponent(u.id)}`:null,subscription:u.subscription,trial:u.trial||null,emailVerified:isVerified(u),createdAt:u.createdAt}; }
 function requireAuth(req,res,next){ const {session,user}=current(req); if(!session||!user)return res.status(401).json({error:'Authentication required.'}); req.session=session; req.user=user; next(); }
 function optionalAuth(req,res,next){ const {session,user}=current(req); if(session&&user){req.session=session;req.user=user;} next(); }
@@ -316,14 +320,13 @@ app.post('/api/auth/register',authLimiter,async(req,res)=>{
   if(role==='student' && !institution)return res.status(400).json({error:'Students must select their university or training institution.'});
   if(role==='student' && (!STUDY_LEVELS.includes(studyLevel)||!PROGRAMMES.includes(programme)))return res.status(400).json({error:'Select a valid study level and programme from the list.'});
   const users=readJson('users'); if(users.some(u=>u.email===email))return res.status(409).json({error:'An account with that email already exists.'});
-  const start=now(); const u={id:uid('usr'),name,email,role,profession,institution:role==='student'?institution:null,studyLevel:role==='student'?studyLevel:null,programme:role==='student'?programme:null,password:hashPassword(password),emailVerified:false,subscription:{active:false,status:'free'},trial:{status:'active',startedAt:start,endsAt:trialEndsAt(start),days:trialDays()},createdAt:start}; users.push(u); writeJson('users',users);
+  // Email verification is temporarily disabled (see isVerified()) since no verified sending
+  // domain is configured yet, so new accounts sign in immediately instead of being sent through
+  // a verification email that cannot yet be delivered. emailVerified is stored true to match.
+  const start=now(); const u={id:uid('usr'),name,email,role,profession,institution:role==='student'?institution:null,studyLevel:role==='student'?studyLevel:null,programme:role==='student'?programme:null,password:hashPassword(password),emailVerified:true,subscription:{active:false,status:'free'},trial:{status:'active',startedAt:start,endsAt:trialEndsAt(start),days:trialDays()},createdAt:start}; users.push(u); writeJson('users',users);
   createNotification(u.id,'welcome','Welcome to the Hub!','Your 7-day Premium trial is active. Open Community to see members you can connect with and start building your study network.','community');
-  const response={ok:true,verificationRequired:true,email:u.email};
-  const mailed=await issueAndSendVerification(u,response);
-  response.message=mailed
-    ?'Account created. Check your email to verify your account before signing in.'
-    :'Your account was created, but we were unable to send the verification email right now. Please try again in a moment.';
-  res.status(201).json(response);
+  const csrf=createSession(res,u.id);
+  res.status(201).json({user:safeUser(u),csrf});
 });
 app.post('/api/auth/verify-email',authLimiter,(req,res)=>{
   const email=emailNorm(req.body.email),token=clean(req.body.token,120);
