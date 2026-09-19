@@ -282,9 +282,13 @@ app.post('/api/news/:id/like',requireAuth,requireCsrf,(req,res)=>{const list=rea
 app.get('/api/news/:id/social',requireAuth,(req,res)=>{const likes=readJson('newsLikes').filter(x=>x.newsId===req.params.id);res.json({liked:likes.some(x=>x.userId===req.user.id),count:likes.length,comments:readJson('newsComments').filter(x=>x.newsId===req.params.id).slice(-100)});});
 
 async function sendVerificationEmail(to,verifyUrl){
-  if(process.env.RESEND_API_KEY&&process.env.RESEND_FROM_EMAIL){
-    try{const r=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${process.env.RESEND_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({from:process.env.RESEND_FROM_EMAIL,to:[to],subject:'Verify your Nurses & Midwives Hub account',html:`<p>Welcome to Nurses & Midwives Hub.</p><p><a href="${escapeHtml(verifyUrl)}">Verify Email</a></p><p>This link expires in 24 hours. If you did not create this account, you can ignore this email.</p>`})});return r.ok;}catch{} }
-  return false;
+  if(!(process.env.RESEND_API_KEY&&process.env.RESEND_FROM_EMAIL)) return {ok:false,reason:'not_configured'};
+  try{
+    const r=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${process.env.RESEND_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({from:process.env.RESEND_FROM_EMAIL,to:[to],subject:'Verify your Nurses & Midwives Hub account',html:`<p>Welcome to Nurses & Midwives Hub.</p><p><a href="${escapeHtml(verifyUrl)}">Verify Email</a></p><p>This link expires in 24 hours. If you did not create this account, you can ignore this email.</p>`})});
+    if(r.ok) return {ok:true};
+    let body=''; try{body=(await r.text()).slice(0,500)}catch{}
+    return {ok:false,reason:'resend_rejected',status:r.status,body};
+  }catch(e){ return {ok:false,reason:'network_error',error:e.message}; }
 }
 function issueVerificationToken(userId){
   const token=crypto.randomBytes(32).toString('hex'); const digest=crypto.createHash('sha256').update(token).digest('hex');
@@ -293,12 +297,18 @@ function issueVerificationToken(userId){
   writeJson('emailVerifications',list.slice(-20000));
   return token;
 }
+// Returns true only if the email was actually handed to the provider (or a dev link is available as a working substitute).
+// The caller MUST NOT claim "verification email sent" to the client when this returns false in production.
 async function issueAndSendVerification(u,response){
   const token=issueVerificationToken(u.id);
   const verifyUrl=`${APP_URL}/?verify=${token}&email=${encodeURIComponent(u.email)}`;
-  const mailed=await sendVerificationEmail(u.email,verifyUrl);
+  const result=await sendVerificationEmail(u.email,verifyUrl);
+  response.emailSent=result.ok;
   if(process.env.NODE_ENV!=='production'){ response.devVerifyUrl=verifyUrl; }
-  else if(!mailed){ console.error(`Verification email failed to send for ${u.email} (RESEND_API_KEY/RESEND_FROM_EMAIL missing or Resend request failed). The verification link was not exposed to the client.`); }
+  if(!result.ok){
+    console.error(`Verification email failed to send for ${u.email}: reason=${result.reason}${result.status?` status=${result.status}`:''}${result.body?` resendResponse=${result.body}`:''}${result.error?` error=${result.error}`:''}. The verification link was not exposed to the client.`);
+  }
+  return process.env.NODE_ENV!=='production' ? true : result.ok;
 }
 app.post('/api/auth/register',authLimiter,async(req,res)=>{
   const name=clean(req.body.name,100), email=emailNorm(req.body.email), password=String(req.body.password||''), role=clean(req.body.role,20), profession=clean(req.body.profession,80), institution=clean(req.body.institution,180), studyLevel=clean(req.body.studyLevel,80), programme=clean(req.body.programme,120);
@@ -308,8 +318,11 @@ app.post('/api/auth/register',authLimiter,async(req,res)=>{
   const users=readJson('users'); if(users.some(u=>u.email===email))return res.status(409).json({error:'An account with that email already exists.'});
   const start=now(); const u={id:uid('usr'),name,email,role,profession,institution:role==='student'?institution:null,studyLevel:role==='student'?studyLevel:null,programme:role==='student'?programme:null,password:hashPassword(password),emailVerified:false,subscription:{active:false,status:'free'},trial:{status:'active',startedAt:start,endsAt:trialEndsAt(start),days:trialDays()},createdAt:start}; users.push(u); writeJson('users',users);
   createNotification(u.id,'welcome','Welcome to the Hub!','Your 7-day Premium trial is active. Open Community to see members you can connect with and start building your study network.','community');
-  const response={ok:true,verificationRequired:true,email:u.email,message:'Account created. Check your email to verify your account before signing in.'};
-  await issueAndSendVerification(u,response);
+  const response={ok:true,verificationRequired:true,email:u.email};
+  const mailed=await issueAndSendVerification(u,response);
+  response.message=mailed
+    ?'Account created. Check your email to verify your account before signing in.'
+    :'Your account was created, but we were unable to send the verification email right now. Please try again in a moment.';
   res.status(201).json(response);
 });
 app.post('/api/auth/verify-email',authLimiter,(req,res)=>{
@@ -325,7 +338,8 @@ app.post('/api/auth/resend-verification',authLimiter,async(req,res)=>{
   const email=emailNorm(req.body.email),users=readJson('users'),u=users.find(x=>x.email===email);
   const response={ok:true,message:'If that account exists and still needs verification, a new verification email has been sent.'};
   if(!u||isVerified(u))return res.json(response);
-  await issueAndSendVerification(u,response);
+  const mailed=await issueAndSendVerification(u,response);
+  if(!mailed)return res.status(503).json({error:'Unable to send the verification email right now. Please try again.'});
   res.json(response);
 });
 app.post('/api/auth/login',authLimiter,(req,res)=>{const email=emailNorm(req.body.email),password=String(req.body.password||''),users=readJson('users'),u=users.find(x=>x.email===email);if(!u||!verifyPassword(password,u.password))return res.status(401).json({error:'Invalid email or password.'});if(!isVerified(u))return res.status(403).json({error:'Please verify your email address before signing in.',needsVerification:true,email:u.email});ensureTrial(u);writeJson('users',users);const csrf=createSession(res,u.id);res.json({user:safeUser(u),csrf});});
