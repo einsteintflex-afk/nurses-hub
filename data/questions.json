@@ -580,6 +580,426 @@
     "explanation": "High-quality documentation should be accurate, timely, relevant and factual and should reflect care actually provided."
   },
   {
+    "id": "q051",
+    "domain": "Midwifery",
+    "difficulty": "Medium",
+    "question": "Immediately after a normal vaginal birth, the midwife's priority assessment is which of the following?",
+    "options": [
+      "Maternal blood pressure only",
+      "Uterine tone and the amount of vaginal bleeding",
+      "Neonatal head circumference",
+      "Maternal pain score"
+    ],
+    "answer": 1,
+    "explanation": "The immediate postpartum priority is checking uterine tone and bleeding to detect postpartum haemorrhage early."
+  },
+  {
+    "id": "q052",
+    "domain": "Anatomy",
+    "difficulty": "Easy",
+    "question": "Which chamber of the heart receives deoxygenated blood from the body via the venae cavae?",
+    "options": [
+      "Left atrium",
+      "Left ventricle",
+      "Right atrium",
+      "Right ventricle"
+    ],
+    "answer": 2,
+    "explanation": "The right atrium receives deoxygenated blood returning from the systemic circulation through the superior and inferior venae cavae."
+  },
+  {
+    "id": "q053",
+    "domain": "Pharmacology",
+    "difficulty": "Medium",
+    "question": "A patient on warfarin reports new bruising and gum bleeding. Which action is the priority?",
+    "options": [
+      "Reassure the patient and continue the current dose",
+      "Withhold the dose and notify the prescriber for an INR check",
+      "Double the next dose to compensate",
+      "Advise the patient to stop eating green vegetables entirely"
+    ],
+    "answer": 1,
+    "explanation": "New bleeding signs in a patient on warfarin suggest possible over-anticoagulation; the dose should be withheld and an INR checked before continuing therapy."
+  },
+  {
+    "id": "q054",
+    "domain": "Medical-Surgical",
+    "difficulty": "Medium",
+    "question": "Which finding in a patient 6 hours after abdominal surgery requires the most urgent escalation?",
+    "options": [
+      "Mild incisional pain relieved by prescribed analgesia",
+      "Rigid, silent abdomen with rising heart rate and falling blood pressure",
+      "Slight nausea after the first oral fluids",
+      "Low-grade drowsiness from the anaesthetic wearing off"
+    ],
+    "answer": 1,
+    "explanation": "A rigid, silent abdomen with tachycardia and hypotension suggests internal bleeding or peritonitis and needs immediate escalation."
+  },
+  {
+    "id": "q055",
+    "domain": "Mental Health",
+    "difficulty": "Medium",
+    "question": "A client describes a persistent, intense fear of a specific situation that is out of proportion to the actual danger. This best describes which condition?",
+    "options": [
+      "Generalized anxiety disorder",
+      "Specific phobia",
+      "Somatic symptom disorder",
+      "Bipolar disorder"
+    ],
+    "answer": 1,
+    "explanation": "A specific phobia is marked disproportionate fear and avoidance triggered by a particular object or situation."
+  },
+  {
+    "id": "q056",
+    "domain": "Community",
+    "difficulty": "Easy",
+    "question": "Which activity is an example of primary prevention in community health nursing?",
+    "options": [
+      "Childhood immunization outreach",
+      "Screening for hypertension in adults over 40",
+      "Rehabilitation after a stroke",
+      "Managing a diabetic foot ulcer"
+    ],
+    "answer": 0,
+    "explanation": "Primary prevention aims to stop disease before it occurs; immunization is a classic example."
+  },
+  {
+    "id": "q057",
+    "domain": "Nutrition",
+    "difficulty": "Easy",
+    "question": "Which micronutrient deficiency is most directly associated with neural tube defects when lacking in early pregnancy?",
+    "options": [
+      "Vitamin C",
+      "Folate (folic acid)",
+      "Vitamin D",
+      "Iron"
+    ],
+    "answer": 1,
+    "explanation": "Adequate folate intake before and during early pregnancy substantially reduces the risk of neural tube defects."
+  },
+  {
+    "id": "q058",
+    "domain": "Paediatrics",
+    "difficulty": "Medium",
+    "question": "A 2-year-old presents with a barking cough, hoarseness and inspiratory stridor that worsens at night. Which condition is most likely?",
+    "options": [
+      "Croup (laryngotracheobronchitis)",
+      "Bronchiolitis",
+      "Asthma exacerbation",
+      "Foreign body aspiration"
+    ],
+    "answer": 0,
+    "explanation": "A barking cough with inspiratory stridor and hoarseness in a toddler, often worse at night, is classic for croup."
+  },
+  {
+    "id": "q059",
+    "domain": "Leadership",
+    "difficulty": "Medium",
+    "question": "A newly qualified nurse is unsure how to safely perform a procedure. What is the most appropriate professional action?",
+    "options": [
+      "Attempt the procedure and learn by trial and error",
+      "Ask a colleague to do it without telling the supervisor",
+      "Seek supervision or further training before performing the procedure independently",
+      "Avoid the task permanently"
+    ],
+    "answer": 2,
+    "explanation": "Professional accountability requires practising within one's competence and seeking supervision or training when unsure, to keep patients safe."
+  },
+  {
+    "id": "q060",
+    "domain": "Infection Prevention",
+    "difficulty": "Easy",
+    "question": "What is the single most effective routine measure to prevent the spread of healthcare-associated infections?",
+    "options": [
+      "Wearing a mask at all times",
+      "Hand hygiene at the correct moments of care",
+      "Isolating every patient regardless of diagnosis",
+      "Using antibiotics prophylactically for all admissions"
+    ],
+    "answer": 1,
+    "explanation": "Hand hygiene performed at the correct moments remains the single most effective, evidence-based infection prevention measure."
+  },
+  {
+    "id": "q061",
+    "domain": "Emergency",
+    "difficulty": "Hard",
+    "question": "A trauma patient has a systolic blood pressure of 82 mmHg, heart rate of 132 bpm, and cool, clammy skin after a road traffic accident. Which shock classification is most consistent with this presentation?",
+    "options": [
+      "Class I haemorrhagic shock",
+      "Class II haemorrhagic shock",
+      "Class III haemorrhagic shock",
+      "Cardiogenic shock"
+    ],
+    "answer": 2,
+    "explanation": "Marked tachycardia, hypotension and cool clammy skin after trauma are consistent with Class III haemorrhagic shock (approximately 30-40% blood volume loss)."
+  },
+  {
+    "id": "q062",
+    "domain": "Postnatal",
+    "difficulty": "Medium",
+    "question": "A postnatal woman on day 3 reports a firm, red, tender area on one breast with a fever of 38.5°C. What is the most likely cause?",
+    "options": [
+      "Normal breast engorgement",
+      "Mastitis",
+      "Blocked milk duct only, no infection",
+      "Breast abscess requiring surgery immediately"
+    ],
+    "answer": 1,
+    "explanation": "Localized redness, tenderness and fever in a breastfeeding woman are characteristic features of mastitis."
+  },
+  {
+    "id": "q063",
+    "domain": "Newborn Care",
+    "difficulty": "Medium",
+    "question": "A newborn's Apgar score at 1 minute is 9 (losing 1 point for colour). What does this indicate?",
+    "options": [
+      "Severe distress requiring immediate resuscitation",
+      "Good condition at birth with minor colour concern to monitor",
+      "The baby has failed the assessment and cannot be discharged",
+      "A definite congenital heart defect"
+    ],
+    "answer": 1,
+    "explanation": "An Apgar score of 9 indicates a newborn in good overall condition; ongoing routine observation is appropriate."
+  },
+  {
+    "id": "q064",
+    "domain": "Public Health",
+    "difficulty": "Easy",
+    "question": "Which of the following best describes the purpose of epidemiological surveillance?",
+    "options": [
+      "Treating individual patients in a clinic",
+      "Systematically collecting and analysing health data to detect and respond to disease patterns",
+      "Performing surgery on high-risk patients",
+      "Prescribing medication to a community at random"
+    ],
+    "answer": 1,
+    "explanation": "Surveillance is the ongoing, systematic collection and analysis of data to guide public health action."
+  },
+  {
+    "id": "q065",
+    "domain": "Geriatrics",
+    "difficulty": "Medium",
+    "question": "An older adult on multiple medications develops sudden confusion over several hours. What should the nurse suspect first?",
+    "options": [
+      "Normal ageing",
+      "Delirium, and investigate for a reversible underlying cause",
+      "Dementia progression",
+      "Depression"
+    ],
+    "answer": 1,
+    "explanation": "Sudden-onset confusion over hours suggests delirium, which is often reversible and requires urgent investigation for cause (infection, medication, metabolic disturbance)."
+  },
+  {
+    "id": "q066",
+    "domain": "Palliative Care",
+    "difficulty": "Medium",
+    "question": "A palliative care patient reports persistent pain despite regular paracetamol and a weak opioid. According to the WHO analgesic ladder, what is the appropriate next step?",
+    "options": [
+      "Stop all analgesia and reassess in a week",
+      "Move to a strong opioid with regular review",
+      "Add another dose of the same weak opioid only",
+      "Refer only for physiotherapy"
+    ],
+    "answer": 1,
+    "explanation": "The WHO analgesic ladder recommends stepping up to a strong opioid when pain persists despite optimised weak-opioid and non-opioid therapy."
+  },
+  {
+    "id": "q067",
+    "domain": "Maternal",
+    "difficulty": "Hard",
+    "question": "A pregnant woman at 32 weeks presents with a blood pressure of 168/112 mmHg, severe headache and visual disturbance. What is the priority nursing action?",
+    "options": [
+      "Reassure her that headaches are common in pregnancy",
+      "Urgently escalate for assessment of pre-eclampsia/eclampsia risk and continuous monitoring",
+      "Advise bed rest at home and review in two weeks",
+      "Give a routine antenatal vitamin and discharge"
+    ],
+    "answer": 1,
+    "explanation": "Severe hypertension with headache and visual disturbance in pregnancy are warning signs of severe pre-eclampsia and need urgent escalation."
+  },
+  {
+    "id": "q068",
+    "domain": "Professional Practice",
+    "difficulty": "Medium",
+    "question": "A nurse witnesses a colleague making a medication error that reaches the patient without harm. What is the correct professional response?",
+    "options": [
+      "Say nothing to avoid conflict",
+      "Report and document the incident through the correct clinical governance process",
+      "Confront the colleague publicly on the ward",
+      "Correct the record without telling anyone"
+    ],
+    "answer": 1,
+    "explanation": "Patient safety and professional accountability require open, honest reporting of incidents through the proper clinical governance/incident-reporting process."
+  },
+  {
+    "id": "q069",
+    "domain": "Medication Safety",
+    "difficulty": "Medium",
+    "question": "Before administering an intravenous medication, which of the 'rights' of medication administration specifically confirms the medication is being given via the correct method?",
+    "options": [
+      "Right patient",
+      "Right route",
+      "Right time",
+      "Right documentation"
+    ],
+    "answer": 1,
+    "explanation": "The 'right route' check confirms the medication is administered by the correct method (e.g. IV, oral, IM) as prescribed."
+  },
+  {
+    "id": "q070",
+    "domain": "Research",
+    "difficulty": "Easy",
+    "question": "In evidence-based practice, what does a systematic review with meta-analysis generally represent on the hierarchy of evidence?",
+    "options": [
+      "The weakest form of evidence",
+      "Among the strongest forms of evidence",
+      "Equivalent to a single expert opinion",
+      "Not usable in clinical decision-making"
+    ],
+    "answer": 1,
+    "explanation": "Systematic reviews and meta-analyses of high-quality studies sit near the top of the evidence hierarchy, above individual studies and expert opinion."
+  },
+  {
+    "id": "q071",
+    "domain": "Foundations",
+    "difficulty": "Easy",
+    "question": "Which vital sign combination is most consistent with early compensated shock?",
+    "options": [
+      "Slow heart rate, high blood pressure",
+      "Rapid heart rate, normal or slightly low blood pressure",
+      "Normal heart rate, very high blood pressure",
+      "Slow heart rate, very low blood pressure"
+    ],
+    "answer": 1,
+    "explanation": "In early compensated shock, the heart rate rises to maintain perfusion before blood pressure noticeably falls."
+  },
+  {
+    "id": "q072",
+    "domain": "Midwifery",
+    "difficulty": "Medium",
+    "question": "During the second stage of labour, sustained fetal heart rate deceleration below 100 bpm should prompt which action first?",
+    "options": [
+      "Continue routine observation",
+      "Reposition the mother, stop any oxytocin, and escalate urgently",
+      "Document only and reassess in 30 minutes",
+      "Encourage the mother to push harder"
+    ],
+    "answer": 1,
+    "explanation": "A sustained fetal bradycardia is an obstetric emergency requiring immediate repositioning, stopping oxytocin if running, and urgent escalation."
+  },
+  {
+    "id": "q073",
+    "domain": "Pharmacology",
+    "difficulty": "Easy",
+    "question": "Which route of administration has the fastest onset of drug action in an emergency?",
+    "options": [
+      "Oral",
+      "Intramuscular",
+      "Intravenous",
+      "Subcutaneous"
+    ],
+    "answer": 2,
+    "explanation": "The intravenous route delivers medication directly into the bloodstream, giving the fastest onset of action."
+  },
+  {
+    "id": "q074",
+    "domain": "Medical-Surgical",
+    "difficulty": "Medium",
+    "question": "A patient with a chest tube shows continuous bubbling in the water-seal chamber. What does this most likely indicate?",
+    "options": [
+      "Normal, expected finding",
+      "An air leak in the drainage system or the patient's pleural space",
+      "The tube should be clamped immediately",
+      "The patient needs more sedation"
+    ],
+    "answer": 1,
+    "explanation": "Continuous bubbling in the water-seal chamber suggests an air leak, which needs to be located and addressed."
+  },
+  {
+    "id": "q075",
+    "domain": "Mental Health",
+    "difficulty": "Medium",
+    "question": "A client on lithium reports nausea, tremor, and confusion. What should the nurse suspect?",
+    "options": [
+      "Normal side effects requiring no action",
+      "Possible lithium toxicity, requiring urgent level check",
+      "Unrelated seasonal illness",
+      "The dose should be doubled to work better"
+    ],
+    "answer": 1,
+    "explanation": "Nausea, tremor and confusion can signal lithium toxicity; a serum lithium level should be checked urgently."
+  },
+  {
+    "id": "q076",
+    "domain": "Community Health",
+    "difficulty": "Easy",
+    "question": "Which of the following best defines 'herd immunity'?",
+    "options": [
+      "Only animals can be immune to disease",
+      "When enough of a population is immune, disease spread is reduced, protecting those who are not immune",
+      "A type of individual immune response",
+      "Immunity gained only from natural infection"
+    ],
+    "answer": 1,
+    "explanation": "Herd immunity occurs when a sufficient proportion of a population is immune, reducing overall disease transmission and indirectly protecting unimmunised individuals."
+  },
+  {
+    "id": "q077",
+    "domain": "Paediatrics",
+    "difficulty": "Medium",
+    "question": "A 6-month-old is brought in with a fever of 39.5°C, poor feeding and a bulging fontanelle. Which condition must be urgently excluded?",
+    "options": [
+      "Teething",
+      "Meningitis",
+      "Mild viral cold",
+      "Nappy rash"
+    ],
+    "answer": 1,
+    "explanation": "Fever with a bulging fontanelle and poor feeding in an infant are red-flag signs of meningitis requiring urgent assessment."
+  },
+  {
+    "id": "q078",
+    "domain": "Nutrition",
+    "difficulty": "Medium",
+    "question": "A patient with chronic kidney disease is generally advised to limit which nutrient to reduce strain on the kidneys?",
+    "options": [
+      "Dietary fibre",
+      "Protein, as advised by the care team",
+      "Vitamin C in normal amounts",
+      "Water-soluble vitamins entirely"
+    ],
+    "answer": 1,
+    "explanation": "Protein intake is often carefully controlled in chronic kidney disease to reduce the metabolic waste load on the kidneys, guided by the care team."
+  },
+  {
+    "id": "q079",
+    "domain": "Infection Prevention",
+    "difficulty": "Medium",
+    "question": "A patient is suspected to have an airborne infection such as pulmonary tuberculosis. Which precaution is most appropriate?",
+    "options": [
+      "Standard precautions only",
+      "Droplet precautions only",
+      "Airborne precautions, including a negative-pressure room and N95-type respirator",
+      "No special precautions are needed"
+    ],
+    "answer": 2,
+    "explanation": "Suspected airborne infections such as pulmonary TB require airborne precautions: a negative-pressure isolation room and fit-tested respirator protection."
+  },
+  {
+    "id": "q080",
+    "domain": "Professional Practice",
+    "difficulty": "Easy",
+    "question": "What is the primary purpose of obtaining informed consent before a procedure?",
+    "options": [
+      "To protect the institution from all liability",
+      "To ensure the patient understands and voluntarily agrees to the procedure, its risks and alternatives",
+      "It is only a legal formality with no clinical value",
+      "To speed up the admission process"
+    ],
+    "answer": 1,
+    "explanation": "Informed consent ensures the patient understands the procedure, its risks, benefits and alternatives, and agrees voluntarily — it is an ethical and legal safeguard of patient autonomy."
+  },
+  {
     "id": "q041",
     "type": "theory",
     "domain": "Foundations",
