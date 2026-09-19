@@ -124,9 +124,9 @@ Without an API key, the Hub uses a safe fallback tutor/tutorial/lesson-notes res
 
 Never place the AI API key in browser JavaScript.
 
-## Email / password reset
+## Email verification / password reset
 
-Password reset works locally with a development reset URL.
+New accounts are created unverified and must verify their email before signing in. Verification and password-reset links both work locally with a development link shown directly in the UI.
 
 For production, configure:
 ```env
@@ -134,7 +134,7 @@ RESEND_API_KEY=...
 RESEND_FROM_EMAIL=Hub <no-reply@yourdomain.example>
 ```
 
-Use a production email provider, verified domain, abuse controls and rate limits.
+Use a production email provider, verified domain, abuse controls and rate limits. Without these set, verification and reset emails are not delivered in production, and the raw link is never exposed in the API response, browser console, or logs — only a server-side warning is logged. Accounts that existed before email verification was introduced are treated as already verified; they were not retroactively locked out.
 
 ## Run locally
 

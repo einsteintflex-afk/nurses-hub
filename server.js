@@ -27,7 +27,7 @@ const STORE = {
   users:'users.json', sessions:'sessions.json', progress:'progress.json',
   payments:'payments.json', paymentEvents:'payment-events.json', enquiries:'enquiries.json',
   submissions:'submissions.json',
-  passwordResets:'password-resets.json', messages:'messages.json', reports:'message-reports.json',
+  passwordResets:'password-resets.json', emailVerifications:'email-verifications.json', messages:'messages.json', reports:'message-reports.json',
   applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json', reels:'reels.json'
 };
 const CONTENT = { syllabus:'syllabus.json', questions:'questions.json', travel:'travel.json', resources:'resources.json', jobs:'jobs.json', news:'news.json', institutions:'institutions.json', studyOptions:'study-options.json', testimonials:'testimonials.json' };
@@ -66,7 +66,8 @@ function clearCookie(res){ res.setHeader('Set-Cookie','nursinghub=; Max-Age=0; P
 function sessionFor(req){ const token=parseCookies(req).nursinghub; if(!token) return null; return readJson('sessions').find(s=>s.token===token && new Date(s.expiresAt)>new Date()) || null; }
 function createSession(res,userId,role='user'){ const days=Math.max(1,Number(process.env.SESSION_DAYS||7)); const token=crypto.randomBytes(32).toString('hex'); const csrf=crypto.randomBytes(24).toString('hex'); const list=readJson('sessions').filter(s=>new Date(s.expiresAt)>new Date()); list.push({token,csrf,userId,role,createdAt:now(),expiresAt:new Date(Date.now()+days*86400000).toISOString()}); writeJson('sessions',list); setCookie(res,token,days); return csrf; }
 function current(req){ const s=sessionFor(req); if(!s) return {session:null,user:null}; if(s.role==='admin') return {session:s,user:{id:s.userId,name:'Administrator',email:process.env.ADMIN_EMAIL||'admin',role:'admin',profession:'Platform Administration',subscription:{active:true}}}; const users=readJson('users'); const u=users.find(x=>x.id===s.userId); if(u){ensureTrial(u); writeJson('users',users);} return {session:s,user:u||null}; }
-function safeUser(u){ if(!u) return null; syncMembership(u); return {id:u.id,name:u.name,email:u.email,role:u.role,profession:u.profession,institution:u.institution||null,studyLevel:u.studyLevel||null,programme:u.programme||null,avatar:u.avatar?`/api/profile/avatar/${encodeURIComponent(u.id)}`:null,subscription:u.subscription,trial:u.trial||null,createdAt:u.createdAt}; }
+function isVerified(u){ return u?.emailVerified!==false; }
+function safeUser(u){ if(!u) return null; syncMembership(u); return {id:u.id,name:u.name,email:u.email,role:u.role,profession:u.profession,institution:u.institution||null,studyLevel:u.studyLevel||null,programme:u.programme||null,avatar:u.avatar?`/api/profile/avatar/${encodeURIComponent(u.id)}`:null,subscription:u.subscription,trial:u.trial||null,emailVerified:isVerified(u),createdAt:u.createdAt}; }
 function requireAuth(req,res,next){ const {session,user}=current(req); if(!session||!user)return res.status(401).json({error:'Authentication required.'}); req.session=session; req.user=user; next(); }
 function optionalAuth(req,res,next){ const {session,user}=current(req); if(session&&user){req.session=session;req.user=user;} next(); }
 function requireCsrf(req,res,next){ if(!req.session) return next(); if(req.headers['x-csrf-token']!==req.session.csrf)return res.status(403).json({error:'Security token expired. Refresh the page and try again.'}); next(); }
@@ -280,17 +281,54 @@ app.post('/api/news/:id/comments',requireAuth,requireCsrf,(req,res)=>{const text
 app.post('/api/news/:id/like',requireAuth,requireCsrf,(req,res)=>{const list=readJson('newsLikes');const existing=list.find(x=>x.newsId===req.params.id&&x.userId===req.user.id);if(existing){const next=list.filter(x=>x!==existing);writeJson('newsLikes',next);return res.json({liked:false,count:next.filter(x=>x.newsId===req.params.id).length});}list.push({id:uid('nlike'),newsId:req.params.id,userId:req.user.id,createdAt:now()});writeJson('newsLikes',list);res.json({liked:true,count:list.filter(x=>x.newsId===req.params.id).length});});
 app.get('/api/news/:id/social',requireAuth,(req,res)=>{const likes=readJson('newsLikes').filter(x=>x.newsId===req.params.id);res.json({liked:likes.some(x=>x.userId===req.user.id),count:likes.length,comments:readJson('newsComments').filter(x=>x.newsId===req.params.id).slice(-100)});});
 
-app.post('/api/auth/register',authLimiter,(req,res)=>{
+async function sendVerificationEmail(to,verifyUrl){
+  if(process.env.RESEND_API_KEY&&process.env.RESEND_FROM_EMAIL){
+    try{const r=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${process.env.RESEND_API_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({from:process.env.RESEND_FROM_EMAIL,to:[to],subject:'Verify your Nurses & Midwives Hub account',html:`<p>Welcome to Nurses & Midwives Hub.</p><p><a href="${escapeHtml(verifyUrl)}">Verify Email</a></p><p>This link expires in 24 hours. If you did not create this account, you can ignore this email.</p>`})});return r.ok;}catch{} }
+  return false;
+}
+function issueVerificationToken(userId){
+  const token=crypto.randomBytes(32).toString('hex'); const digest=crypto.createHash('sha256').update(token).digest('hex');
+  const list=readJson('emailVerifications').filter(x=>new Date(x.expiresAt)>new Date() && !x.used);
+  list.push({id:uid('evf'),userId,digest,expiresAt:new Date(Date.now()+24*3600000).toISOString(),used:false,createdAt:now()});
+  writeJson('emailVerifications',list.slice(-20000));
+  return token;
+}
+async function issueAndSendVerification(u,response){
+  const token=issueVerificationToken(u.id);
+  const verifyUrl=`${APP_URL}/?verify=${token}&email=${encodeURIComponent(u.email)}`;
+  const mailed=await sendVerificationEmail(u.email,verifyUrl);
+  if(process.env.NODE_ENV!=='production'){ response.devVerifyUrl=verifyUrl; }
+  else if(!mailed){ console.error(`Verification email failed to send for ${u.email} (RESEND_API_KEY/RESEND_FROM_EMAIL missing or Resend request failed). The verification link was not exposed to the client.`); }
+}
+app.post('/api/auth/register',authLimiter,async(req,res)=>{
   const name=clean(req.body.name,100), email=emailNorm(req.body.email), password=String(req.body.password||''), role=clean(req.body.role,20), profession=clean(req.body.profession,80), institution=clean(req.body.institution,180), studyLevel=clean(req.body.studyLevel,80), programme=clean(req.body.programme,120);
   if(name.length<2||!email.includes('@')||password.length<8||!['student','graduate'].includes(role)||!profession)return res.status(400).json({error:'Provide a valid name, email, 8+ character password, profile type and profession.'});
   if(role==='student' && !institution)return res.status(400).json({error:'Students must select their university or training institution.'});
   if(role==='student' && (!STUDY_LEVELS.includes(studyLevel)||!PROGRAMMES.includes(programme)))return res.status(400).json({error:'Select a valid study level and programme from the list.'});
   const users=readJson('users'); if(users.some(u=>u.email===email))return res.status(409).json({error:'An account with that email already exists.'});
-  const start=now(); const u={id:uid('usr'),name,email,role,profession,institution:role==='student'?institution:null,studyLevel:role==='student'?studyLevel:null,programme:role==='student'?programme:null,password:hashPassword(password),subscription:{active:false,status:'free'},trial:{status:'active',startedAt:start,endsAt:trialEndsAt(start),days:trialDays()},createdAt:start}; users.push(u); writeJson('users',users);
+  const start=now(); const u={id:uid('usr'),name,email,role,profession,institution:role==='student'?institution:null,studyLevel:role==='student'?studyLevel:null,programme:role==='student'?programme:null,password:hashPassword(password),emailVerified:false,subscription:{active:false,status:'free'},trial:{status:'active',startedAt:start,endsAt:trialEndsAt(start),days:trialDays()},createdAt:start}; users.push(u); writeJson('users',users);
   createNotification(u.id,'welcome','Welcome to the Hub!','Your 7-day Premium trial is active. Open Community to see members you can connect with and start building your study network.','community');
-  const csrf=createSession(res,u.id); res.status(201).json({user:safeUser(u),csrf});
+  const response={ok:true,verificationRequired:true,email:u.email,message:'Account created. Check your email to verify your account before signing in.'};
+  await issueAndSendVerification(u,response);
+  res.status(201).json(response);
 });
-app.post('/api/auth/login',authLimiter,(req,res)=>{const email=emailNorm(req.body.email),password=String(req.body.password||''),users=readJson('users'),u=users.find(x=>x.email===email);if(!u||!verifyPassword(password,u.password))return res.status(401).json({error:'Invalid email or password.'});ensureTrial(u);writeJson('users',users);const csrf=createSession(res,u.id);res.json({user:safeUser(u),csrf});});
+app.post('/api/auth/verify-email',authLimiter,(req,res)=>{
+  const email=emailNorm(req.body.email),token=clean(req.body.token,120);
+  if(!email||!token)return res.status(400).json({error:'A valid verification link is required.'});
+  const users=readJson('users'),u=users.find(x=>x.email===email); const digest=crypto.createHash('sha256').update(token).digest('hex');
+  const list=readJson('emailVerifications'),item=list.find(x=>x.digest===digest&&!x.used&&new Date(x.expiresAt)>new Date()&&x.userId===u?.id);
+  if(!u||!item)return res.status(400).json({error:'That verification link is invalid or has expired.'});
+  u.emailVerified=true; item.used=true; writeJson('users',users); writeJson('emailVerifications',list);
+  res.json({ok:true,message:'Email verified. You can now sign in.'});
+});
+app.post('/api/auth/resend-verification',authLimiter,async(req,res)=>{
+  const email=emailNorm(req.body.email),users=readJson('users'),u=users.find(x=>x.email===email);
+  const response={ok:true,message:'If that account exists and still needs verification, a new verification email has been sent.'};
+  if(!u||isVerified(u))return res.json(response);
+  await issueAndSendVerification(u,response);
+  res.json(response);
+});
+app.post('/api/auth/login',authLimiter,(req,res)=>{const email=emailNorm(req.body.email),password=String(req.body.password||''),users=readJson('users'),u=users.find(x=>x.email===email);if(!u||!verifyPassword(password,u.password))return res.status(401).json({error:'Invalid email or password.'});if(!isVerified(u))return res.status(403).json({error:'Please verify your email address before signing in.',needsVerification:true,email:u.email});ensureTrial(u);writeJson('users',users);const csrf=createSession(res,u.id);res.json({user:safeUser(u),csrf});});
 app.post('/api/auth/admin-login',authLimiter,(req,res)=>{const email=emailNorm(req.body.email),password=String(req.body.password||''),configured=String(process.env.ADMIN_PASSWORD||'');if(configured==='change-this-immediately')return res.status(503).json({error:'Administrator login is disabled until ADMIN_PASSWORD is changed in .env.'});if(!emailNorm(process.env.ADMIN_EMAIL)||email!==emailNorm(process.env.ADMIN_EMAIL)||password!==configured)return res.status(401).json({error:'Invalid administrator credentials.'});const csrf=createSession(res,`admin:${email}`,'admin');res.json({admin:true,csrf});});
 
 async function sendResetEmail(to,resetUrl){
