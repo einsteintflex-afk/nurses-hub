@@ -7,7 +7,7 @@
     "source": "Nurses & Midwives Hub",
     "sourceUrl": "https://www.jobs.nhs.uk/candidate/search/results",
     "summary": "A Hub-authored roundup of the official job boards Ghanaian nurses and midwives can use directly to find verified, current vacancies in the UK, Germany, Canada and Australia — and how to avoid recruitment scams.",
-    "image": "/assets/dashboard-community.png",
+    "image": "/assets/study-global.png",
     "locked": true,
     "lastVerified": "2026-09-15",
     "body": [
@@ -45,7 +45,7 @@
       "Ghana",
       "work abroad"
     ],
-    "image": "/assets/study-global.png",
+    "image": "/assets/hero-professionals.png",
     "locked": true
   },
   {
@@ -68,7 +68,7 @@
       "migration",
       "Ghana"
     ],
-    "image": "/assets/dashboard.svg",
+    "image": "/assets/study-campus.png",
     "locked": false
   },
   {
@@ -114,7 +114,7 @@
       "Ghana",
       "government"
     ],
-    "image": "/assets/study-global.png",
+    "image": "/assets/study-team.png",
     "locked": true
   },
   {
@@ -137,7 +137,7 @@
       "Ghana",
       "bilateral agreement"
     ],
-    "image": "/assets/study-global.png",
+    "image": "/assets/hero-learning.png",
     "locked": true
   },
   {
@@ -160,7 +160,7 @@
       "workforce",
       "migration"
     ],
-    "image": "/assets/hero-professionals.png",
+    "image": "/assets/study-clinical.png",
     "locked": true
   },
   {
@@ -206,7 +206,7 @@
       "Ghana",
       "health system"
     ],
-    "image": "/assets/study-ghana.png",
+    "image": "/assets/study-clinical.png",
     "locked": false
   }
 ]
