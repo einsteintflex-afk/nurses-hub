@@ -110,6 +110,9 @@ Premium/trial members can use:
 
 For real scale, the WebSocket and persistence layer should move to managed infrastructure.
 
+### Reels
+Every account holder (Premium or not) can browse and post photo/audio/video reels. Administrators can also curate a video pool in the admin panel (Reels → Auto-post video pool): upload real MP4/WEBM files there and the Hub automatically posts the next one from the pool to the public feed on a rotation, once every `REEL_AUTO_POST_HOURS` (default 2). This posts video files an administrator supplies — it does not generate video content.
+
 ## AI configuration
 
 AI is optional in local development. The Hub calls Claude (Anthropic) via the official `@anthropic-ai/sdk`.

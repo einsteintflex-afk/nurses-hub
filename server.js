@@ -28,7 +28,7 @@ const STORE = {
   payments:'payments.json', paymentEvents:'payment-events.json', enquiries:'enquiries.json',
   submissions:'submissions.json',
   passwordResets:'password-resets.json', emailVerifications:'email-verifications.json', messages:'messages.json', reports:'message-reports.json',
-  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json', reels:'reels.json'
+  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json', reels:'reels.json', reelVideoPool:'reel-video-pool.json'
 };
 const CONTENT = { syllabus:'syllabus.json', questions:'questions.json', travel:'travel.json', resources:'resources.json', jobs:'jobs.json', news:'news.json', institutions:'institutions.json', studyOptions:'study-options.json', testimonials:'testimonials.json' };
 for (const f of [...Object.values(STORE), ...Object.values(CONTENT)]) {
@@ -271,6 +271,39 @@ app.get('/api/reels/media/:id',requireAuth,(req,res)=>{
   const safe=path.basename(r.media.path); if(!/^[A-Za-z0-9._-]+$/.test(safe))return res.sendStatus(404);
   res.sendFile(path.join(UPLOADS,safe));
 });
+
+// Admin-curated video pool: an admin uploads real video files here, and autoPostPoolReel()
+// (scheduled below) automatically posts one to the public Reels feed on a fixed interval.
+// This posts admin-supplied video files on a timer — it does not generate any video content.
+app.get('/api/admin/reel-pool',requireAuth,requireAdmin,(req,res)=>res.json(readJson('reelVideoPool')));
+app.post('/api/admin/reel-pool',requireAuth,requireAdmin,requireCsrf,mediaUpload.single('media'),(req,res)=>{
+  try{
+    if(!req.file)return res.status(400).json({error:'Add a video file to add it to the auto-post pool.'});
+    if(!req.file.mimetype.startsWith('video')){ try{fs.unlinkSync(req.file.path)}catch{}; return res.status(400).json({error:'Only MP4 or WEBM video files can be added to the reel pool.'}); }
+    const item={id:uid('rpv'),caption:clean(req.body.caption,300),media:{path:path.basename(req.file.path),mime:req.file.mimetype},addedAt:now()};
+    const list=readJson('reelVideoPool');list.push(item);writeJson('reelVideoPool',list.slice(-500));
+    res.status(201).json(item);
+  }catch(e){if(req.file)try{fs.unlinkSync(req.file.path)}catch{};res.status(400).json({error:e.message||'Upload failed.'});}
+});
+app.delete('/api/admin/reel-pool/:id',requireAuth,requireAdmin,requireCsrf,(req,res)=>{
+  const list=readJson('reelVideoPool'); if(!list.some(x=>x.id===req.params.id))return res.status(404).json({error:'Not found.'});
+  writeJson('reelVideoPool',list.filter(x=>x.id!==req.params.id));
+  res.json({ok:true});
+});
+app.get('/api/admin/reel-pool/:id/media',requireAuth,requireAdmin,(req,res)=>{
+  const item=readJson('reelVideoPool').find(x=>x.id===req.params.id); if(!item?.media)return res.sendStatus(404);
+  const safe=path.basename(item.media.path); if(!/^[A-Za-z0-9._-]+$/.test(safe))return res.sendStatus(404);
+  res.sendFile(path.join(UPLOADS,safe));
+});
+let reelPoolCursor=0;
+async function autoPostPoolReel(){
+  const pool=readJson('reelVideoPool'); if(!pool.length)return;
+  const item=pool[reelPoolCursor%pool.length]; reelPoolCursor++;
+  const reels=readJson('reels');
+  reels.push({id:uid('reel'),userId:null,author:'Hub Team',caption:item.caption||'A quick moment from the Hub.',mediaType:'video',media:{path:item.media.path,mime:item.media.mime},likes:[],createdAt:now()});
+  writeJson('reels',reels.slice(-5000));
+}
+setInterval(()=>autoPostPoolReel().catch(e=>console.error('Reel auto-post failed:',e.message)), Number(process.env.REEL_AUTO_POST_HOURS||2)*3600000);
 
 app.get('/api/notifications',requireAuth,(req,res)=>res.json(readJson('notifications').filter(x=>x.userId===req.user.id).slice(-100).reverse()));
 app.post('/api/notifications/:id/read',requireAuth,requireCsrf,(req,res)=>{const list=readJson('notifications'),item=list.find(x=>x.id===req.params.id&&x.userId===req.user.id);if(!item)return res.status(404).json({error:'Notification not found.'});item.read=true;writeJson('notifications',list);res.json(item);});
@@ -636,7 +669,7 @@ app.get('/api/admin/evaluations/:id/file/:field',requireAuth,requireAdmin,(req,r
 // Admin APIs
 app.post('/api/admin/refresh-sources',requireAuth,requireAdmin,requireCsrf,async(req,res)=>{try{const result=await refreshAllSources();res.json({ok:true,...result,refreshedAt:now()});}catch(e){res.status(502).json({error:e.message||'Source refresh failed.'});}});
 
-app.get('/api/admin/summary',requireAuth,requireAdmin,(req,res)=>{const users=readJson('users');res.json({users:users.length,activePremium:users.filter(u=>u.subscription?.active).length,activeTrials:users.filter(u=>u.trial?.status==='active'&&u.trial.endsAt&&new Date(u.trial.endsAt)>new Date()).length,enquiries:readJson('enquiries').length,evaluations:readJson('submissions').length,payments:readJson('payments').length,pendingStories:readJson('stories').filter(x=>x.status==='pending').length,openReports:readJson('reports').filter(x=>x.status==='open').length});});
+app.get('/api/admin/summary',requireAuth,requireAdmin,(req,res)=>{const users=readJson('users');res.json({users:users.length,activePremium:users.filter(u=>u.subscription?.active).length,activeTrials:users.filter(u=>u.trial?.status==='active'&&u.trial.endsAt&&new Date(u.trial.endsAt)>new Date()).length,enquiries:readJson('enquiries').length,evaluations:readJson('submissions').length,payments:readJson('payments').length,pendingStories:readJson('stories').filter(x=>x.status==='pending').length,openReports:readJson('reports').filter(x=>x.status==='open').length,reelAutoPostHours:Number(process.env.REEL_AUTO_POST_HOURS||2)});});
 app.get('/api/admin/users',requireAuth,requireAdmin,(req,res)=>res.json(readJson('users').map(safeUser)));
 app.get('/api/admin/enquiries',requireAuth,requireAdmin,(req,res)=>res.json(readJson('enquiries')));
 app.get('/api/admin/evaluations',requireAuth,requireAdmin,(req,res)=>res.json(readJson('submissions')));

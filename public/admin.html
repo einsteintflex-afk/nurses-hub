@@ -41,6 +41,11 @@
       </section>
     </div>
 
+    <section class="panel"><div class="panel-head"><div><span class="eyebrow">REELS</span><h3>Auto-post video pool</h3></div></div><p class="muted">Upload real video files here (MP4 or WEBM). Every <span id="reelPoolHours">2</span> hour(s), the Hub automatically posts the next video from this pool to the public Reels feed on a rotation — no AI generation, just files you supply.</p>
+      <form id="reelPoolForm" class="form-card" enctype="multipart/form-data" style="max-width:520px"><label>Video file (MP4 or WEBM)<input name="media" type="file" accept="video/mp4,video/webm" required></label><label>Caption<input name="caption" placeholder="e.g. Study tip of the week" maxlength="300"></label><button class="btn primary">Add to pool</button></form>
+      <div id="reelPool" class="admin-list" style="margin-top:14px"></div>
+    </section>
+
     <section class="panel"><div class="panel-head"><div><span class="eyebrow">MEMBERS</span><h3>Member directory</h3></div></div><div id="users" class="admin-table"></div></section>
   </section>
 </main>
