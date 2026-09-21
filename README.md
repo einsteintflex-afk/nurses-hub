@@ -113,6 +113,8 @@ For real scale, the WebSocket and persistence layer should move to managed infra
 ### Reels
 Every account holder (Premium or not) can browse and post photo/audio/video reels. Administrators can also curate a video pool in the admin panel (Reels → Auto-post video pool): upload real MP4/WEBM files there and the Hub automatically posts the next one from the pool to the public feed on a rotation, once every `REEL_AUTO_POST_HOURS` (default 2). This posts video files an administrator supplies — it does not generate video content.
 
+Administrators can additionally connect a YouTube channel ID (Reels → Auto-pull from a YouTube channel). The Hub checks the channel's public feed and automatically embeds newly uploaded videos into the public feed on the same rotation, falling back to the video pool when there is nothing new. The video is never downloaded — it always plays back from YouTube through an embedded player. Only connect a channel you have the rights to feature.
+
 ## AI configuration
 
 AI is optional in local development. The Hub calls Claude (Anthropic) via the official `@anthropic-ai/sdk`.

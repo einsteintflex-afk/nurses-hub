@@ -234,7 +234,7 @@ function renderReels(){
   }).catch(e=>toast(e.message));
 }
 function reelCard(r){
-  const media=r.mediaType==='video'?`<video controls class="reel-media" src="${esc(r.mediaUrl)}"></video>`:r.mediaType==='audio'?`<div class="reel-media reel-audio"><audio controls src="${esc(r.mediaUrl)}"></audio></div>`:`<img class="reel-media" src="${esc(r.mediaUrl)}" alt="Reel">`;
+  const media=r.mediaType==='youtube'?`<div class="reel-media reel-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${esc(r.videoId)}" title="YouTube video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>`:r.mediaType==='video'?`<video controls class="reel-media" src="${esc(r.mediaUrl)}"></video>`:r.mediaType==='audio'?`<div class="reel-media reel-audio"><audio controls src="${esc(r.mediaUrl)}"></audio></div>`:`<img class="reel-media" src="${esc(r.mediaUrl)}" alt="Reel">`;
   return `<article class="reel-card">${media}<div class="reel-body"><b>${esc(r.author)}</b><p>${esc(r.caption||'')}</p><button class="btn ghost" onclick="toggleReelLike('${esc(r.id)}')">${r.liked?'♥':'♡'} ${r.likeCount}</button></div></article>`;
 }
 window.toggleReelLike=async id=>{try{await api('/api/reels/'+id+'/like',{method:'POST',body:'{}'});renderReels()}catch(e){toast(e.message)}}

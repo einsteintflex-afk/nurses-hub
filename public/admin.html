@@ -46,6 +46,11 @@
       <div id="reelPool" class="admin-list" style="margin-top:14px"></div>
     </section>
 
+    <section class="panel"><div class="panel-head"><div><span class="eyebrow">REELS</span><h3>Auto-pull from a YouTube channel</h3></div></div><p class="muted">Optional. When new videos are uploaded to this channel, the Hub automatically embeds them into the public Reels feed on the same rotation (the video always plays from YouTube — nothing is downloaded or copied). Only point this at a channel you have the rights to feature. Needs the channel's ID (starts with "UC", 24 characters) — found under the channel's About page &rarr; Share channel &rarr; Copy channel ID.</p>
+      <form id="reelYoutubeForm" class="form-card" style="max-width:520px"><label>YouTube channel ID<input name="channelId" placeholder="UCxxxxxxxxxxxxxxxxxxxxxx" pattern="UC[A-Za-z0-9_-]{22}" required></label><button class="btn primary">Save channel</button></form>
+      <div id="reelYoutubeStatus" class="admin-item" style="margin-top:12px"></div>
+    </section>
+
     <section class="panel"><div class="panel-head"><div><span class="eyebrow">MEMBERS</span><h3>Member directory</h3></div></div><div id="users" class="admin-table"></div></section>
   </section>
 </main>

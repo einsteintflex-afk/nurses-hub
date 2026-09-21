@@ -28,7 +28,7 @@ const STORE = {
   payments:'payments.json', paymentEvents:'payment-events.json', enquiries:'enquiries.json',
   submissions:'submissions.json',
   passwordResets:'password-resets.json', emailVerifications:'email-verifications.json', messages:'messages.json', reports:'message-reports.json',
-  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json', reels:'reels.json', reelVideoPool:'reel-video-pool.json'
+  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json', reels:'reels.json', reelVideoPool:'reel-video-pool.json', reelYoutubeSource:'reel-youtube-source.json'
 };
 const CONTENT = { syllabus:'syllabus.json', questions:'questions.json', travel:'travel.json', resources:'resources.json', jobs:'jobs.json', news:'news.json', institutions:'institutions.json', studyOptions:'study-options.json', testimonials:'testimonials.json' };
 for (const f of [...Object.values(STORE), ...Object.values(CONTENT)]) {
@@ -123,7 +123,7 @@ app.post('/api/payments/webhook', express.raw({type:'application/json',limit:'2m
   writeJson('users',users); res.sendStatus(200);
 });
 
-app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],scriptSrcAttr:["'unsafe-inline'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'data:'],connectSrc:["'self'","ws:","wss:"],fontSrc:["'self'"],frameAncestors:["'none'"]}}}));
+app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],scriptSrcAttr:["'unsafe-inline'"],styleSrc:["'self'","'unsafe-inline'"],imgSrc:["'self'",'data:'],connectSrc:["'self'","ws:","wss:"],fontSrc:["'self'"],frameSrc:["https://www.youtube-nocookie.com"],frameAncestors:["'none'"]}}}));
 app.use(express.json({limit:'2mb'}));
 app.use(express.urlencoded({extended:true,limit:'2mb'}));
 app.use(rateLimit({windowMs:15*60*1000,limit:400,standardHeaders:'draft-7',legacyHeaders:false}));
@@ -245,7 +245,7 @@ app.get('/api/support/messages',requireAuth,(req,res)=>res.json(readJson('suppor
 app.post('/api/support/messages',requireAuth,chatLimiter,requireCsrf,(req,res)=>{const text=clean(req.body.text,1000);if(!text)return res.status(400).json({error:'Message cannot be empty.'});const item={id:uid('sup'),userId:req.user.id,sender:'member',text,createdAt:now()};const list=readJson('supportMessages');list.push(item);writeJson('supportMessages',list.slice(-20000));createNotification(`admin:${process.env.ADMIN_EMAIL||'admin'}`,'support_message','New support message',text.slice(0,120),'admin');res.status(201).json(item);});
 app.get('/api/community/summary',requireAuth,requirePremium,(req,res)=>{const friends=readJson('friends').filter(x=>x.status==='accepted'&&(x.userId===req.user.id||x.friendId===req.user.id)).length;const pending=readJson('friends').filter(x=>x.friendId===req.user.id&&x.status==='pending').length;const unread=readJson('notifications').filter(x=>x.userId===req.user.id&&!x.read).length;const online=[...clients?.values?.()||[]].filter(x=>x.userId!==req.user.id).length;res.json({friends,pending,unread,online});});
 
-function publicReel(r){return {id:r.id,userId:r.userId,author:r.author,caption:r.caption,mediaType:r.mediaType,mediaUrl:r.mediaUrl||`/api/reels/media/${r.id}`,likeCount:(r.likes||[]).length,createdAt:r.createdAt};}
+function publicReel(r){return {id:r.id,userId:r.userId,author:r.author,caption:r.caption,mediaType:r.mediaType,videoId:r.videoId||null,mediaUrl:r.mediaType==='youtube'?null:(r.mediaUrl||`/api/reels/media/${r.id}`),likeCount:(r.likes||[]).length,createdAt:r.createdAt};}
 app.get('/api/reels',requireAuth,(req,res)=>{
   const reels=readJson('reels').slice(-200).reverse();
   res.json(reels.map(r=>({...publicReel(r),liked:(r.likes||[]).includes(req.user.id)})));
@@ -297,13 +297,52 @@ app.get('/api/admin/reel-pool/:id/media',requireAuth,requireAdmin,(req,res)=>{
 });
 let reelPoolCursor=0;
 async function autoPostPoolReel(){
-  const pool=readJson('reelVideoPool'); if(!pool.length)return;
+  const pool=readJson('reelVideoPool'); if(!pool.length)return false;
   const item=pool[reelPoolCursor%pool.length]; reelPoolCursor++;
   const reels=readJson('reels');
   reels.push({id:uid('reel'),userId:null,author:'Hub Team',caption:item.caption||'A quick moment from the Hub.',mediaType:'video',media:{path:item.media.path,mime:item.media.mime},likes:[],createdAt:now()});
   writeJson('reels',reels.slice(-5000));
+  return true;
 }
-setInterval(()=>autoPostPoolReel().catch(e=>console.error('Reel auto-post failed:',e.message)), Number(process.env.REEL_AUTO_POST_HOURS||2)*3600000);
+
+// Admin-configured YouTube channel: reads the channel's public Atom feed (the same feed RSS
+// readers use, no API key, nothing downloaded) to find videos not yet posted, then auto-posts
+// an embedded player pointing back at YouTube — the video itself always stays on YouTube.
+app.get('/api/admin/reel-youtube',requireAuth,requireAdmin,(req,res)=>{
+  const cfg=readJson('reelYoutubeSource')[0]||null;
+  res.json({channelId:cfg?.channelId||null,postedCount:(cfg?.postedVideoIds||[]).length});
+});
+app.post('/api/admin/reel-youtube',requireAuth,requireAdmin,requireCsrf,(req,res)=>{
+  const channelId=clean(req.body.channelId,40);
+  if(!/^UC[A-Za-z0-9_-]{22}$/.test(channelId))return res.status(400).json({error:'Enter a valid YouTube channel ID — it starts with "UC" and is 24 characters long. A @handle or channel URL will not work directly here.'});
+  writeJson('reelYoutubeSource',[{channelId,postedVideoIds:[],updatedAt:now()}]);
+  res.status(201).json({ok:true,channelId});
+});
+app.delete('/api/admin/reel-youtube',requireAuth,requireAdmin,requireCsrf,(req,res)=>{ writeJson('reelYoutubeSource',[]); res.json({ok:true}); });
+async function checkYoutubeForNewVideo(){
+  const cfg=readJson('reelYoutubeSource')[0]; if(!cfg?.channelId)return null;
+  try{
+    const xml=await fetchText(`https://www.youtube.com/feeds/videos.xml?channel_id=${encodeURIComponent(cfg.channelId)}`);
+    const entries=parseYoutubeFeed(xml,15);
+    const posted=new Set(cfg.postedVideoIds||[]);
+    const next=[...entries].reverse().find(e=>!posted.has(e.videoId));
+    if(!next)return null;
+    cfg.postedVideoIds=[...(cfg.postedVideoIds||[]),next.videoId].slice(-300); cfg.updatedAt=now();
+    writeJson('reelYoutubeSource',[cfg]);
+    return next;
+  }catch(e){ console.error('YouTube channel check failed:',e.message); return null; }
+}
+async function autoPostReel(){
+  const yt=await checkYoutubeForNewVideo();
+  if(yt){
+    const reels=readJson('reels');
+    reels.push({id:uid('reel'),userId:null,author:'Hub Team',caption:yt.title||'New video from the Hub channel.',mediaType:'youtube',videoId:yt.videoId,likes:[],createdAt:now()});
+    writeJson('reels',reels.slice(-5000));
+    return;
+  }
+  await autoPostPoolReel();
+}
+setInterval(()=>autoPostReel().catch(e=>console.error('Reel auto-post failed:',e.message)), Number(process.env.REEL_AUTO_POST_HOURS||2)*3600000);
 
 app.get('/api/notifications',requireAuth,(req,res)=>res.json(readJson('notifications').filter(x=>x.userId===req.user.id).slice(-100).reverse()));
 app.post('/api/notifications/:id/read',requireAuth,requireCsrf,(req,res)=>{const list=readJson('notifications'),item=list.find(x=>x.id===req.params.id&&x.userId===req.user.id);if(!item)return res.status(404).json({error:'Notification not found.'});item.read=true;writeJson('notifications',list);res.json(item);});
@@ -625,6 +664,18 @@ app.post('/api/ai/tutor',requireAuth,requirePremium,requireCsrf,async(req,res)=>
 // Lightweight server-side source refresh. Uses public RSS where available and keeps Hub pages readable internally.
 async function fetchText(url){const r=await fetch(url,{headers:{'User-Agent':'Nurses-Midwives-Hub/1.0'},redirect:'follow'});if(!r.ok)throw new Error(`HTTP ${r.status}`);return await r.text();}
 function stripTags(x){return String(x||'').replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim();}
+// Reads a YouTube channel's public Atom feed (the same feed RSS readers use — not scraping,
+// and no API key required) to find newly uploaded videos. Only the video ID/title are read;
+// nothing is downloaded. Playback stays on YouTube via an embedded player.
+function parseYoutubeFeed(xml,limit=15){
+  const out=[]; const entries=String(xml).match(/<entry>[\s\S]*?<\/entry>/gi)||[];
+  for(const e of entries.slice(0,limit)){
+    const videoId=(e.match(/<yt:videoId>([\s\S]*?)<\/yt:videoId>/i)||[])[1];
+    const title=(e.match(/<title>([\s\S]*?)<\/title>/i)||[])[1];
+    if(videoId)out.push({videoId:stripTags(videoId).trim(),title:stripTags(title||'').trim()});
+  }
+  return out;
+}
 function parseRss(xml,limit=12){const out=[];const blocks=String(xml).match(/<item[\s\S]*?<\/item>/gi)||[];for(const b of blocks.slice(0,limit)){const title=(b.match(/<title(?:\s[^>]*)?>([\s\S]*?)<\/title>/i)||[])[1];const link=(b.match(/<link(?:\s[^>]*)?>([\s\S]*?)<\/link>/i)||[])[1];const desc=(b.match(/<description(?:\s[^>]*)?>([\s\S]*?)<\/description>/i)||[])[1];const pub=(b.match(/<pubDate(?:\s[^>]*)?>([\s\S]*?)<\/pubDate>/i)||[])[1];if(title&&link)out.push({title:stripTags(title),link:stripTags(link),summary:stripTags(desc||''),date:pub?new Date(stripTags(pub)).toISOString().slice(0,10):now().slice(0,10)});}return out;}
 function parseHtmlArticles(html,limit=10){
   const out=[]; const re=/<a[^>]+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi; let m;
