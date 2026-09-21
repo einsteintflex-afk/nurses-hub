@@ -312,9 +312,29 @@ app.get('/api/admin/reel-youtube',requireAuth,requireAdmin,(req,res)=>{
   const cfg=readJson('reelYoutubeSource')[0]||null;
   res.json({channelId:cfg?.channelId||null,postedCount:(cfg?.postedVideoIds||[]).length});
 });
-app.post('/api/admin/reel-youtube',requireAuth,requireAdmin,requireCsrf,(req,res)=>{
-  const channelId=clean(req.body.channelId,40);
-  if(!/^UC[A-Za-z0-9_-]{22}$/.test(channelId))return res.status(400).json({error:'Enter a valid YouTube channel ID — it starts with "UC" and is 24 characters long. A @handle or channel URL will not work directly here.'});
+// Accepts a raw channel ID, a bare @handle, or a full channel/handle URL, and resolves it to
+// the canonical "UC..." channel ID. Handle/URL resolution reads the channel's own public page
+// (the same page a browser would show) for its canonical channel link — a single public page
+// fetch, not an API call and not bulk scraping.
+async function resolveYoutubeChannelId(input){
+  const raw=String(input||'').trim();
+  if(/^UC[A-Za-z0-9_-]{22}$/.test(raw))return raw;
+  const channelUrlMatch=raw.match(/youtube\.com\/channel\/(UC[A-Za-z0-9_-]{22})/i);
+  if(channelUrlMatch)return channelUrlMatch[1];
+  const handleMatch=raw.match(/@([A-Za-z0-9_.-]{3,30})/);
+  if(!handleMatch)return null;
+  try{
+    const html=await fetchText(`https://www.youtube.com/@${encodeURIComponent(handleMatch[1])}`);
+    const canonical=html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/channel\/(UC[A-Za-z0-9_-]{22})"/i)
+      || html.match(/"channelId":"(UC[A-Za-z0-9_-]{22})"/);
+    return canonical?canonical[1]:null;
+  }catch(e){ console.error('YouTube channel resolution failed:',e.message); return null; }
+}
+app.post('/api/admin/reel-youtube',requireAuth,requireAdmin,requireCsrf,async(req,res)=>{
+  const input=clean(req.body.channelId,300);
+  if(!input)return res.status(400).json({error:'Enter a YouTube channel ID, @handle, or channel URL.'});
+  const channelId=await resolveYoutubeChannelId(input);
+  if(!channelId)return res.status(400).json({error:'Could not resolve that to a YouTube channel. Double-check the handle/URL, or paste the exact channel ID instead (channel About page → Share channel → Copy channel ID).'});
   writeJson('reelYoutubeSource',[{channelId,postedVideoIds:[],updatedAt:now()}]);
   res.status(201).json({ok:true,channelId});
 });
