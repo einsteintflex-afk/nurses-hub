@@ -28,7 +28,7 @@ const STORE = {
   payments:'payments.json', paymentEvents:'payment-events.json', enquiries:'enquiries.json',
   submissions:'submissions.json',
   passwordResets:'password-resets.json', emailVerifications:'email-verifications.json', messages:'messages.json', reports:'message-reports.json',
-  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json', reels:'reels.json', reelVideoPool:'reel-video-pool.json', reelYoutubeSource:'reel-youtube-source.json'
+  applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json', reels:'reels.json', reelVideoPool:'reel-video-pool.json', reelYoutubeSource:'reel-youtube-source.json', refreshStatus:'refresh-status.json'
 };
 const CONTENT = { syllabus:'syllabus.json', questions:'questions.json', travel:'travel.json', resources:'resources.json', jobs:'jobs.json', news:'news.json', institutions:'institutions.json', studyOptions:'study-options.json', testimonials:'testimonials.json' };
 for (const f of [...Object.values(STORE), ...Object.values(CONTENT)]) {
@@ -182,7 +182,7 @@ function publicNewsItem(n,user){
 }
 app.get('/api/content',optionalAuth,(req,res)=>{
   const jobs=readJson('jobs').map(j=>{const {applicationUrl,...publicJob}=j;return publicJob;});
-  res.json({syllabus:readJson('syllabus'),questions:readJson('questions').map(({answer,...q})=>q),travel:readJson('travel').map(t=>({...t,links:undefined})),resources:readJson('resources').map(r=>({...r,sourceUrl:undefined})),jobs,news:readJson('news').map(n=>publicNewsItem(n,req.user)),institutions:readJson('institutions'),studyOptions:readJson('studyOptions').map(x=>({...x,applicationUrl:undefined})),testimonials:readJson('testimonials'),stories:readJson('stories').filter(x=>x.status==='approved').map(x=>({id:x.id,type:x.type,text:x.text,name:x.anonymous?'Anonymous member':x.name,createdAt:x.createdAt}))});
+  res.json({syllabus:readJson('syllabus'),questions:readJson('questions').map(({answer,...q})=>q),travel:readJson('travel').map(t=>({...t,links:undefined})),resources:readJson('resources').map(r=>({...r,sourceUrl:undefined})),jobs,news:readJson('news').map(n=>publicNewsItem(n,req.user)),institutions:readJson('institutions'),studyOptions:readJson('studyOptions').map(x=>({...x,applicationUrl:undefined})),testimonials:readJson('testimonials'),stories:readJson('stories').filter(x=>x.status==='approved').map(x=>({id:x.id,type:x.type,text:x.text,name:x.anonymous?'Anonymous member':x.name,createdAt:x.createdAt})),refreshStatus:getRefreshStatus()});
 });
 app.get('/api/news/:id',optionalAuth,(req,res)=>{const n=readJson('news').find(x=>x.id===req.params.id); if(!n)return res.status(404).json({error:'Article not found.'}); res.json(publicNewsItem(n,req.user));});
 app.get('/api/jobs/:id',requireAuth,(req,res)=>{const j=readJson('jobs').find(x=>x.id===req.params.id); if(!j)return res.status(404).json({error:'Job not found.'}); res.json(j);});
@@ -739,7 +739,7 @@ app.post('/api/ai/tutor',requireAuth,requirePremium,requireCsrf,async(req,res)=>
 
 
 // Lightweight server-side source refresh. Uses public RSS where available and keeps Hub pages readable internally.
-async function fetchText(url){const r=await fetch(url,{headers:{'User-Agent':'Nurses-Midwives-Hub/1.0'},redirect:'follow'});if(!r.ok)throw new Error(`HTTP ${r.status}`);return await r.text();}
+async function fetchText(url){const r=await fetch(url,{headers:{'User-Agent':'Nurses-Midwives-Hub/1.0'},redirect:'follow',signal:AbortSignal.timeout(10000)});if(!r.ok)throw new Error(`HTTP ${r.status}`);return await r.text();}
 function stripTags(x){return String(x||'').replace(/<script[\s\S]*?<\/script>/gi,' ').replace(/<style[\s\S]*?<\/style>/gi,' ').replace(/<[^>]+>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim();}
 // Reads a YouTube channel's public Atom feed (the same feed RSS readers use — not scraping,
 // and no API key required) to find newly uploaded videos. Only the video ID/title are read;
@@ -784,8 +784,15 @@ async function refreshOpportunities(){
   if(changed)writeJson('jobs',jobs.slice(0,500));return changed;
 }
 async function refreshAllSources(){const newsAdded=await refreshOfficialNews();const jobsAdded=await refreshOpportunities();return {newsAdded,jobsAdded};}
+function getRefreshStatus(){const r=readJson('refreshStatus');return Array.isArray(r)?{lastAttemptAt:null,lastSuccessAt:null,lastError:null,newsAdded:0,jobsAdded:0}:r;}
+function setRefreshStatus(patch){writeJson('refreshStatus',{...getRefreshStatus(),...patch});}
 let refreshBusy=false;
-async function autoRefresh(){if(refreshBusy)return;refreshBusy=true;try{await refreshAllSources();}catch(e){console.error('Auto refresh failed:',e.message);}finally{refreshBusy=false;}}
+async function autoRefresh(){
+  if(refreshBusy)return;refreshBusy=true;setRefreshStatus({lastAttemptAt:now()});
+  try{const result=await refreshAllSources();setRefreshStatus({lastSuccessAt:now(),lastError:null,newsAdded:result.newsAdded,jobsAdded:result.jobsAdded});}
+  catch(e){console.error('Auto refresh failed:',e.message);setRefreshStatus({lastError:e.message||'Refresh failed.'});}
+  finally{refreshBusy=false;}
+}
 setTimeout(autoRefresh,2500); setInterval(autoRefresh,Number(process.env.AUTO_REFRESH_MINUTES||30)*60000);
 
 
@@ -795,7 +802,11 @@ app.post('/api/admin/support/:userId',requireAuth,requireAdmin,requireCsrf,(req,
 app.get('/api/admin/evaluations/:id/file/:field',requireAuth,requireAdmin,(req,res)=>{const allowed=['transcript','certificate','registration','idDocument','cv'];if(!allowed.includes(req.params.field))return res.sendStatus(404);const item=readJson('submissions').find(x=>x.id===req.params.id);if(!item)return res.sendStatus(404);const name=item.files?.[req.params.field];if(!name)return res.sendStatus(404);const safe=path.basename(name);if(!/^[A-Za-z0-9._-]+$/.test(safe))return res.sendStatus(404);res.sendFile(path.join(UPLOADS,safe));});
 
 // Admin APIs
-app.post('/api/admin/refresh-sources',requireAuth,requireAdmin,requireCsrf,async(req,res)=>{try{const result=await refreshAllSources();res.json({ok:true,...result,refreshedAt:now()});}catch(e){res.status(502).json({error:e.message||'Source refresh failed.'});}});
+app.post('/api/admin/refresh-sources',requireAuth,requireAdmin,requireCsrf,async(req,res)=>{
+  setRefreshStatus({lastAttemptAt:now()});
+  try{const result=await refreshAllSources();setRefreshStatus({lastSuccessAt:now(),lastError:null,newsAdded:result.newsAdded,jobsAdded:result.jobsAdded});res.json({ok:true,...result,refreshedAt:now()});}
+  catch(e){setRefreshStatus({lastError:e.message||'Refresh failed.'});res.status(502).json({error:e.message||'Source refresh failed.'});}
+});
 
 app.get('/api/admin/summary',requireAuth,requireAdmin,(req,res)=>{const users=readJson('users');res.json({users:users.length,activePremium:users.filter(u=>u.subscription?.active).length,activeTrials:users.filter(u=>u.trial?.status==='active'&&u.trial.endsAt&&new Date(u.trial.endsAt)>new Date()).length,enquiries:readJson('enquiries').length,evaluations:readJson('submissions').length,payments:readJson('payments').length,pendingStories:readJson('stories').filter(x=>x.status==='pending').length,openReports:readJson('reports').filter(x=>x.status==='open').length,reelAutoPostHours:Number(process.env.REEL_AUTO_POST_HOURS||2)});});
 app.get('/api/admin/users',requireAuth,requireAdmin,(req,res)=>res.json(readJson('users').map(safeUser)));
