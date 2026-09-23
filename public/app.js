@@ -35,8 +35,9 @@ function bindGlobal(){
   $$('[data-action="signup"]').forEach(b=>b.onclick=()=>state.user?enter('dashboard'):showSignup('student'));
   $$('[data-action="close"]').forEach(b=>b.onclick=closeModal);
   $$('[data-view-go]').forEach(b=>b.onclick=()=>enter(b.dataset.viewGo));
-  $$('[data-view]').forEach(b=>b.onclick=()=>enter(b.dataset.view));
-  const t=$('#sidebarToggle');if(t)t.onclick=()=>$('#sidebar').classList.toggle('open');
+  $$('[data-view]').forEach(b=>b.onclick=()=>{enter(b.dataset.view);$('#sidebar')?.classList.remove('open')});
+  const t=$('#sidebarToggle');if(t)t.onclick=e=>{e.stopPropagation();$('#sidebar').classList.toggle('open')};
+  if(!window.__sidebarOutsideClickBound){window.__sidebarOutsideClickBound=true;document.addEventListener('click',e=>{const s=$('#sidebar'),tg=$('#sidebarToggle');if(s&&s.classList.contains('open')&&!s.contains(e.target)&&e.target!==tg)s.classList.remove('open')});}
   const notify=$('#notifyBtn');if(notify)notify.onclick=showNotifications;
   const sub=$('[data-action="subscribe"]');if(sub)sub.onclick=showPremium;
   const signout=$('[data-action="signout"]');if(signout)signout.onclick=signOut;
