@@ -13,6 +13,25 @@ function initModalGlobalHandlers(){
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!m.classList.contains('hidden'))closeModal()});
   window.addEventListener('pageshow',()=>{if(!m.classList.contains('hidden'))closeModal()});
 }
+function isMobileSidebar(){ return window.matchMedia('(max-width:800px)').matches; }
+function openSidebarDrawer(){ const s=$('#sidebar');if(!s)return;s.classList.add('open');$('#sidebarBackdrop')?.classList.add('show');document.body.classList.add('sidebar-open'); }
+function closeSidebarDrawer(){ const s=$('#sidebar');if(!s)return;s.classList.remove('open');$('#sidebarBackdrop')?.classList.remove('show');document.body.classList.remove('sidebar-open'); }
+function toggleSidebar(){
+  if(isMobileSidebar()){ $('#sidebar')?.classList.contains('open')?closeSidebarDrawer():openSidebarDrawer(); return; }
+  const s=$('#sidebar'); if(!s)return; const collapsed=s.classList.toggle('collapsed');
+  try{localStorage.setItem('sidebarCollapsed',collapsed?'1':'0')}catch{}
+}
+function restoreSidebarPreference(){
+  try{ if(localStorage.getItem('sidebarCollapsed')==='1' && !isMobileSidebar()) $('#sidebar')?.classList.add('collapsed'); }catch{}
+}
+function initSidebarGlobalHandlers(){
+  if(window.__sidebarHandlersBound)return;window.__sidebarHandlersBound=true;
+  document.addEventListener('click',e=>{const s=$('#sidebar'),tg=$('#sidebarToggle');if(s&&s.classList.contains('open')&&!s.contains(e.target)&&e.target!==tg)closeSidebarDrawer();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#sidebar')?.classList.contains('open'))closeSidebarDrawer();});
+  window.addEventListener('pageshow',closeSidebarDrawer);
+  window.addEventListener('popstate',closeSidebarDrawer);
+  window.addEventListener('resize',()=>{ if(!isMobileSidebar())closeSidebarDrawer(); });
+}
 async function api(url,opt={}){const method=(opt.method||'GET').toUpperCase();const headers={...(opt.body instanceof FormData?{}:{'Content-Type':'application/json'}),...(opt.headers||{})};if(state.csrf&&['POST','PATCH','PUT','DELETE'].includes(method))headers['X-CSRF-Token']=state.csrf;const r=await fetch(url,{...opt,method,headers,credentials:'include'});let d={};try{d=await r.json()}catch{}if(!r.ok){const err=new Error(d.error||`Request failed (${r.status})`);Object.assign(err,d);throw err;}return d}
 function trialInfo(){const t=state.user?.trial;if(!t?.endsAt)return {active:false,expired:true,days:0,hours:0,minutes:0,seconds:0,total:0};const total=Math.max(0,new Date(t.endsAt)-Date.now());if(t.status==='active'&&total>0){const sec=Math.floor(total/1000);return {active:true,expired:false,days:Math.floor(sec/86400),hours:Math.floor(sec%86400/3600),minutes:Math.floor(sec%3600/60),seconds:sec%60,total};}return {active:false,expired:true,days:0,hours:0,minutes:0,seconds:0,total:0}}
 function premium(){return Boolean(state.user?.subscription?.active)||trialInfo().active}
@@ -35,9 +54,8 @@ function bindGlobal(){
   $$('[data-action="signup"]').forEach(b=>b.onclick=()=>state.user?enter('dashboard'):showSignup('student'));
   $$('[data-action="close"]').forEach(b=>b.onclick=closeModal);
   $$('[data-view-go]').forEach(b=>b.onclick=()=>enter(b.dataset.viewGo));
-  $$('[data-view]').forEach(b=>b.onclick=()=>{enter(b.dataset.view);$('#sidebar')?.classList.remove('open')});
-  const t=$('#sidebarToggle');if(t)t.onclick=e=>{e.stopPropagation();$('#sidebar').classList.toggle('open')};
-  if(!window.__sidebarOutsideClickBound){window.__sidebarOutsideClickBound=true;document.addEventListener('click',e=>{const s=$('#sidebar'),tg=$('#sidebarToggle');if(s&&s.classList.contains('open')&&!s.contains(e.target)&&e.target!==tg)s.classList.remove('open')});}
+  $$('[data-view]').forEach(b=>b.onclick=()=>{enter(b.dataset.view);closeSidebarDrawer()});
+  const t=$('#sidebarToggle');if(t)t.onclick=e=>{e.stopPropagation();toggleSidebar()};
   const notify=$('#notifyBtn');if(notify)notify.onclick=showNotifications;
   const sub=$('[data-action="subscribe"]');if(sub)sub.onclick=showPremium;
   const signout=$('[data-action="signout"]');if(signout)signout.onclick=signOut;
@@ -63,6 +81,8 @@ function renderPublicTestimonials(){
 }
 async function boot(){
   initModalGlobalHandlers();
+  initSidebarGlobalHandlers();
+  restoreSidebarPreference();
   try{state.config=await api('/api/config');state.content=await api('/api/content')}catch(e){toast('The Hub could not load. Check the server terminal.');console.error(e);return}
   renderPublicTestimonials();
   try{const me=await api('/api/me');state.user=me.user;state.progress=me.progress;state.csrf=me.csrf;state.notifications=await api('/api/notifications')}catch{}
