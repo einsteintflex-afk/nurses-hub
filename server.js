@@ -658,22 +658,50 @@ ${worked}${secondQuestion}
 <h4>Exam focus</h4><p>For licensing-style questions on <b>${escapeHtml(coreTopic)}</b>, identify the task in the stem first. Distinguish the first priority from a later action, distinguish assessment from intervention, and avoid options that are unsafe, outside scope or unsupported by the information in the scenario.</p>
 <h4>Before you move on — study checklist</h4><ul><li>Define ${escapeHtml(coreTopic)} out loud without notes</li><li>Name one assessment finding and one priority action</li><li>Complete the linked practice question(s) above</li><li>Explain the concept to a study partner or the AI Tutor</li></ul>`;
 }
+const PHARM_SYSTEM_LESSONS=new Set(['Cardiovascular pharmacology','Respiratory pharmacology','Gastrointestinal pharmacology','Endocrine pharmacology','Central nervous system pharmacology','Anti-infective pharmacology','Renal and urinary pharmacology','Reproductive, obstetric and gynaecological pharmacology','Haematology pharmacology','Immunology and rheumatology pharmacology','Oncology pharmacology','Paediatric pharmacology','Geriatric pharmacology']);
+function buildFallbackPharmacologyNotes(lesson){
+  const system=lesson.replace(/ pharmacology$/i,'');
+  return `<h4>${escapeHtml(lesson)} — study framework</h4><p>System-based pharmacology is best learned drug-class by drug-class. For each major class relevant to <b>${escapeHtml(system)}</b> pharmacology, build your own notes covering:</p>
+<ol><li><b>Mechanism of action</b> — how the drug produces its effect</li><li><b>Clinical uses</b> — what it treats</li><li><b>Key pharmacokinetics</b> — route, absorption, metabolism, elimination</li><li><b>Adverse effects</b></li><li><b>Contraindications and precautions</b></li><li><b>Notable interactions</b></li><li><b>Monitoring parameters</b></li><li><b>Nursing considerations</b> — safe administration and what to watch for</li><li><b>Patient counselling points</b></li><li><b>Any specific clinical warning</b> that applies to the class</li></ol>
+<p><b>Safety note:</b> never rely on a memorised specific dose from general notes — always confirm dosing against your local protocol, the BNF/national formulary, or the prescriber, since safe dosing depends on the individual patient, indication and formulation.</p>
+<h4>Clinical pearls & red flags</h4><p>For each class, ask: what would make me withhold this drug and escalate? What is the single most dangerous adverse effect to monitor for, and what early sign would tell me it is starting?</p>
+<h4>Before you move on — study checklist</h4><ul><li>Name 3-4 major drug classes used in ${escapeHtml(system.toLowerCase())} pharmacology</li><li>For one class, recite mechanism, key adverse effect and one nursing consideration from memory</li><li>Ask the AI Tutor to quiz you on this system's drug classes</li></ul>`;
+}
+const ADAPTIVE_NOTE_SECTIONS='Introduction, Definition, Classification, Epidemiology, Aetiology/Risk factors, Pathophysiology, Clinical manifestations/Signs & symptoms, Diagnosis & differential diagnosis, Investigations, Management (pharmacological, non-pharmacological and nursing care), Patient monitoring, Complications, Prevention, Health education & patient counselling, Clinical pearls, Red flags/when to refer, Summary & key learning points, Practice questions with answers and rationales';
 app.post('/api/ai/lesson-notes',requireAuth,requirePremium,requireCsrf,async(req,res)=>{
   const moduleId=clean(req.body.moduleId,100),lessonIndex=Math.max(0,Number(req.body.lessonIndex||0));
   const module=readJson('syllabus').find(m=>m.id===moduleId); if(!module)return res.status(404).json({error:'Module not found.'});
   const lesson=module.lessons[lessonIndex]; if(!lesson)return res.status(404).json({error:'Lesson not found.'});
-  const cacheKey=`${moduleId}::${lessonIndex}`; const cache=readJson('lessonNotes'); const cached=cache.find(x=>x.key===cacheKey);
+  const isPharmSystem=module.id==='pharmacology' && PHARM_SYSTEM_LESSONS.has(lesson);
+  const cacheKey=`${moduleId}::${lesson}`; const cache=readJson('lessonNotes'); const cached=cache.find(x=>x.key===cacheKey);
   const related=relatedQuestionsFor(module,lesson); const relatedQuestions=related.map(q=>({id:q.id,question:q.question,domain:q.domain}));
   if(cached)return res.json({notesHtml:cached.notesHtml,ai:cached.ai,relatedQuestions});
-  const fallback=buildFallbackLessonNotes(module,lesson,lessonIndex,related);
+  const fallback=isPharmSystem?buildFallbackPharmacologyNotes(lesson):buildFallbackLessonNotes(module,lesson,lessonIndex,related);
   if(!aiConfigured()){cache.push({key:cacheKey,notesHtml:fallback,ai:false,createdAt:now()});writeJson('lessonNotes',cache.slice(-8000));return res.json({notesHtml:fallback,ai:false,relatedQuestions});}
-  const prompt=`Write precise, well-organised nursing/midwifery study notes for Nurses & Midwives Hub, for the lesson "${lesson}" inside the module "${module.title}" (${module.track}). Module topics: ${module.topics.join(', ')}. Write 600-900 words as HTML using only <h4>, <p>, <ul>, <ol>, <li>, <b>, <i> tags (no <html>/<body>/<script>). Structure it with these headings, each covering this exact lesson specifically (not the whole module): "Learning focus", "Core concepts" (as a numbered step-by-step list), "Clinical/professional application" (a short worked scenario), "Common pitfalls", "Exam focus" (licensing-style technique), and "Before you move on" (a short study checklist as a bullet list). Be concise, specific, precise and easy to understand — no padding, no repetition.
+  const svgSpec=`Also include exactly one simple explanatory diagram as inline SVG, placed at a natural point in the notes. Requirements for the diagram: viewBox="0 0 560 200", 3-6 labeled boxes/circles/arrows illustrating the actual process, classification or comparison for THIS lesson's topic (not generic), text labels inside or beside each shape, colours from this palette only (fill/stroke hex values: navy #0b3542, teal #0c8d82, sky #e9f4fb, ink #16303b), sans-serif font-family, no external images, no <script>, no event-handler attributes, no <a>/<foreignObject>/<image> tags. Wrap it in a single <svg>...</svg> block with no surrounding <div>.`;
+  const prompt=isPharmSystem?`Write a comprehensive, system-based pharmacology study guide for Nurses & Midwives Hub covering "${lesson}" within the module "${module.title}".
 
-Also include exactly one simple explanatory diagram as inline SVG, placed right after "Core concepts". Requirements for the diagram: viewBox="0 0 560 200", 3-6 labeled boxes/circles/arrows illustrating the actual process, cycle or comparison for THIS lesson's topic (not generic), text labels inside or beside each shape, colours from this palette only (fill/stroke hex values: navy #0b3542, teal #0c8d82, sky #e9f4fb, ink #16303b), sans-serif font-family, no external images, no <script>, no event-handler attributes, no <a>/<foreignObject>/<image> tags. Wrap it in a single <svg>...</svg> block with no surrounding <div>.
+Structure it as HTML using only <h4>, <p>, <ul>, <ol>, <li>, <b>, <i> tags (no <html>/<body>/<script>). Start with a short introduction to this system's pharmacology, then cover 4-6 major, clinically important drug classes or representative drugs for this system. For EACH class/drug use this exact structure as a labelled sub-list: Mechanism of action, Clinical uses, Key pharmacokinetics (route/absorption, metabolism, elimination — only what is well established), Adverse effects, Contraindications, Precautions, Notable drug interactions, Monitoring parameters, Nursing considerations, Patient counselling points, and any Clinical warning that genuinely applies to that class.
 
-Never claim to reproduce an official exam paper and never give individualized diagnosis or prescribing instructions. Return only the HTML (including the one inline <svg> diagram), no surrounding commentary or markdown fences.`;
+Be clinically accurate and conservative: never state a specific numeric dose — always say "dose per local protocol/prescriber" instead, since safe dosing depends on the patient, indication, formulation and local guidelines. Never invent an interaction, contraindication or adverse effect you are not confident is well established; if unsure of a specific fact, omit it rather than guess.
+
+End with a short "Clinical pearls / red flags" section and a "Practice questions" section (2-3 original scenario or short-answer questions with model answers and rationales).
+
+${svgSpec}
+
+Never claim to reproduce an official exam paper and never give individualized diagnosis or prescribing instructions for a real patient. Return only the HTML (including the one inline <svg> diagram), no surrounding commentary or markdown fences.`:`Write comprehensive, university/clinical-quality nursing/midwifery study notes for Nurses & Midwives Hub, for the lesson "${lesson}" inside the module "${module.title}" (${module.track}). Module topics: ${module.topics.join(', ')}.
+
+Write as HTML using only <h4>, <p>, <ul>, <ol>, <li>, <b>, <i> tags (no <html>/<body>/<script>). Choose and adapt headings from this list to fit what this SPECIFIC lesson actually covers — use only the ones that genuinely apply, do not force every heading onto every topic, and do not include a heading that would add nothing new: ${ADAPTIVE_NOTE_SECTIONS}. A skills/communication/professional-practice lesson should look very different from a disease-focused lesson — use your judgement on which of the above genuinely apply, and pick your own natural heading text rather than copying this list verbatim.
+
+Depth: aim for 1200-1800 words of genuinely useful, exam-and-practice-relevant content — comprehensive but not padded with repetition. Always end with a short "Practice questions" section: 2-3 original short-answer or scenario questions with model answers and rationales.
+
+Be clinically accurate and cautious: never invent drug doses, lab reference ranges, or statistics you are not confident about — where a precise numeric value would normally come from a local protocol or the BNF/national formulary, say so explicitly rather than stating an invented number. Never claim to reproduce an official exam paper and never give individualized diagnosis or prescribing instructions for a real patient.
+
+${svgSpec}
+
+Return only the HTML (including the one inline <svg> diagram), no surrounding commentary or markdown fences.`;
   try{
-    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:3000,output_config:{effort:'low'},messages:[{role:'user',content:prompt}]});
+    const r=await anthropicClient().messages.create({model:CLAUDE_MODEL,max_tokens:isPharmSystem?6500:6000,output_config:{effort:'medium'},messages:[{role:'user',content:prompt}]});
     let text=sanitizeLessonHtml(claudeText(r).replace(/^```html\s*|^```\s*|\s*```$/g,'').trim());
     if(!text)throw new Error('empty');
     cache.push({key:cacheKey,notesHtml:text,ai:true,createdAt:now()}); writeJson('lessonNotes',cache.slice(-8000));

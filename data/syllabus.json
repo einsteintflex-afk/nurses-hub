@@ -95,7 +95,7 @@
     "id": "pharmacology",
     "track": "Nursing Core",
     "title": "Pharmacology & Medication Safety",
-    "description": "Medication classes, safe administration, dosage calculations, monitoring, adverse reactions and patient education.",
+    "description": "Medication safety foundations followed by a system-based tour of clinically important drug classes: mechanism, uses, pharmacokinetics, adverse effects, contraindications, interactions, monitoring, nursing considerations and patient counselling for each.",
     "topics": [
       "Dose calculations",
       "Medication rights",
@@ -103,15 +103,37 @@
       "Adverse reactions",
       "High-alert medicines",
       "Medication reconciliation",
-      "Patient education"
+      "Cardiovascular",
+      "Respiratory",
+      "Gastrointestinal",
+      "Endocrine",
+      "Central nervous system",
+      "Anti-infective",
+      "Renal and urinary",
+      "Reproductive, obstetric and gynaecological",
+      "Haematology",
+      "Immunology and rheumatology",
+      "Oncology",
+      "Paediatric pharmacology",
+      "Geriatric pharmacology"
     ],
     "lessons": [
-      "Medication safety principles",
+      "Medication safety principles and the rights of administration",
       "Dosage and infusion calculations",
-      "Routes and administration",
-      "Adverse drug reactions",
-      "High-alert medicines",
-      "Medication reconciliation and counselling"
+      "Cardiovascular pharmacology",
+      "Respiratory pharmacology",
+      "Gastrointestinal pharmacology",
+      "Endocrine pharmacology",
+      "Central nervous system pharmacology",
+      "Anti-infective pharmacology",
+      "Renal and urinary pharmacology",
+      "Reproductive, obstetric and gynaecological pharmacology",
+      "Haematology pharmacology",
+      "Immunology and rheumatology pharmacology",
+      "Oncology pharmacology",
+      "Paediatric pharmacology",
+      "Geriatric pharmacology",
+      "High-alert medicines, reconciliation and patient counselling"
     ]
   },
   {
