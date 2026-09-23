@@ -261,10 +261,10 @@ app.get('/api/support/messages',requireAuth,(req,res)=>res.json(readJson('suppor
 app.post('/api/support/messages',requireAuth,chatLimiter,requireCsrf,(req,res)=>{const text=clean(req.body.text,1000);if(!text)return res.status(400).json({error:'Message cannot be empty.'});const item={id:uid('sup'),userId:req.user.id,sender:'member',text,createdAt:now()};const list=readJson('supportMessages');list.push(item);writeJson('supportMessages',list.slice(-20000));createNotification(`admin:${process.env.ADMIN_EMAIL||'admin'}`,'support_message','New support message',text.slice(0,120),'admin');res.status(201).json(item);});
 app.get('/api/community/summary',requireAuth,requirePremium,(req,res)=>{const friends=readJson('friends').filter(x=>x.status==='accepted'&&(x.userId===req.user.id||x.friendId===req.user.id)).length;const pending=readJson('friends').filter(x=>x.friendId===req.user.id&&x.status==='pending').length;const unread=readJson('notifications').filter(x=>x.userId===req.user.id&&!x.read).length;const online=[...clients?.values?.()||[]].filter(x=>x.userId!==req.user.id).length;res.json({friends,pending,unread,online});});
 
-function publicReel(r){return {id:r.id,userId:r.userId,author:r.author,caption:r.caption,mediaType:r.mediaType,videoId:r.videoId||null,mediaUrl:r.mediaType==='youtube'?null:(r.mediaUrl||`/api/reels/media/${r.id}`),likeCount:(r.likes||[]).length,createdAt:r.createdAt};}
+function publicReel(r){return {id:r.id,userId:r.userId,author:r.author,caption:r.caption,mediaType:r.mediaType,videoId:r.videoId||null,mediaUrl:r.mediaType==='youtube'?null:(r.mediaUrl||`/api/reels/media/${r.id}`),likeCount:(r.likes||[]).length,viewCount:(r.views||[]).length,createdAt:r.createdAt};}
 app.get('/api/reels',requireAuth,(req,res)=>{
   const reels=readJson('reels').filter(r=>r.mediaType==='video'||r.mediaType==='youtube').slice(-200).reverse();
-  res.json(reels.map(r=>({...publicReel(r),liked:(r.likes||[]).includes(req.user.id)})));
+  res.json(reels.map(r=>({...publicReel(r),liked:(r.likes||[]).includes(req.user.id),canDelete:r.userId===req.user.id||req.user.role==='admin'})));
 });
 // Reels are video-only: a caption card or a photo is not a Reel. Enforced here (not just in
 // the upload form's accept="") so the API itself rejects non-video content either way.
@@ -274,9 +274,9 @@ app.post('/api/reels',requireAuth,requireCsrf,chatLimiter,mediaUpload.single('me
     if(!req.file)return res.status(400).json({error:'Add a short video to post a Reel.'});
     if(!req.file.mimetype.startsWith('video')){ try{fs.unlinkSync(req.file.path)}catch{}; return res.status(400).json({error:'Reels must be a video (MP4 or WEBM). Photos and audio-only clips are not supported here.'}); }
     if(!videoMagicOk(req.file)){ try{fs.unlinkSync(req.file.path)}catch{}; return res.status(400).json({error:'That file does not look like a valid MP4 or WEBM video. Re-export and try again.'}); }
-    const item={id:uid('reel'),userId:req.user.id,author:clean(req.user.name,60),caption,mediaType:'video',media:{path:path.basename(req.file.path),mime:req.file.mimetype},likes:[],createdAt:now()};
+    const item={id:uid('reel'),userId:req.user.id,author:clean(req.user.name,60),caption,mediaType:'video',media:{path:path.basename(req.file.path),mime:req.file.mimetype},likes:[],views:[],createdAt:now()};
     const list=readJson('reels');list.push(item);writeJson('reels',list.slice(-5000));
-    res.status(201).json({...publicReel(item),liked:false});
+    res.status(201).json({...publicReel(item),liked:false,canDelete:true});
   }catch(e){if(req.file)try{fs.unlinkSync(req.file.path)}catch{};res.status(400).json({error:e.message||'Reel post failed.'});}
 });
 app.post('/api/reels/:id/like',requireAuth,requireCsrf,(req,res)=>{
@@ -284,6 +284,21 @@ app.post('/api/reels/:id/like',requireAuth,requireCsrf,(req,res)=>{
   item.likes=item.likes||[]; const idx=item.likes.indexOf(req.user.id);
   if(idx>=0)item.likes.splice(idx,1); else item.likes.push(req.user.id);
   writeJson('reels',list); res.json({liked:idx<0,likeCount:item.likes.length});
+});
+// One view per member per reel — fired once by the player when playback actually starts,
+// not on every feed load, so scrolling past a reel never counts as a "view".
+app.post('/api/reels/:id/view',requireAuth,requireCsrf,(req,res)=>{
+  const list=readJson('reels'),item=list.find(x=>x.id===req.params.id); if(!item)return res.status(404).json({error:'Reel not found.'});
+  item.views=item.views||[];
+  if(!item.views.includes(req.user.id)){item.views.push(req.user.id);writeJson('reels',list);}
+  res.json({viewCount:item.views.length});
+});
+app.delete('/api/reels/:id',requireAuth,requireCsrf,(req,res)=>{
+  const list=readJson('reels'),item=list.find(x=>x.id===req.params.id); if(!item)return res.status(404).json({error:'Reel not found.'});
+  if(item.userId!==req.user.id && req.user.role!=='admin')return res.status(403).json({error:'You can only delete your own reels.'});
+  if(item.media?.path){const safe=path.basename(item.media.path); if(/^[A-Za-z0-9._-]+$/.test(safe))try{fs.unlinkSync(path.join(UPLOADS,safe))}catch{}}
+  writeJson('reels',list.filter(x=>x.id!==item.id));
+  res.json({ok:true});
 });
 app.get('/api/reels/media/:id',requireAuth,(req,res)=>{
   const r=readJson('reels').find(x=>x.id===req.params.id); if(!r?.media)return res.sendStatus(404);

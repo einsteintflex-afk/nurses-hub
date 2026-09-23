@@ -264,14 +264,21 @@ function renderReels(){
     initReelPlayers();
   }).catch(e=>toast(e.message));
 }
+function reelStats(r){return `<div class="reel-stats"><button class="btn ghost" onclick="toggleReelLike('${esc(r.id)}')">${r.liked?'♥':'♡'} ${r.likeCount}</button><span class="reel-view-count" title="Views">👁 ${r.viewCount||0}</span>${r.canDelete?`<button class="btn ghost reel-delete-btn" onclick="deleteReel('${esc(r.id)}')">🗑 Delete</button>`:''}</div>`}
 function reelCard(r){
-  if(r.mediaType==='youtube')return `<article class="reel-card"><div class="reel-media reel-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${esc(r.videoId)}" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="reel-body"><b>${esc(r.author)}</b><p>${esc(r.caption||'')}</p><button class="btn ghost" onclick="toggleReelLike('${esc(r.id)}')">${r.liked?'♥':'♡'} ${r.likeCount}</button></div></article>`;
-  return `<article class="reel-card"><div class="reel-video-wrap" data-id="${esc(r.id)}"><video class="reel-media" src="${esc(r.mediaUrl)}" playsinline preload="metadata"></video><div class="reel-spinner"></div><div class="reel-error hidden"><span>⚠ This video could not be played.</span></div><button class="reel-play-toggle" aria-label="Play video" type="button"><span class="reel-play-icon">▶</span></button><div class="reel-video-bar"><div class="reel-progress"><div class="reel-progress-fill"></div></div><button class="reel-mute-toggle" aria-label="Mute" type="button">🔊</button></div></div><div class="reel-body"><b>${esc(r.author)}</b><p>${esc(r.caption||'')}</p><button class="btn ghost" onclick="toggleReelLike('${esc(r.id)}')">${r.liked?'♥':'♡'} ${r.likeCount}</button></div></article>`;
+  if(r.mediaType==='youtube')return `<article class="reel-card"><div class="reel-media reel-youtube"><iframe src="https://www.youtube-nocookie.com/embed/${esc(r.videoId)}" title="YouTube video" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="reel-body"><b>${esc(r.author)}</b><p>${esc(r.caption||'')}</p>${reelStats(r)}</div></article>`;
+  return `<article class="reel-card"><div class="reel-video-wrap" data-id="${esc(r.id)}"><video class="reel-media" src="${esc(r.mediaUrl)}" playsinline preload="metadata"></video><div class="reel-spinner"></div><div class="reel-error hidden"><span>⚠ This video could not be played.</span></div><button class="reel-play-toggle" aria-label="Play video" type="button"><span class="reel-play-icon">▶</span></button><div class="reel-video-bar"><div class="reel-progress"><div class="reel-progress-fill"></div></div><button class="reel-mute-toggle" aria-label="Mute" type="button">🔊</button></div></div><div class="reel-body"><b>${esc(r.author)}</b><p>${esc(r.caption||'')}</p>${reelStats(r)}</div></article>`;
+}
+window.deleteReel=async id=>{
+  if(!confirm('Delete this reel? This cannot be undone.'))return;
+  try{await api('/api/reels/'+id,{method:'DELETE'});toast('Reel deleted.');renderReels()}catch(e){toast(e.message)}
 }
 function initReelPlayers(){
   $$('.reel-video-wrap').forEach(wrap=>{
     if(wrap.dataset.bound)return; wrap.dataset.bound='1';
     const video=wrap.querySelector('video'),spinner=wrap.querySelector('.reel-spinner'),errBox=wrap.querySelector('.reel-error'),playBtn=wrap.querySelector('.reel-play-toggle'),muteBtn=wrap.querySelector('.reel-mute-toggle'),fill=wrap.querySelector('.reel-progress-fill'),bar=wrap.querySelector('.reel-progress');
+    let viewed=false;
+    const recordView=()=>{if(viewed)return;viewed=true;api('/api/reels/'+wrap.dataset.id+'/view',{method:'POST',body:'{}'}).catch(()=>{})};
     video.muted=true;
     spinner.classList.remove('hidden');
     video.addEventListener('loadeddata',()=>spinner.classList.add('hidden'));
@@ -280,7 +287,7 @@ function initReelPlayers(){
     video.addEventListener('error',()=>{spinner.classList.add('hidden');errBox.classList.remove('hidden');playBtn.classList.add('hidden')});
     video.addEventListener('timeupdate',()=>{if(video.duration)fill.style.width=(video.currentTime/video.duration*100)+'%'});
     video.addEventListener('pause',()=>playBtn.classList.remove('hidden'));
-    video.addEventListener('play',()=>playBtn.classList.add('hidden'));
+    video.addEventListener('play',()=>{playBtn.classList.add('hidden');recordView()});
     video.addEventListener('ended',()=>playBtn.classList.remove('hidden'));
     const togglePlay=()=>{if(video.paused)video.play().catch(()=>{errBox.classList.remove('hidden');playBtn.classList.add('hidden')});else video.pause()};
     playBtn.onclick=togglePlay; video.onclick=togglePlay;
