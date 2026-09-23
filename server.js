@@ -140,6 +140,16 @@ function extFor(mime){ return {'application/pdf':'.pdf','image/jpeg':'.jpg','ima
 const uploadStorage=multer.diskStorage({destination:(req,file,cb)=>cb(null,UPLOADS),filename:(req,file,cb)=>cb(null,crypto.randomBytes(16).toString('hex')+extFor(file.mimetype))});
 const upload=multer({storage:uploadStorage,limits:{files:5,fileSize:Math.max(1,Number(process.env.MAX_UPLOAD_MB||8))*1024*1024},fileFilter:(req,file,cb)=>{if(['application/pdf','image/jpeg','image/png'].includes(file.mimetype))cb(null,true);else cb(new Error('Only PDF, JPG and PNG files are accepted.'));}});
 function fileMagicOk(file){ try{const b=fs.readFileSync(file.path); if(file.mimetype==='application/pdf')return b.slice(0,5).toString()==='%PDF-'; if(file.mimetype==='image/png')return b.slice(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])); if(file.mimetype==='image/jpeg')return b[0]===255&&b[1]===216&&b[b.length-2]===255&&b[b.length-1]===217;}catch{} return false; }
+// Trusts real file bytes, not the client-supplied Content-Type header, so a mislabeled or
+// renamed file can never be stored/served as a "video" it isn't.
+function videoMagicOk(file){
+  try{
+    const b=fs.readFileSync(file.path);
+    if(file.mimetype==='video/mp4')return b.length>8 && b.slice(4,8).toString('ascii')==='ftyp';
+    if(file.mimetype==='video/webm')return b.length>4 && b[0]===0x1A&&b[1]===0x45&&b[2]===0xDF&&b[3]===0xA3;
+  }catch{}
+  return false;
+}
 function cleanupFiles(files){ for(const list of Object.values(files||{}))for(const f of list){try{fs.unlinkSync(f.path)}catch{}} }
 
 
@@ -263,6 +273,7 @@ app.post('/api/reels',requireAuth,requireCsrf,chatLimiter,mediaUpload.single('me
     const caption=clean(req.body.caption,300);
     if(!req.file)return res.status(400).json({error:'Add a short video to post a Reel.'});
     if(!req.file.mimetype.startsWith('video')){ try{fs.unlinkSync(req.file.path)}catch{}; return res.status(400).json({error:'Reels must be a video (MP4 or WEBM). Photos and audio-only clips are not supported here.'}); }
+    if(!videoMagicOk(req.file)){ try{fs.unlinkSync(req.file.path)}catch{}; return res.status(400).json({error:'That file does not look like a valid MP4 or WEBM video. Re-export and try again.'}); }
     const item={id:uid('reel'),userId:req.user.id,author:clean(req.user.name,60),caption,mediaType:'video',media:{path:path.basename(req.file.path),mime:req.file.mimetype},likes:[],createdAt:now()};
     const list=readJson('reels');list.push(item);writeJson('reels',list.slice(-5000));
     res.status(201).json({...publicReel(item),liked:false});
@@ -288,6 +299,7 @@ app.post('/api/admin/reel-pool',requireAuth,requireAdmin,requireCsrf,mediaUpload
   try{
     if(!req.file)return res.status(400).json({error:'Add a video file to add it to the auto-post pool.'});
     if(!req.file.mimetype.startsWith('video')){ try{fs.unlinkSync(req.file.path)}catch{}; return res.status(400).json({error:'Only MP4 or WEBM video files can be added to the reel pool.'}); }
+    if(!videoMagicOk(req.file)){ try{fs.unlinkSync(req.file.path)}catch{}; return res.status(400).json({error:'That file does not look like a valid MP4 or WEBM video. Re-export and try again.'}); }
     const item={id:uid('rpv'),caption:clean(req.body.caption,300),media:{path:path.basename(req.file.path),mime:req.file.mimetype},addedAt:now()};
     const list=readJson('reelVideoPool');list.push(item);writeJson('reelVideoPool',list.slice(-500));
     res.status(201).json(item);
