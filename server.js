@@ -18,8 +18,15 @@ function claudeText(response){ return (response.content||[]).filter(b=>b.type===
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 const APP_URL = process.env.APP_URL || `http://localhost:${PORT}`;
-const DATA_DIR = path.join(__dirname, 'data');
-const UPLOADS = path.join(__dirname, 'uploads');
+// On a host with ephemeral disk (e.g. Render's default free/starter instance), everything
+// under the app's own code directory is wiped on every restart/redeploy/spin-down, which
+// silently resets all admin config, uploaded videos, and every member's account and data —
+// not just one feature. Setting STORAGE_ROOT to a mounted persistent disk's path (e.g. a
+// Render Persistent Disk) makes both data/ and uploads/ survive restarts. Left unset, it
+// defaults to the app directory itself, which is exactly today's behaviour.
+const STORAGE_ROOT = process.env.STORAGE_ROOT || __dirname;
+const DATA_DIR = path.join(STORAGE_ROOT, 'data');
+const UPLOADS = path.join(STORAGE_ROOT, 'uploads');
 fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(UPLOADS, { recursive: true });
 
@@ -31,8 +38,18 @@ const STORE = {
   applications:'applications.json', stories:'stories.json', friends:'friends.json', directMessages:'direct-messages.json', groups:'groups.json', groupMembers:'group-members.json', statuses:'statuses.json', notifications:'notifications.json', newsComments:'news-comments.json', newsLikes:'news-likes.json', supportMessages:'support-messages.json', lessonNotes:'lesson-notes.json', reels:'reels.json', reelVideoPool:'reel-video-pool.json', reelYoutubeSource:'reel-youtube-source.json', refreshStatus:'refresh-status.json'
 };
 const CONTENT = { syllabus:'syllabus.json', questions:'questions.json', travel:'travel.json', resources:'resources.json', jobs:'jobs.json', news:'news.json', institutions:'institutions.json', studyOptions:'study-options.json', testimonials:'testimonials.json' };
+// First boot against a fresh persistent disk: seed it from the repo's own bundled data/ files
+// (the syllabus, question bank, travel guides, etc. shipped with the code) instead of wiping
+// everything to an empty array. Every boot after that reads/writes only the persistent copy —
+// the bundled repo files are never touched again, so later admin edits are never overwritten
+// by a redeploy.
+const BUNDLED_DATA_DIR = path.join(__dirname, 'data');
 for (const f of [...Object.values(STORE), ...Object.values(CONTENT)]) {
-  const p = path.join(DATA_DIR, f); if (!fs.existsSync(p)) fs.writeFileSync(p, '[]', 'utf8');
+  const p = path.join(DATA_DIR, f);
+  if (fs.existsSync(p)) continue;
+  const bundled = path.join(BUNDLED_DATA_DIR, f);
+  if (DATA_DIR !== BUNDLED_DATA_DIR && fs.existsSync(bundled)) fs.copyFileSync(bundled, p);
+  else fs.writeFileSync(p, '[]', 'utf8');
 }
 
 function autoMigrateLocalUserData(){
