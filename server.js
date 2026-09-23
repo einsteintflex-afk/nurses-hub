@@ -132,7 +132,13 @@ const authLimiter=rateLimit({windowMs:15*60*1000,limit:30,standardHeaders:'draft
 const payLimiter=rateLimit({windowMs:10*60*1000,limit:20,standardHeaders:'draft-7',legacyHeaders:false});
 const chatLimiter=rateLimit({windowMs:60*1000,limit:30,standardHeaders:'draft-7',legacyHeaders:false});
 
-const upload=multer({dest:UPLOADS,limits:{files:5,fileSize:Math.max(1,Number(process.env.MAX_UPLOAD_MB||8))*1024*1024},fileFilter:(req,file,cb)=>{if(['application/pdf','image/jpeg','image/png'].includes(file.mimetype))cb(null,true);else cb(new Error('Only PDF, JPG and PNG files are accepted.'));}});
+// multer's dest:UPLOADS shorthand saves files with no extension at all, which meant
+// res.sendFile() could never infer a Content-Type and always fell back to
+// application/octet-stream — browsers won't play video/audio (and some won't render
+// images) served that way. Extension-aware disk storage fixes every upload route at once.
+function extFor(mime){ return {'application/pdf':'.pdf','image/jpeg':'.jpg','image/png':'.png','image/webp':'.webp','audio/mpeg':'.mp3','audio/ogg':'.ogg','audio/wav':'.wav','video/mp4':'.mp4','video/webm':'.webm'}[mime] || ''; }
+const uploadStorage=multer.diskStorage({destination:(req,file,cb)=>cb(null,UPLOADS),filename:(req,file,cb)=>cb(null,crypto.randomBytes(16).toString('hex')+extFor(file.mimetype))});
+const upload=multer({storage:uploadStorage,limits:{files:5,fileSize:Math.max(1,Number(process.env.MAX_UPLOAD_MB||8))*1024*1024},fileFilter:(req,file,cb)=>{if(['application/pdf','image/jpeg','image/png'].includes(file.mimetype))cb(null,true);else cb(new Error('Only PDF, JPG and PNG files are accepted.'));}});
 function fileMagicOk(file){ try{const b=fs.readFileSync(file.path); if(file.mimetype==='application/pdf')return b.slice(0,5).toString()==='%PDF-'; if(file.mimetype==='image/png')return b.slice(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])); if(file.mimetype==='image/jpeg')return b[0]===255&&b[1]===216&&b[b.length-2]===255&&b[b.length-1]===217;}catch{} return false; }
 function cleanupFiles(files){ for(const list of Object.values(files||{}))for(const f of list){try{fs.unlinkSync(f.path)}catch{}} }
 
@@ -155,7 +161,7 @@ function mediaAllowed(file){
   const allowed=['image/jpeg','image/png','image/webp','audio/mpeg','audio/ogg','audio/wav','video/mp4','video/webm'];
   return allowed.includes(file.mimetype);
 }
-const mediaUpload=multer({dest:UPLOADS,limits:{files:1,fileSize:12*1024*1024},fileFilter:(req,file,cb)=>{if(mediaAllowed(file))cb(null,true);else cb(new Error('Only JPG, PNG, WEBP, MP3, OGG, WAV, MP4 and WEBM media are accepted (max 12 MB).'));}});
+const mediaUpload=multer({storage:uploadStorage,limits:{files:1,fileSize:12*1024*1024},fileFilter:(req,file,cb)=>{if(mediaAllowed(file))cb(null,true);else cb(new Error('Only JPG, PNG, WEBP, MP3, OGG, WAV, MP4 and WEBM media are accepted (max 12 MB).'));}});
 function addFriendNotification(targetId,actor){createNotification(targetId,'friend_request',`${actor.name} sent you a friend request`,`Open Community to review the request.`,'community');}
 function broadcastToUser(userId,payload){for(const entry of clients?.values?.()||[])if(entry.userId===userId&&entry.ws.readyState===1)entry.ws.send(JSON.stringify(payload));}
 
@@ -295,6 +301,16 @@ app.get('/api/admin/reel-pool/:id/media',requireAuth,requireAdmin,(req,res)=>{
   const safe=path.basename(item.media.path); if(!/^[A-Za-z0-9._-]+$/.test(safe))return res.sendStatus(404);
   res.sendFile(path.join(UPLOADS,safe));
 });
+// Adding a video to the pool only queues it for the next scheduled rotation slot (up to
+// REEL_AUTO_POST_HOURS away) — from the admin's side that looks like "nothing happened" even
+// though it worked. This lets an admin publish a specific pool item to the live feed right now.
+app.post('/api/admin/reel-pool/:id/post-now',requireAuth,requireAdmin,requireCsrf,(req,res)=>{
+  const item=readJson('reelVideoPool').find(x=>x.id===req.params.id); if(!item)return res.status(404).json({error:'Pool video not found.'});
+  const reels=readJson('reels');
+  const reel={id:uid('reel'),userId:null,author:'Hub Team',caption:item.caption||'A quick moment from the Hub.',mediaType:'video',media:{path:item.media.path,mime:item.media.mime},likes:[],createdAt:now()};
+  reels.push(reel); writeJson('reels',reels.slice(-5000));
+  res.status(201).json({ok:true,reelId:reel.id});
+});
 let reelPoolCursor=0;
 async function autoPostPoolReel(){
   const pool=readJson('reelVideoPool'); if(!pool.length)return false;
@@ -339,6 +355,17 @@ app.post('/api/admin/reel-youtube',requireAuth,requireAdmin,requireCsrf,async(re
   res.status(201).json({ok:true,channelId});
 });
 app.delete('/api/admin/reel-youtube',requireAuth,requireAdmin,requireCsrf,(req,res)=>{ writeJson('reelYoutubeSource',[]); res.json({ok:true}); });
+// Connecting a channel only takes effect at the next scheduled tick, same visibility gap as the
+// video pool above. Lets an admin check the channel and post immediately if there's something new.
+app.post('/api/admin/reel-youtube/check-now',requireAuth,requireAdmin,requireCsrf,async(req,res)=>{
+  const cfg=readJson('reelYoutubeSource')[0]; if(!cfg?.channelId)return res.status(400).json({error:'Connect a channel first.'});
+  const next=await checkYoutubeForNewVideo();
+  if(!next)return res.json({posted:false,message:'No new videos found on this channel right now (or the channel could not be reached — check the server logs).'});
+  const reels=readJson('reels');
+  reels.push({id:uid('reel'),userId:null,author:'Hub Team',caption:next.title||'New video from the Hub channel.',mediaType:'youtube',videoId:next.videoId,likes:[],createdAt:now()});
+  writeJson('reels',reels.slice(-5000));
+  res.json({posted:true,title:next.title});
+});
 async function checkYoutubeForNewVideo(){
   const cfg=readJson('reelYoutubeSource')[0]; if(!cfg?.channelId)return null;
   try{
