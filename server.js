@@ -253,15 +253,17 @@ app.get('/api/community/summary',requireAuth,requirePremium,(req,res)=>{const fr
 
 function publicReel(r){return {id:r.id,userId:r.userId,author:r.author,caption:r.caption,mediaType:r.mediaType,videoId:r.videoId||null,mediaUrl:r.mediaType==='youtube'?null:(r.mediaUrl||`/api/reels/media/${r.id}`),likeCount:(r.likes||[]).length,createdAt:r.createdAt};}
 app.get('/api/reels',requireAuth,(req,res)=>{
-  const reels=readJson('reels').slice(-200).reverse();
+  const reels=readJson('reels').filter(r=>r.mediaType==='video'||r.mediaType==='youtube').slice(-200).reverse();
   res.json(reels.map(r=>({...publicReel(r),liked:(r.likes||[]).includes(req.user.id)})));
 });
+// Reels are video-only: a caption card or a photo is not a Reel. Enforced here (not just in
+// the upload form's accept="") so the API itself rejects non-video content either way.
 app.post('/api/reels',requireAuth,requireCsrf,chatLimiter,mediaUpload.single('media'),(req,res)=>{
   try{
     const caption=clean(req.body.caption,300);
-    if(!req.file)return res.status(400).json({error:'Add a photo or video to post a reel.'});
-    const mediaType=req.file.mimetype.startsWith('video')?'video':req.file.mimetype.startsWith('audio')?'audio':'image';
-    const item={id:uid('reel'),userId:req.user.id,author:clean(req.user.name,60),caption,mediaType,media:{path:path.basename(req.file.path),mime:req.file.mimetype},likes:[],createdAt:now()};
+    if(!req.file)return res.status(400).json({error:'Add a short video to post a Reel.'});
+    if(!req.file.mimetype.startsWith('video')){ try{fs.unlinkSync(req.file.path)}catch{}; return res.status(400).json({error:'Reels must be a video (MP4 or WEBM). Photos and audio-only clips are not supported here.'}); }
+    const item={id:uid('reel'),userId:req.user.id,author:clean(req.user.name,60),caption,mediaType:'video',media:{path:path.basename(req.file.path),mime:req.file.mimetype},likes:[],createdAt:now()};
     const list=readJson('reels');list.push(item);writeJson('reels',list.slice(-5000));
     res.status(201).json({...publicReel(item),liked:false});
   }catch(e){if(req.file)try{fs.unlinkSync(req.file.path)}catch{};res.status(400).json({error:e.message||'Reel post failed.'});}
